@@ -1,20 +1,13 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>Mi habitación | My Little English</title>
 
     <style>
-
         * {
             box-sizing: border-box;
             margin: 0;
@@ -25,15 +18,10 @@
         body {
             width: 100%;
             height: 100%;
-        }
-
-        body {
+            overflow: hidden;
             font-family: Arial, sans-serif;
             background: #87ceeb;
-            overflow: hidden;
-            touch-action: manipulation;
         }
-
 
         /* =====================================================
            JUEGO
@@ -47,7 +35,6 @@
             overflow: hidden;
         }
 
-
         /* =====================================================
            BARRA SUPERIOR
         ===================================================== */
@@ -56,10 +43,8 @@
             position: absolute;
             top: 0;
             left: 0;
-
             width: 100%;
             height: 75px;
-
             background: rgba(255, 255, 255, 0.96);
 
             display: flex;
@@ -68,10 +53,10 @@
 
             padding: 0 25px;
 
-            z-index: 100;
+            z-index: 500;
 
             box-shadow:
-                0 3px 12px rgba(0, 0, 0, 0.15);
+                0 3px 12px rgba(0, 0, 0, .15);
         }
 
         .logo {
@@ -88,22 +73,11 @@
 
             font-weight: bold;
             color: #333;
-
-            min-width: 0;
-        }
-
-        .player-name {
-            max-width: 180px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
         }
 
         .stars {
             background: #fff4b8;
-
             padding: 10px 18px;
-
             border-radius: 25px;
 
             font-size: 20px;
@@ -112,12 +86,11 @@
             white-space: nowrap;
         }
 
-
         /* =====================================================
-           HABITACIÓN
+           CONTENEDOR DE LA HABITACIÓN
         ===================================================== */
 
-        .room {
+        .room-scroll {
             position: absolute;
 
             top: 75px;
@@ -127,7 +100,27 @@
             height: calc(100vh - 75px);
             height: calc(100dvh - 75px);
 
+            overflow-x: hidden;
+            overflow-y: hidden;
+
+            z-index: 1;
+
+            -webkit-overflow-scrolling: touch;
+
+            overscroll-behavior-x: contain;
+
+            touch-action: pan-x;
+        }
+
+        .room {
+            position: relative;
+
+            width: 100%;
+            height: 100%;
+
             overflow: hidden;
+
+            touch-action: pan-x;
         }
 
         .room-background {
@@ -139,14 +132,13 @@
             height: 100%;
 
             object-fit: cover;
-            object-position: center;
+            object-position: center center;
 
             user-select: none;
             pointer-events: none;
 
             z-index: 1;
         }
-
 
         /* =====================================================
            MISIÓN
@@ -160,16 +152,16 @@
 
             transform: translateX(-50%);
 
-            background: rgba(255, 255, 255, 0.96);
+            background: rgba(255, 255, 255, .96);
 
             padding: 12px 24px;
 
             border-radius: 30px;
 
-            z-index: 70;
+            z-index: 200;
 
             box-shadow:
-                0 5px 15px rgba(0, 0, 0, 0.15);
+                0 5px 15px rgba(0, 0, 0, .15);
 
             font-weight: bold;
             color: #333;
@@ -179,11 +171,6 @@
             white-space: nowrap;
         }
 
-
-        /* =====================================================
-           NIVEL
-        ===================================================== */
-
         .level {
             position: absolute;
 
@@ -191,7 +178,6 @@
             left: 20px;
 
             background: #ffca28;
-
             color: #5d4037;
 
             padding: 10px 18px;
@@ -200,15 +186,10 @@
 
             font-weight: bold;
 
-            z-index: 70;
+            z-index: 200;
 
             white-space: nowrap;
         }
-
-
-        /* =====================================================
-           BOTÓN VOZ
-        ===================================================== */
 
         .listen {
             position: absolute;
@@ -219,7 +200,6 @@
             background: #ffffff;
 
             border: none;
-
             border-radius: 50%;
 
             width: 52px;
@@ -229,22 +209,17 @@
 
             cursor: pointer;
 
-            z-index: 70;
+            z-index: 200;
 
             box-shadow:
-                0 4px 12px rgba(0, 0, 0, 0.20);
+                0 4px 12px rgba(0, 0, 0, .20);
 
-            transition: transform 0.2s;
+            transition: transform .2s;
         }
 
         .listen:hover {
             transform: scale(1.1);
         }
-
-        .listen:active {
-            transform: scale(0.92);
-        }
-
 
         /* =====================================================
            PERSONAJE
@@ -259,22 +234,17 @@
             width: 220px;
             height: 320px;
 
-            z-index: 60;
+            z-index: 150;
 
             pointer-events: none;
 
             transition:
-                left 0.5s ease,
-                top 0.5s ease,
-                transform 0.3s ease;
+                left .5s ease,
+                top .5s ease,
+                transform .3s ease;
 
             transform-origin: bottom center;
         }
-
-
-        /* =====================================================
-           IMAGEN DEL PERSONAJE
-        ===================================================== */
 
         .character-image {
             width: 100%;
@@ -289,27 +259,25 @@
 
             filter:
                 drop-shadow(
-                    0 7px 5px rgba(0, 0, 0, 0.22)
+                    0 7px 5px rgba(0, 0, 0, .22)
                 );
 
             transform-origin: bottom center;
         }
 
-
         /* =====================================================
-           ANIMACIÓN CAMINAR
+           CAMINAR
         ===================================================== */
 
         .character.walking .character-image {
             animation:
                 walkingAnimation
-                0.30s
+                .30s
                 infinite
                 alternate;
         }
 
         @keyframes walkingAnimation {
-
             from {
                 transform:
                     translateY(0)
@@ -322,7 +290,6 @@
                     rotate(2deg);
             }
         }
-
 
         /* =====================================================
            PERSONAJE SEÑALANDO
@@ -339,16 +306,16 @@
             opacity: 0;
 
             transform:
-                scale(0.5)
+                scale(.5)
                 rotate(-10deg);
 
             transition:
-                opacity 0.25s ease,
-                transform 0.25s ease;
+                opacity .25s ease,
+                transform .25s ease;
 
             filter:
                 drop-shadow(
-                    0 3px 2px rgba(0, 0, 0, 0.20)
+                    0 3px 2px rgba(0, 0, 0, .20)
                 );
         }
 
@@ -361,13 +328,12 @@
 
             animation:
                 pointingAnimation
-                0.45s
+                .45s
                 infinite
                 alternate;
         }
 
         @keyframes pointingAnimation {
-
             from {
                 transform:
                     scale(1)
@@ -381,7 +347,6 @@
             }
         }
 
-
         /* =====================================================
            HOTSPOTS
         ===================================================== */
@@ -389,7 +354,7 @@
         .hotspot {
             position: absolute;
 
-            z-index: 30;
+            z-index: 100;
 
             cursor: pointer;
 
@@ -399,30 +364,29 @@
             outline: none;
 
             transition:
-                background 0.2s,
-                transform 0.2s;
+                background .2s,
+                transform .2s;
 
             border-radius: 15px;
 
-            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .hotspot:hover {
             background:
-                rgba(255, 255, 255, 0.14);
+                rgba(255, 255, 255, .14);
 
             box-shadow:
                 0 0 0 3px
-                rgba(255, 255, 255, 0.20);
+                rgba(255, 255, 255, .20);
         }
 
         .hotspot:active {
-            transform: scale(0.97);
+            transform: scale(.97);
         }
 
-
         /* =====================================================
-           POSICIONES DE OBJETOS
+           OBJETOS
         ===================================================== */
 
         .bed-hotspot {
@@ -537,7 +501,6 @@
             height: 17%;
         }
 
-
         /* =====================================================
            MENSAJE
         ===================================================== */
@@ -561,10 +524,10 @@
 
             color: #333;
 
-            z-index: 150;
+            z-index: 350;
 
             box-shadow:
-                0 5px 20px rgba(0, 0, 0, 0.20);
+                0 5px 20px rgba(0, 0, 0, .20);
 
             display: none;
 
@@ -578,18 +541,17 @@
 
             animation:
                 feedbackIn
-                0.35s
+                .35s
                 ease;
         }
 
         @keyframes feedbackIn {
-
             from {
                 opacity: 0;
 
                 transform:
                     translate(-50%, 20px)
-                    scale(0.9);
+                    scale(.9);
             }
 
             to {
@@ -601,9 +563,8 @@
             }
         }
 
-
         /* =====================================================
-           ESTRELLA FLOTANTE
+           ESTRELLA
         ===================================================== */
 
         .floating-star {
@@ -611,7 +572,7 @@
 
             font-size: 35px;
 
-            z-index: 160;
+            z-index: 400;
 
             pointer-events: none;
 
@@ -623,13 +584,12 @@
         }
 
         @keyframes starFloat {
-
             0% {
                 opacity: 1;
 
                 transform:
                     translateY(0)
-                    scale(0.6);
+                    scale(.6);
             }
 
             100% {
@@ -641,9 +601,49 @@
             }
         }
 
+        /* =====================================================
+           CONTROLES
+        ===================================================== */
+
+        .movement-controls {
+            position: absolute;
+
+            bottom: 22px;
+            left: 25px;
+
+            z-index: 350;
+
+            display: flex;
+
+            gap: 10px;
+        }
+
+        .movement-controls button {
+            width: 58px;
+            height: 58px;
+
+            border: none;
+            border-radius: 50%;
+
+            background:
+                rgba(255, 255, 255, .94);
+
+            box-shadow:
+                0 4px 12px rgba(0, 0, 0, .20);
+
+            font-size: 28px;
+
+            cursor: pointer;
+
+            touch-action: manipulation;
+        }
+
+        .movement-controls button:active {
+            transform: scale(.9);
+        }
 
         /* =====================================================
-           PANTALLA FINAL
+           FINAL
         ===================================================== */
 
         .complete-screen {
@@ -651,13 +651,10 @@
 
             inset: 0;
 
-            width: 100%;
-            height: 100%;
-
             background:
-                rgba(255, 255, 255, 0.96);
+                rgba(255, 255, 255, .96);
 
-            z-index: 300;
+            z-index: 1000;
 
             display: none;
 
@@ -712,64 +709,22 @@
             border-radius: 30px;
 
             cursor: pointer;
-
-            transition: transform 0.2s;
         }
 
         .continue-btn:hover {
             transform: scale(1.05);
         }
 
-        .continue-btn:active {
-            transform: scale(0.95);
-        }
-
-
         /* =====================================================
-           CONTROLES
+           INDICADOR DE DESLIZAMIENTO EN CELULAR
         ===================================================== */
 
-        .movement-controls {
-            position: absolute;
-
-            bottom: 22px;
-            left: 25px;
-
-            z-index: 180;
-
-            display: flex;
-
-            gap: 10px;
+        .swipe-hint {
+            display: none;
         }
-
-        .movement-controls button {
-            width: 58px;
-            height: 58px;
-
-            border: none;
-
-            border-radius: 50%;
-
-            background:
-                rgba(255, 255, 255, 0.94);
-
-            box-shadow:
-                0 4px 12px rgba(0, 0, 0, 0.20);
-
-            font-size: 28px;
-
-            cursor: pointer;
-
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .movement-controls button:active {
-            transform: scale(0.9);
-        }
-
 
         /* =====================================================
-           CELULARES
+           CELULAR
         ===================================================== */
 
         @media (max-width: 700px) {
@@ -784,8 +739,6 @@
 
             .game {
                 width: 100vw;
-
-                height: 100vh;
                 height: 100dvh;
 
                 min-height: 0;
@@ -793,40 +746,30 @@
                 overflow: hidden;
             }
 
-
-            /* -------------------------------
+            /* -------------------------------------------------
                BARRA SUPERIOR
-            ------------------------------- */
+            ------------------------------------------------- */
 
             .top-bar {
                 height: 58px;
 
-                padding:
-                    0 8px;
+                padding: 0 10px;
 
-                gap: 5px;
+                gap: 6px;
             }
 
             .logo {
                 font-size: 15px;
-
-                white-space: nowrap;
-
-                flex-shrink: 0;
             }
 
             .player {
-                gap: 5px;
-
-                min-width: 0;
-
-                margin-left: auto;
+                gap: 6px;
             }
 
             .player-name {
                 font-size: 12px;
 
-                max-width: 75px;
+                max-width: 80px;
 
                 overflow: hidden;
 
@@ -836,34 +779,58 @@
             }
 
             .stars {
-                padding:
-                    6px 9px;
+                padding: 6px 9px;
 
-                font-size: 14px;
+                font-size: 13px;
 
                 border-radius: 18px;
             }
 
+            /* -------------------------------------------------
+               ÁREA DESPLAZABLE
+            ------------------------------------------------- */
 
-            /* -------------------------------
-               HABITACIÓN
-            ------------------------------- */
-
-            .room {
-                position: absolute;
+            .room-scroll {
+                top: 58px;
 
                 left: 0;
-                top: 58px;
 
                 width: 100vw;
 
-                height:
-                    calc(100vh - 58px);
+                height: calc(100dvh - 58px);
 
-                height:
-                    calc(100dvh - 58px);
+                overflow-x: auto;
+                overflow-y: hidden;
+
+                -webkit-overflow-scrolling: touch;
+
+                scroll-behavior: smooth;
+
+                touch-action: pan-x;
+
+                scrollbar-width: none;
+            }
+
+            .room-scroll::-webkit-scrollbar {
+                display: none;
+            }
+
+            /* -------------------------------------------------
+               HABITACIÓN GRANDE PARA CELULAR
+            ------------------------------------------------- */
+
+            .room {
+                position: relative;
+
+                width: 1400px;
+
+                min-width: 1400px;
+
+                height: 100%;
 
                 overflow: hidden;
+
+                touch-action: pan-x;
             }
 
             .room-background {
@@ -872,89 +839,110 @@
 
                 object-fit: cover;
 
-                object-position: center;
+                object-position: center center;
             }
 
+            /* -------------------------------------------------
+               INDICADOR
+            ------------------------------------------------- */
 
-            /* -------------------------------
-               NIVEL
-            ------------------------------- */
+            .swipe-hint {
+                display: block;
 
-            .level {
-                top: 9px;
-                left: 8px;
+                position: fixed;
 
-                padding:
-                    6px 9px;
-
-                font-size: 12px;
-
-                border-radius: 12px;
-
-                z-index: 80;
-            }
-
-
-            /* -------------------------------
-               MISIÓN
-            ------------------------------- */
-
-            .mission {
-                top: 9px;
+                top: 68px;
 
                 left: 50%;
 
-                transform:
-                    translateX(-50%);
+                transform: translateX(-50%);
 
-                width: auto;
+                z-index: 450;
 
-                max-width: 48%;
+                background:
+                    rgba(255, 255, 255, .88);
 
-                padding:
-                    7px 8px;
+                color: #444;
+
+                padding: 6px 12px;
+
+                border-radius: 20px;
 
                 font-size: 11px;
 
-                white-space: nowrap;
+                font-weight: bold;
 
-                overflow: hidden;
+                pointer-events: none;
 
-                text-overflow: ellipsis;
+                opacity: 1;
 
-                z-index: 80;
+                transition: opacity .5s ease;
             }
 
+            .swipe-hint.hide {
+                opacity: 0;
+            }
 
-            /* -------------------------------
-               BOTÓN DE VOZ
-            ------------------------------- */
+            /* -------------------------------------------------
+               NIVEL
+            ------------------------------------------------- */
+
+            .level {
+                top: 10px;
+                left: 10px;
+
+                padding: 6px 10px;
+
+                font-size: 13px;
+
+                border-radius: 10px;
+            }
+
+            /* -------------------------------------------------
+               MISIÓN
+            ------------------------------------------------- */
+
+            .mission {
+                top: 10px;
+
+                left: 50%;
+
+                transform: translateX(-50%);
+
+                padding: 7px 10px;
+
+                font-size: 13px;
+
+                white-space: nowrap;
+            }
+
+            /* -------------------------------------------------
+               VOZ
+            ------------------------------------------------- */
 
             .listen {
-                top: 7px;
-                right: 8px;
+                top: 10px;
+
+                right: 10px;
 
                 width: 42px;
                 height: 42px;
 
-                font-size: 19px;
-
-                z-index: 90;
+                font-size: 18px;
             }
 
-
-            /* -------------------------------
+            /* -------------------------------------------------
                PERSONAJE
-            ------------------------------- */
+            ------------------------------------------------- */
 
             .character {
-                width: 145px;
-                height: 210px;
+                width: 150px;
 
-                left: 43%;
-                top: 58%;
+                height: 220px;
 
-                z-index: 60;
+                left: 48%;
+
+                top: 57%;
             }
 
             .character-image {
@@ -964,183 +952,94 @@
                 object-fit: contain;
             }
 
-            .pointer {
-                right: -22px;
-                top: 30px;
-
-                font-size: 29px;
-            }
-
-
-            /* -------------------------------
-               OBJETOS
-            ------------------------------- */
-
-            .hotspot {
-                -webkit-tap-highlight-color:
-                    transparent;
-            }
-
-
-            /* -------------------------------
+            /* -------------------------------------------------
                CONTROLES
-            ------------------------------- */
+            ------------------------------------------------- */
 
             .movement-controls {
-                bottom: 10px;
-                left: 10px;
+                position: fixed;
 
-                gap: 7px;
+                bottom: 12px;
 
-                z-index: 200;
+                left: 12px;
+
+                gap: 8px;
+
+                z-index: 600;
             }
 
             .movement-controls button {
-                width: 45px;
-                height: 45px;
+                width: 44px;
+                height: 44px;
 
                 font-size: 20px;
             }
 
-
-            /* -------------------------------
-               MENSAJE
-            ------------------------------- */
+            /* -------------------------------------------------
+               FEEDBACK
+            ------------------------------------------------- */
 
             .feedback {
+                position: fixed;
+
                 left: 50%;
 
-                bottom: 65px;
+                bottom: 72px;
 
-                width: 78%;
+                transform: translateX(-50%);
+
+                width: 75%;
 
                 max-width: 300px;
 
-                padding:
-                    9px 12px;
+                padding: 10px 14px;
 
-                font-size: 14px;
+                font-size: 15px;
 
-                border-radius: 20px;
+                z-index: 700;
 
                 white-space: normal;
-
-                z-index: 220;
             }
 
-
-            /* -------------------------------
-               PANTALLA FINAL
-            ------------------------------- */
+            /* -------------------------------------------------
+               FINAL
+            ------------------------------------------------- */
 
             .complete-screen {
+                position: fixed;
+
+                inset: 0;
+
                 width: 100%;
-                height: 100%;
+                max-width: none;
 
-                padding:
-                    20px 15px;
-            }
-
-            .complete-stars {
-                font-size: 38px;
-
-                margin-bottom: 15px;
+                padding: 25px 18px;
             }
 
             .complete-screen h1 {
-                font-size: 28px;
-
-                margin-bottom: 10px;
+                font-size: 26px;
             }
 
             .complete-screen p {
-                font-size: 16px;
+                font-size: 15px;
+            }
 
-                margin-bottom: 20px;
+            .complete-stars {
+                font-size: 42px;
             }
 
             .continue-btn {
-                font-size: 17px;
-
-                padding:
-                    12px 22px;
-            }
-        }
-
-
-        /* =====================================================
-           CELULARES MUY PEQUEÑOS
-        ===================================================== */
-
-        @media (max-width: 390px) {
-
-            .logo {
-                font-size: 13px;
-            }
-
-            .player-name {
-                max-width: 58px;
-
-                font-size: 11px;
-            }
-
-            .stars {
-                padding:
-                    5px 7px;
-
-                font-size: 12px;
-            }
-
-            .mission {
-                font-size: 10px;
-
-                max-width: 45%;
-            }
-
-            .level {
-                font-size: 10px;
-
-                padding:
-                    5px 7px;
-            }
-
-            .listen {
-                width: 38px;
-                height: 38px;
-
-                font-size: 17px;
-            }
-
-            .character {
-                width: 125px;
-                height: 185px;
-
-                left: 42%;
-                top: 60%;
-            }
-
-            .movement-controls button {
-                width: 42px;
-                height: 42px;
-
                 font-size: 18px;
-            }
 
-            .feedback {
-                width: 82%;
-
-                font-size: 13px;
+                padding: 12px 24px;
             }
         }
-
     </style>
 </head>
-
 
 <body>
 
 <div class="game">
-
 
     <!-- =====================================================
          BARRA SUPERIOR
@@ -1174,290 +1073,314 @@
 
 
     <!-- =====================================================
-         HABITACIÓN
+         INDICADOR CELULAR
     ====================================================== -->
 
     <div
-        class="room"
-        id="room"
+        id="swipeHint"
+        class="swipe-hint"
+    >
+        👆 Desliza la habitación
+    </div>
+
+
+    <!-- =====================================================
+         ÁREA DESPLAZABLE
+    ====================================================== -->
+
+    <div
+        id="roomScroll"
+        class="room-scroll"
     >
 
-
-        <!-- IMAGEN DE LA HABITACIÓN -->
-
-        <img
-            src="{% static 'juego/images/my-room.jpeg' %}"
-            class="room-background"
-            alt="My Room"
-        >
-
-
-        <!-- NIVEL -->
-
-        <div class="level">
-            🏠 Level 1
-        </div>
-
-
-        <!-- MISIÓN -->
-
-        <div class="mission">
-            🔎 Find the objects!
-        </div>
-
-
-        <!-- VOZ -->
-
-        <button
-            class="listen"
-            id="listenButton"
-            onclick="repeatMission()"
-            title="Listen"
-            type="button"
-        >
-            🔊
-        </button>
-
-
         <!-- =================================================
-             PERSONAJE
+             HABITACIÓN
         ================================================== -->
 
         <div
-            id="character"
-            class="character"
+            class="room"
+            id="room"
         >
 
+            <!-- IMAGEN DE LA HABITACIÓN -->
+
             <img
-                id="characterImage"
-                class="character-image"
-                src="{% static 'juego/images/personaje-niña.png' %}"
-                alt=""
+                src="{% static 'juego/images/my-room.jpeg' %}"
+                class="room-background"
+                alt="My Room"
                 draggable="false"
             >
 
-            <div
-                id="pointer"
-                class="pointer"
-            >
-                👉
+
+            <!-- NIVEL -->
+
+            <div class="level">
+                🏠 Level 1
             </div>
 
-        </div>
+
+            <!-- MISIÓN -->
+
+            <div class="mission">
+                🔎 Find the objects!
+            </div>
 
 
-        <!-- =================================================
-             OBJETOS
-        ================================================== -->
-
-
-        <!-- CAMA -->
-
-        <button
-            class="hotspot bed-hotspot"
-            onclick="discoverObject(this, 'Bed')"
-            title="Bed"
-            aria-label="Bed"
-            type="button"
-        ></button>
-
-
-        <!-- VENTANA -->
-
-        <button
-            class="hotspot window-hotspot"
-            onclick="discoverObject(this, 'Window')"
-            title="Window"
-            aria-label="Window"
-            type="button"
-        ></button>
-
-
-        <!-- ESTANTERÍA -->
-
-        <button
-            class="hotspot bookshelf-hotspot"
-            onclick="discoverObject(this, 'Bookshelf')"
-            title="Bookshelf"
-            aria-label="Bookshelf"
-            type="button"
-        ></button>
-
-
-        <!-- ARMARIO -->
-
-        <button
-            class="hotspot wardrobe-hotspot"
-            onclick="discoverObject(this, 'Wardrobe')"
-            title="Wardrobe"
-            aria-label="Wardrobe"
-            type="button"
-        ></button>
-
-
-        <!-- ROPA -->
-
-        <button
-            class="hotspot clothes-hotspot"
-            onclick="discoverObject(this, 'Clothes')"
-            title="Clothes"
-            aria-label="Clothes"
-            type="button"
-        ></button>
-
-
-        <!-- ZAPATOS -->
-
-        <button
-            class="hotspot shoes-hotspot"
-            onclick="discoverObject(this, 'Shoes')"
-            title="Shoes"
-            aria-label="Shoes"
-            type="button"
-        ></button>
-
-
-        <!-- SILLA -->
-
-        <button
-            class="hotspot chair-hotspot"
-            onclick="discoverObject(this, 'Chair')"
-            title="Chair"
-            aria-label="Chair"
-            type="button"
-        ></button>
-
-
-        <!-- ESPEJO -->
-
-        <button
-            class="hotspot mirror-hotspot"
-            onclick="discoverObject(this, 'Mirror')"
-            title="Mirror"
-            aria-label="Mirror"
-            type="button"
-        ></button>
-
-
-        <!-- OSO -->
-
-        <button
-            class="hotspot teddy-hotspot"
-            onclick="discoverObject(this, 'Teddy Bear')"
-            title="Teddy Bear"
-            aria-label="Teddy Bear"
-            type="button"
-        ></button>
-
-
-        <!-- PLANTA -->
-
-        <button
-            class="hotspot plant-hotspot"
-            onclick="discoverObject(this, 'Plant')"
-            title="Plant"
-            aria-label="Plant"
-            type="button"
-        ></button>
-
-
-        <!-- LÁMPARA -->
-
-        <button
-            class="hotspot lamp-hotspot"
-            onclick="discoverObject(this, 'Lamp')"
-            title="Lamp"
-            aria-label="Lamp"
-            type="button"
-        ></button>
-
-
-        <!-- JUGUETES -->
-
-        <button
-            class="hotspot toys-hotspot"
-            onclick="discoverObject(this, 'Toys')"
-            title="Toys"
-            aria-label="Toys"
-            type="button"
-        ></button>
-
-
-        <!-- LIBRO -->
-
-        <button
-            class="hotspot book-hotspot"
-            onclick="discoverObject(this, 'Book')"
-            title="Book"
-            aria-label="Book"
-            type="button"
-        ></button>
-
-
-        <!-- PUERTA -->
-
-        <button
-            class="hotspot door-hotspot"
-            onclick="discoverObject(this, 'Door')"
-            title="Door"
-            aria-label="Door"
-            type="button"
-        ></button>
-
-
-        <!-- PARED -->
-
-        <button
-            class="hotspot wall-hotspot"
-            onclick="discoverObject(this, 'Wall')"
-            title="Wall"
-            aria-label="Wall"
-            type="button"
-        ></button>
-
-
-        <!-- PISO -->
-
-        <button
-            class="hotspot floor-hotspot"
-            onclick="discoverObject(this, 'Floor')"
-            title="Floor"
-            aria-label="Floor"
-            type="button"
-        ></button>
-
-
-        <!-- =================================================
-             CONTROLES
-        ================================================== -->
-
-        <div class="movement-controls">
+            <!-- VOZ -->
 
             <button
+                class="listen"
+                id="listenButton"
+                onclick="repeatMission()"
+                title="Listen"
                 type="button"
-                onclick="moveGirl('left')"
-                aria-label="Move left"
             >
-                ◀
+                🔊
             </button>
+
+
+            <!-- =================================================
+                 PERSONAJE
+            ================================================== -->
+
+            <div
+                id="character"
+                class="character"
+            >
+
+                <img
+                    id="characterImage"
+                    class="character-image"
+                    src="{% static 'juego/images/personaje-niña.png' %}"
+                    alt=""
+                    draggable="false"
+                >
+
+                <div
+                    id="pointer"
+                    class="pointer"
+                >
+                    👉
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 OBJETOS
+            ================================================== -->
+
+            <!-- CAMA -->
 
             <button
+                class="hotspot bed-hotspot"
+                onclick="discoverObject(this, 'Bed')"
+                title="Bed"
+                aria-label="Bed"
                 type="button"
-                onclick="moveGirl('right')"
-                aria-label="Move right"
-            >
-                ▶
-            </button>
+            ></button>
+
+
+            <!-- VENTANA -->
+
+            <button
+                class="hotspot window-hotspot"
+                onclick="discoverObject(this, 'Window')"
+                title="Window"
+                aria-label="Window"
+                type="button"
+            ></button>
+
+
+            <!-- ESTANTERÍA -->
+
+            <button
+                class="hotspot bookshelf-hotspot"
+                onclick="discoverObject(this, 'Bookshelf')"
+                title="Bookshelf"
+                aria-label="Bookshelf"
+                type="button"
+            ></button>
+
+
+            <!-- ARMARIO -->
+
+            <button
+                class="hotspot wardrobe-hotspot"
+                onclick="discoverObject(this, 'Wardrobe')"
+                title="Wardrobe"
+                aria-label="Wardrobe"
+                type="button"
+            ></button>
+
+
+            <!-- ROPA -->
+
+            <button
+                class="hotspot clothes-hotspot"
+                onclick="discoverObject(this, 'Clothes')"
+                title="Clothes"
+                aria-label="Clothes"
+                type="button"
+            ></button>
+
+
+            <!-- ZAPATOS -->
+
+            <button
+                class="hotspot shoes-hotspot"
+                onclick="discoverObject(this, 'Shoes')"
+                title="Shoes"
+                aria-label="Shoes"
+                type="button"
+            ></button>
+
+
+            <!-- SILLA -->
+
+            <button
+                class="hotspot chair-hotspot"
+                onclick="discoverObject(this, 'Chair')"
+                title="Chair"
+                aria-label="Chair"
+                type="button"
+            ></button>
+
+
+            <!-- ESPEJO -->
+
+            <button
+                class="hotspot mirror-hotspot"
+                onclick="discoverObject(this, 'Mirror')"
+                title="Mirror"
+                aria-label="Mirror"
+                type="button"
+            ></button>
+
+
+            <!-- OSO -->
+
+            <button
+                class="hotspot teddy-hotspot"
+                onclick="discoverObject(this, 'Teddy Bear')"
+                title="Teddy Bear"
+                aria-label="Teddy Bear"
+                type="button"
+            ></button>
+
+
+            <!-- PLANTA -->
+
+            <button
+                class="hotspot plant-hotspot"
+                onclick="discoverObject(this, 'Plant')"
+                title="Plant"
+                aria-label="Plant"
+                type="button"
+            ></button>
+
+
+            <!-- LÁMPARA -->
+
+            <button
+                class="hotspot lamp-hotspot"
+                onclick="discoverObject(this, 'Lamp')"
+                title="Lamp"
+                aria-label="Lamp"
+                type="button"
+            ></button>
+
+
+            <!-- JUGUETES -->
+
+            <button
+                class="hotspot toys-hotspot"
+                onclick="discoverObject(this, 'Toys')"
+                title="Toys"
+                aria-label="Toys"
+                type="button"
+            ></button>
+
+
+            <!-- LIBRO -->
+
+            <button
+                class="hotspot book-hotspot"
+                onclick="discoverObject(this, 'Book')"
+                title="Book"
+                aria-label="Book"
+                type="button"
+            ></button>
+
+
+            <!-- PUERTA -->
+
+            <button
+                class="hotspot door-hotspot"
+                onclick="discoverObject(this, 'Door')"
+                title="Door"
+                aria-label="Door"
+                type="button"
+            ></button>
+
+
+            <!-- PARED -->
+
+            <button
+                class="hotspot wall-hotspot"
+                onclick="discoverObject(this, 'Wall')"
+                title="Wall"
+                aria-label="Wall"
+                type="button"
+            ></button>
+
+
+            <!-- PISO -->
+
+            <button
+                class="hotspot floor-hotspot"
+                onclick="discoverObject(this, 'Floor')"
+                title="Floor"
+                aria-label="Floor"
+                type="button"
+            ></button>
+
+
+            <!-- =================================================
+                 CONTROLES
+            ================================================== -->
+
+            <div class="movement-controls">
+
+                <button
+                    type="button"
+                    onclick="moveGirl('left')"
+                    aria-label="Move left"
+                >
+                    ◀
+                </button>
+
+                <button
+                    type="button"
+                    onclick="moveGirl('right')"
+                    aria-label="Move right"
+                >
+                    ▶
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 MENSAJE
+            ================================================== -->
+
+            <div
+                id="feedback"
+                class="feedback"
+            ></div>
 
         </div>
-
-
-        <!-- MENSAJE -->
-
-        <div
-            id="feedback"
-            class="feedback"
-        ></div>
 
     </div>
 
@@ -1498,7 +1421,6 @@
 
 <script>
 
-
     /* =====================================================
        DATOS DEL JUGADOR
     ===================================================== */
@@ -1528,14 +1450,12 @@
 
     document
         .getElementById("playerName")
-        .textContent =
-        playerName;
+        .textContent = playerName;
 
 
     document
         .getElementById("starCount")
-        .textContent =
-        stars;
+        .textContent = stars;
 
 
     /* =====================================================
@@ -1554,18 +1474,9 @@
         );
 
 
-    /*
-       RUTAS REALES DE TUS ARCHIVOS.
-
-       NIÑA:
-       juego/static/juego/images/personaje-niña.png
-
-       NIÑO:
-       juego/static/juego/images/personaje-niño.png
-    */
-
     const girlImage =
         "{% static 'juego/images/personaje-niña.png' %}";
+
 
     const boyImage =
         "{% static 'juego/images/personaje-niño.png' %}";
@@ -1574,45 +1485,17 @@
     if (
         selectedCharacter === "boy"
     ) {
-
-        characterImage.src =
-            boyImage;
-
+        characterImage.src = boyImage;
     } else {
-
-        characterImage.src =
-            girlImage;
+        characterImage.src = girlImage;
     }
 
-
-    /*
-       No mostrar "Girl" o "Boy"
-       si una imagen no carga.
-    */
 
     characterImage.alt = "";
 
 
-    /*
-       Si alguna imagen no se puede cargar,
-       dejamos constancia en consola.
-    */
-
-    characterImage.addEventListener(
-        "error",
-        function () {
-
-            console.error(
-                "No se pudo cargar la imagen del personaje:",
-                characterImage.src
-            );
-
-        }
-    );
-
-
     /* =====================================================
-       OBJETOS DEL NIVEL
+       OBJETOS
     ===================================================== */
 
     const levelObjects = [
@@ -1662,9 +1545,7 @@
 
 
     if (
-        !Array.isArray(
-            objectsFound
-        )
+        !Array.isArray(objectsFound)
     ) {
 
         objectsFound = [];
@@ -1683,9 +1564,7 @@
 
     localStorage.setItem(
         "myLittleEnglishObjects",
-        JSON.stringify(
-            objectsFound
-        )
+        JSON.stringify(objectsFound)
     );
 
 
@@ -1699,14 +1578,26 @@
         );
 
 
+    const roomScroll =
+        document.getElementById(
+            "roomScroll"
+        );
+
+
     const feedback =
         document.getElementById(
             "feedback"
         );
 
 
+    const swipeHint =
+        document.getElementById(
+            "swipeHint"
+        );
+
+
     /* =====================================================
-       POSICIÓN
+       POSICIÓN DEL PERSONAJE
     ===================================================== */
 
     let girlX = 48;
@@ -1725,10 +1616,7 @@
     function speakWord(word) {
 
         if (
-            !(
-                "speechSynthesis"
-                in window
-            )
+            !("speechSynthesis" in window)
         ) {
 
             console.log(
@@ -1739,9 +1627,7 @@
         }
 
 
-        window
-            .speechSynthesis
-            .cancel();
+        window.speechSynthesis.cancel();
 
 
         const utterance =
@@ -1750,27 +1636,18 @@
             );
 
 
-        utterance.lang =
-            "en-US";
+        utterance.lang = "en-US";
+
+        utterance.rate = 0.72;
+
+        utterance.pitch = 1.08;
+
+        utterance.volume = 1;
 
 
-        utterance.rate =
-            0.72;
-
-
-        utterance.pitch =
-            1.08;
-
-
-        utterance.volume =
-            1;
-
-
-        window
-            .speechSynthesis
-            .speak(
-                utterance
-            );
+        window.speechSynthesis.speak(
+            utterance
+        );
     }
 
 
@@ -1828,7 +1705,7 @@
 
 
     /* =====================================================
-       MOVER MANUALMENTE
+       MOVER PERSONAJE
     ===================================================== */
 
     function moveGirl(direction) {
@@ -1952,7 +1829,7 @@
                 objectRect.left -
                 roomRect.left +
                 objectRect.width / 2
-            ) - 55;
+            ) - 75;
 
 
         let targetY =
@@ -1960,18 +1837,12 @@
                 objectRect.top -
                 roomRect.top +
                 objectRect.height
-            ) - 130;
+            ) - 190;
 
 
-        /*
-           Tamaño real aproximado
-           utilizado para calcular
-           los límites.
-        */
+        const characterWidth = 150;
 
-        const characterWidth = 110;
-
-        const characterHeight = 160;
+        const characterHeight = 220;
 
 
         targetX =
@@ -2111,18 +1982,15 @@
 
             [
                 {
-                    transform:
-                        "scale(1)"
+                    transform: "scale(1)"
                 },
 
                 {
-                    transform:
-                        "scale(1.12)"
+                    transform: "scale(1.12)"
                 },
 
                 {
-                    transform:
-                        "scale(1)"
+                    transform: "scale(1)"
                 }
             ],
 
@@ -2130,7 +1998,6 @@
                 duration: 500,
                 easing: "ease-out"
             }
-
         );
     }
 
@@ -2186,9 +2053,7 @@
 
         setTimeout(
             () => {
-
                 star.remove();
-
             },
             1100
         );
@@ -2204,46 +2069,21 @@
         word
     ) {
 
-        /*
-           1.
-           El personaje camina.
-        */
-
         moveCharacter(
             element
         );
 
 
-        /*
-           2.
-           Esperamos que llegue.
-        */
-
         setTimeout(
             () => {
 
-                /*
-                   3.
-                   Señala.
-                */
-
                 pointAtObject();
 
-
-                /*
-                   4.
-                   Pronuncia.
-                */
 
                 speakWord(
                     word
                 );
 
-
-                /*
-                   5.
-                   ¿Ya lo encontró?
-                */
 
                 if (
                     objectsFound.includes(
@@ -2252,8 +2092,7 @@
                 ) {
 
                     showFeedback(
-                        "🔊 " +
-                        word
+                        "🔊 " + word
                     );
 
 
@@ -2265,11 +2104,6 @@
                     return;
                 }
 
-
-                /*
-                   6.
-                   Nuevo objeto.
-                */
 
                 objectsFound.push(
                     word
@@ -2283,11 +2117,6 @@
                     )
                 );
 
-
-                /*
-                   7.
-                   +1 estrella.
-                */
 
                 stars++;
 
@@ -2303,44 +2132,23 @@
                         "starCount"
                     )
                     .textContent =
-                    stars;
+                        stars;
 
-
-                /*
-                   8.
-                   Animar objeto.
-                */
 
                 animateObject(
                     element
                 );
 
 
-                /*
-                   9.
-                   Mensaje.
-                */
-
                 showFeedback(
-                    "⭐ +1  " +
-                    word
+                    "⭐ +1  " + word
                 );
 
-
-                /*
-                   10.
-                   Estrella flotante.
-                */
 
                 createFloatingStar(
                     element
                 );
 
-
-                /*
-                   11.
-                   ¿Terminó?
-                */
 
                 if (
                     objectsFound.length >=
@@ -2401,6 +2209,53 @@
 
 
     /* =====================================================
+       INDICADOR DE DESLIZAMIENTO
+    ===================================================== */
+
+    let swipeHintTimer =
+        setTimeout(
+            () => {
+
+                if (swipeHint) {
+
+                    swipeHint.classList.add(
+                        "hide"
+                    );
+
+                }
+
+            },
+            4500
+        );
+
+
+    if (roomScroll) {
+
+        roomScroll.addEventListener(
+            "scroll",
+            () => {
+
+                if (swipeHint) {
+
+                    swipeHint.classList.add(
+                        "hide"
+                    );
+
+                }
+
+                clearTimeout(
+                    swipeHintTimer
+                );
+
+            },
+            {
+                passive: true
+            }
+        );
+    }
+
+
+    /* =====================================================
        SALUDO
     ===================================================== */
 
@@ -2418,7 +2273,6 @@
     );
 
 </script>
-
 
 </body>
 </html>
