@@ -1,0 +1,3017 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Mi habitación | My Little English
+    </title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            background:
+                #87ceeb;
+
+            overflow: hidden;
+
+        }
+
+
+        /* =====================================================
+           JUEGO
+        ===================================================== */
+
+        .game {
+
+            width: 100vw;
+            height: 100vh;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+
+        /* =====================================================
+           BARRA SUPERIOR
+        ===================================================== */
+
+        .top-bar {
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 75px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.96
+                );
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding:
+                0 25px;
+
+            z-index: 100;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0,0,0,.15);
+
+        }
+
+
+        .logo {
+
+            font-size: 26px;
+
+            font-weight: 900;
+
+            color:
+                #ff6b6b;
+
+        }
+
+
+        .player {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            font-weight: bold;
+
+            color:
+                #333;
+
+        }
+
+
+        .stars {
+
+            background:
+                #fff4b8;
+
+            padding:
+                10px 18px;
+
+            border-radius:
+                25px;
+
+            font-size:
+                20px;
+
+            color:
+                #f39c12;
+
+        }
+
+
+        /* =====================================================
+           HABITACIÓN
+        ===================================================== */
+
+        .room {
+
+            position: absolute;
+
+            top: 75px;
+            left: 0;
+
+            width: 100%;
+
+            height:
+                calc(
+                    100vh - 75px
+                );
+
+            overflow: hidden;
+
+        }
+
+
+        .room-background {
+
+            position: absolute;
+
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            user-select: none;
+
+            pointer-events: none;
+
+            z-index: 1;
+
+        }
+
+
+        /* =====================================================
+           MISIÓN
+        ===================================================== */
+
+        .mission {
+
+            position: absolute;
+
+            top: 18px;
+
+            left: 50%;
+
+            transform:
+                translateX(-50%);
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .96
+                );
+
+            padding:
+                12px 24px;
+
+            border-radius:
+                30px;
+
+            z-index: 70;
+
+            box-shadow:
+                0 5px 15px
+                rgba(0,0,0,.15);
+
+            font-weight:
+                bold;
+
+            color:
+                #333;
+
+            text-align:
+                center;
+
+        }
+
+
+        .level {
+
+            position: absolute;
+
+            top: 18px;
+
+            left: 20px;
+
+            background:
+                #ffca28;
+
+            color:
+                #5d4037;
+
+            padding:
+                10px 18px;
+
+            border-radius:
+                20px;
+
+            font-weight:
+                bold;
+
+            z-index:
+                70;
+
+        }
+
+
+        .listen {
+
+            position: absolute;
+
+            top: 18px;
+
+            right: 20px;
+
+            background:
+                #ffffff;
+
+            border:
+                none;
+
+            border-radius:
+                50%;
+
+            width:
+                52px;
+
+            height:
+                52px;
+
+            font-size:
+                25px;
+
+            cursor:
+                pointer;
+
+            z-index:
+                70;
+
+            box-shadow:
+                0 4px 12px
+                rgba(0,0,0,.20);
+
+            transition:
+                transform .2s;
+
+        }
+
+
+        .listen:hover {
+
+            transform:
+                scale(1.1);
+
+        }
+
+
+        /* =====================================================
+           PERSONAJE REAL
+        ===================================================== */
+
+        .character {
+
+            position: absolute;
+
+            left:
+                48%;
+
+            top:
+                65%;
+
+            width:
+                220px;
+
+            height:
+                320px;
+
+            z-index:
+                60;
+
+            pointer-events:
+                none;
+
+            transition: left .5s ease, top .5s ease, transform .3s ease;
+                top 1.15s
+                cubic-bezier(
+                    .22,
+                    .61,
+                    .36,
+                    1
+                );
+
+            transform-origin:
+                bottom center;
+
+        }
+
+
+        /* =====================================================
+           IMAGEN DE NIÑA / NIÑO
+        ===================================================== */
+
+        .character-image {
+
+            width:
+                100%;
+
+            height:
+                100%;
+
+            object-fit:
+                contain;
+
+            display:
+                block;
+
+            user-select:
+                none;
+
+            pointer-events:
+                none;
+
+            filter:
+                drop-shadow(
+                    0 7px 5px
+                    rgba(
+                        0,
+                        0,
+                        0,
+                        .22
+                    )
+                );
+
+            transform-origin:
+                bottom center;
+
+        }
+
+
+        /* =====================================================
+           ANIMACIÓN DE CAMINAR
+        ===================================================== */
+
+        .character.walking
+        .character-image {
+
+            animation:
+                walkingAnimation
+                .30s
+                infinite
+                alternate;
+
+        }
+
+
+        @keyframes walkingAnimation {
+
+            from {
+
+                transform:
+                    translateY(0)
+                    rotate(-2deg);
+
+            }
+
+            to {
+
+                transform:
+                    translateY(-7px)
+                    rotate(2deg);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           PERSONAJE SEÑALANDO
+        ===================================================== */
+
+        .pointer {
+
+            position: absolute;
+
+            right:
+                -30px;
+
+            top:
+                38px;
+
+            font-size:
+                38px;
+
+            opacity:
+                0;
+
+            transform:
+                scale(.5)
+                rotate(-10deg);
+
+            transition:
+                opacity .25s ease,
+                transform .25s ease;
+
+            filter:
+                drop-shadow(
+                    0 3px 2px
+                    rgba(
+                        0,
+                        0,
+                        0,
+                        .20
+                    )
+                );
+
+        }
+
+
+        .character.pointing
+        .pointer {
+
+            opacity:
+                1;
+
+            transform:
+                scale(1)
+                rotate(0deg);
+
+            animation:
+                pointingAnimation
+                .45s
+                infinite
+                alternate;
+
+        }
+
+
+        @keyframes pointingAnimation {
+
+            from {
+
+                transform:
+                    scale(1)
+                    translateX(0);
+
+            }
+
+            to {
+
+                transform:
+                    scale(1.12)
+                    translateX(6px);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           HOTSPOTS
+        ===================================================== */
+
+        .hotspot {
+
+            position:
+                absolute;
+
+            z-index:
+                30;
+
+            cursor:
+                pointer;
+
+            background:
+                transparent;
+
+            border:
+                0;
+
+            outline:
+                none;
+
+            transition:
+                background .2s,
+                transform .2s;
+
+            border-radius:
+                15px;
+
+        }
+
+
+        .hotspot:hover {
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .14
+                );
+
+            box-shadow:
+                0 0 0 3px
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .20
+                );
+
+        }
+
+
+        .hotspot:active {
+
+            transform:
+                scale(.97);
+
+        }
+
+
+        /* =====================================================
+           BED
+        ===================================================== */
+
+        .bed-hotspot {
+
+            left:
+                38.5%;
+
+            top:
+                43%;
+
+            width:
+                27%;
+
+            height:
+                42%;
+
+        }
+
+
+        /* =====================================================
+           WINDOW
+        ===================================================== */
+
+        .window-hotspot {
+
+            left:
+                77.5%;
+
+            top:
+                5%;
+
+            width:
+                14%;
+
+            height:
+                48%;
+
+        }
+
+
+        /* =====================================================
+           BOOKSHELF
+        ===================================================== */
+
+        .bookshelf-hotspot {
+
+            left:
+                1%;
+
+            top:
+                47%;
+
+            width:
+                15%;
+
+            height:
+                49%;
+
+        }
+
+
+        /* =====================================================
+           WARDROBE
+        ===================================================== */
+
+        .wardrobe-hotspot {
+
+            left:
+                22.5%;
+
+            top:
+                16%;
+
+            width:
+                19%;
+
+            height:
+                49%;
+
+        }
+
+
+        /* =====================================================
+           ROPA
+        ===================================================== */
+
+        .clothes-hotspot {
+
+            left:
+                26%;
+
+            top:
+                27%;
+
+            width:
+                13%;
+
+            height:
+                24%;
+
+        }
+
+
+        /* =====================================================
+           ZAPATOS
+        ===================================================== */
+
+        .shoes-hotspot {
+
+            left:
+                27%;
+
+            top:
+                53%;
+
+            width:
+                12%;
+
+            height:
+                11%;
+
+        }
+
+
+        /* =====================================================
+           CHAIR
+        ===================================================== */
+
+        .chair-hotspot {
+
+            left:
+                23%;
+
+            top:
+                53%;
+
+            width:
+                10%;
+
+            height:
+                29%;
+
+        }
+
+
+        /* =====================================================
+           MIRROR
+        ===================================================== */
+
+        .mirror-hotspot {
+
+            left:
+                15%;
+
+            top:
+                29%;
+
+            width:
+                7%;
+
+            height:
+                27%;
+
+        }
+
+
+        /* =====================================================
+           TEDDY BEAR
+        ===================================================== */
+
+        .teddy-hotspot {
+
+            left:
+                15%;
+
+            top:
+                70%;
+
+            width:
+                8%;
+
+            height:
+                23%;
+
+        }
+
+
+        /* =====================================================
+           PLANT
+        ===================================================== */
+
+        .plant-hotspot {
+
+            left:
+                20%;
+
+            top:
+                47%;
+
+            width:
+                5%;
+
+            height:
+                15%;
+
+        }
+
+
+        /* =====================================================
+           LAMP
+        ===================================================== */
+
+        .lamp-hotspot {
+
+            left:
+                60%;
+
+            top:
+                46%;
+
+            width:
+                7%;
+
+            height:
+                18%;
+
+        }
+
+
+        /* =====================================================
+           TOYS
+        ===================================================== */
+
+        .toys-hotspot {
+
+            left:
+                12%;
+
+            top:
+                82%;
+
+            width:
+                13%;
+
+            height:
+                15%;
+
+        }
+
+
+        /* =====================================================
+           BOOK
+        ===================================================== */
+
+        .book-hotspot {
+
+            left:
+                5%;
+
+            top:
+                57%;
+
+            width:
+                8%;
+
+            height:
+                12%;
+
+        }
+
+
+        /* =====================================================
+           DOOR
+        ===================================================== */
+
+        .door-hotspot {
+
+            right:
+                0;
+
+            top:
+                7%;
+
+            width:
+                10%;
+
+            height:
+                89%;
+
+        }
+
+
+        /* =====================================================
+           WALL
+        ===================================================== */
+
+        .wall-hotspot {
+
+            left:
+                69%;
+
+            top:
+                25%;
+
+            width:
+                8%;
+
+            height:
+                24%;
+
+        }
+
+
+        /* =====================================================
+           FLOOR
+        ===================================================== */
+
+        .floor-hotspot {
+
+            left:
+                67%;
+
+            top:
+                72%;
+
+            width:
+                15%;
+
+            height:
+                17%;
+
+        }
+
+
+        /* =====================================================
+           MENSAJE
+        ===================================================== */
+
+        .feedback {
+
+            position:
+                absolute;
+
+            left:
+                50%;
+
+            bottom:
+                90px;
+
+            transform:
+                translateX(-50%);
+
+            background:
+                white;
+
+            padding:
+                15px 28px;
+
+            border-radius:
+                25px;
+
+            font-size:
+                22px;
+
+            font-weight:
+                bold;
+
+            color:
+                #333;
+
+            z-index:
+                150;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,.20);
+
+            display:
+                none;
+
+            text-align:
+                center;
+
+            white-space:
+                nowrap;
+
+        }
+
+
+        .feedback.show {
+
+            display:
+                block;
+
+            animation:
+                feedbackIn
+                .35s
+                ease;
+
+        }
+
+
+        @keyframes feedbackIn {
+
+            from {
+
+                opacity:
+                    0;
+
+                transform:
+                    translate(
+                        -50%,
+                        20px
+                    )
+                    scale(.9);
+
+            }
+
+            to {
+
+                opacity:
+                    1;
+
+                transform:
+                    translate(
+                        -50%,
+                        0
+                    )
+                    scale(1);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           ESTRELLA FLOTANTE
+        ===================================================== */
+
+        .floating-star {
+
+            position:
+                absolute;
+
+            font-size:
+                35px;
+
+            z-index:
+                160;
+
+            pointer-events:
+                none;
+
+            animation:
+                starFloat
+                1s
+                ease-out
+                forwards;
+
+        }
+
+
+        @keyframes starFloat {
+
+            0% {
+
+                opacity:
+                    1;
+
+                transform:
+                    translateY(0)
+                    scale(.6);
+
+            }
+
+            100% {
+
+                opacity:
+                    0;
+
+                transform:
+                    translateY(-100px)
+                    scale(1.5);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           FINAL
+        ===================================================== */
+
+        .complete-screen {
+
+            position:
+                absolute;
+
+            inset:
+                0;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .96
+                );
+
+            z-index:
+                300;
+
+            display:
+                none;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            flex-direction:
+                column;
+
+            text-align:
+                center;
+
+        }
+
+
+        .complete-screen.show {
+
+            display:
+                flex;
+
+        }
+
+
+        .complete-screen h1 {
+
+            font-size:
+                48px;
+
+            color:
+                #ff6b6b;
+
+            margin-bottom:
+                15px;
+
+        }
+
+
+        .complete-screen p {
+
+            font-size:
+                24px;
+
+            color:
+                #444;
+
+            margin-bottom:
+                25px;
+
+        }
+
+
+        .complete-stars {
+
+            font-size:
+                55px;
+
+            margin-bottom:
+                25px;
+
+        }
+
+
+        .continue-btn {
+
+            border:
+                none;
+
+            background:
+                #ff6b6b;
+
+            color:
+                white;
+
+            font-size:
+                22px;
+
+            font-weight:
+                bold;
+
+            padding:
+                15px 30px;
+
+            border-radius:
+                30px;
+
+            cursor:
+                pointer;
+
+        }
+
+
+        .continue-btn:hover {
+
+            transform:
+                scale(1.05);
+
+        }
+
+
+        /* =====================================================
+           CONTROLES
+        ===================================================== */
+
+        .movement-controls {
+
+            position:
+                absolute;
+
+            bottom:
+                22px;
+
+            left:
+                25px;
+
+            z-index:
+                180;
+
+            display:
+                flex;
+
+            gap:
+                10px;
+
+        }
+
+
+        .movement-controls button {
+
+            width:
+                58px;
+
+            height:
+                58px;
+
+            border:
+                none;
+
+            border-radius:
+                50%;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .94
+                );
+
+            box-shadow:
+                0 4px 12px
+                rgba(0,0,0,.20);
+
+            font-size:
+                28px;
+
+            cursor:
+                pointer;
+
+        }
+
+
+        .movement-controls button:active {
+
+            transform:
+                scale(.9);
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (
+            max-width: 700px
+        ) {
+
+            .top-bar {
+
+                height:
+                    60px;
+
+                padding:
+                    0 12px;
+
+            }
+
+
+            .logo {
+
+                font-size:
+                    19px;
+
+            }
+
+
+            .stars {
+
+                padding:
+                    7px 12px;
+
+                font-size:
+                    16px;
+
+            }
+
+
+            .room {
+
+                top:
+                    60px;
+
+                height:
+                    calc(
+                        100vh - 60px
+                    );
+
+            }
+
+
+            .mission {
+
+                top:
+                    12px;
+
+                font-size:
+                    13px;
+
+                padding:
+                    9px 15px;
+
+            }
+
+
+            .level {
+
+                top:
+                    12px;
+
+                left:
+                    10px;
+
+                font-size:
+                    12px;
+
+                padding:
+                    8px 12px;
+
+            }
+
+
+            .listen {
+
+                top:
+                    10px;
+
+                right:
+                    10px;
+
+                width:
+                    42px;
+
+                height:
+                    42px;
+
+                font-size:
+                    20px;
+
+            }
+
+
+            .character {
+
+                width:
+                    90px;
+
+                height:
+                    140px;
+
+            }
+
+
+            .feedback {
+
+                bottom:
+                    85px;
+
+                width:
+                    85%;
+
+                font-size:
+                    18px;
+
+                white-space:
+                    normal;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="game">
+
+
+    <!-- =====================================================
+         BARRA SUPERIOR
+    ====================================================== -->
+
+    <div class="top-bar">
+
+        <div class="logo">
+
+            🌈 My Little English
+
+        </div>
+
+
+        <div class="player">
+
+            <span id="playerName">
+
+                Little Explorer
+
+            </span>
+
+
+            <div class="stars">
+
+                ⭐
+
+                <span id="starCount">
+
+                    0
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         HABITACIÓN
+    ====================================================== -->
+
+    <div
+        class="room"
+        id="room"
+    >
+
+
+        <!-- IMAGEN DE LA HABITACIÓN -->
+
+        <img
+            src="{% static 'juego/images/my-room.jpeg' %}"
+            class="room-background"
+            alt="My Room"
+        >
+
+
+        <!-- NIVEL -->
+
+        <div class="level">
+
+            🏠 Level 1
+
+        </div>
+
+
+        <!-- MISIÓN -->
+
+        <div class="mission">
+
+            🔎 Find the objects!
+
+        </div>
+
+
+        <!-- VOZ -->
+
+        <button
+            class="listen"
+            id="listenButton"
+            onclick="repeatMission()"
+            title="Listen"
+        >
+
+            🔊
+
+        </button>
+
+
+        <!-- =================================================
+             PERSONAJE
+        ================================================== -->
+
+        <div
+            id="character"
+            class="character"
+        >
+
+
+            <!--
+                IMPORTANTE:
+                El alt queda vacío para que el navegador
+                NO muestre "Girl" o "Boy" si por alguna razón
+                la imagen no carga.
+            -->
+
+            <img
+                id="characterImage"
+                class="character-image"
+                src="{% static 'juego/images/personaje-niña.png' %}"
+                alt=""
+            >
+
+
+            <!-- MANO QUE SEÑALA -->
+
+            <div
+                id="pointer"
+                class="pointer"
+            >
+
+                👉
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             OBJETOS
+        ================================================== -->
+
+
+        <!-- CAMA -->
+
+        <button
+            class="hotspot bed-hotspot"
+            onclick="discoverObject(this, 'Bed')"
+            title="Bed"
+            aria-label="Bed"
+        >
+        </button>
+
+
+        <!-- VENTANA -->
+
+        <button
+            class="hotspot window-hotspot"
+            onclick="discoverObject(this, 'Window')"
+            title="Window"
+            aria-label="Window"
+        >
+        </button>
+
+
+        <!-- ESTANTERÍA -->
+
+        <button
+            class="hotspot bookshelf-hotspot"
+            onclick="discoverObject(this, 'Bookshelf')"
+            title="Bookshelf"
+            aria-label="Bookshelf"
+        >
+        </button>
+
+
+        <!-- ARMARIO -->
+
+        <button
+            class="hotspot wardrobe-hotspot"
+            onclick="discoverObject(this, 'Wardrobe')"
+            title="Wardrobe"
+            aria-label="Wardrobe"
+        >
+        </button>
+
+
+        <!-- ROPA -->
+
+        <button
+            class="hotspot clothes-hotspot"
+            onclick="discoverObject(this, 'Clothes')"
+            title="Clothes"
+            aria-label="Clothes"
+        >
+        </button>
+
+
+        <!-- ZAPATOS -->
+
+        <button
+            class="hotspot shoes-hotspot"
+            onclick="discoverObject(this, 'Shoes')"
+            title="Shoes"
+            aria-label="Shoes"
+        >
+        </button>
+
+
+        <!-- SILLA -->
+
+        <button
+            class="hotspot chair-hotspot"
+            onclick="discoverObject(this, 'Chair')"
+            title="Chair"
+            aria-label="Chair"
+        >
+        </button>
+
+
+        <!-- ESPEJO -->
+
+        <button
+            class="hotspot mirror-hotspot"
+            onclick="discoverObject(this, 'Mirror')"
+            title="Mirror"
+            aria-label="Mirror"
+        >
+        </button>
+
+
+        <!-- OSO -->
+
+        <button
+            class="hotspot teddy-hotspot"
+            onclick="discoverObject(this, 'Teddy Bear')"
+            title="Teddy Bear"
+            aria-label="Teddy Bear"
+        >
+        </button>
+
+
+        <!-- PLANTA -->
+
+        <button
+            class="hotspot plant-hotspot"
+            onclick="discoverObject(this, 'Plant')"
+            title="Plant"
+            aria-label="Plant"
+        >
+        </button>
+
+
+        <!-- LÁMPARA -->
+
+        <button
+            class="hotspot lamp-hotspot"
+            onclick="discoverObject(this, 'Lamp')"
+            title="Lamp"
+            aria-label="Lamp"
+        >
+        </button>
+
+
+        <!-- JUGUETES -->
+
+        <button
+            class="hotspot toys-hotspot"
+            onclick="discoverObject(this, 'Toys')"
+            title="Toys"
+            aria-label="Toys"
+        >
+        </button>
+
+
+        <!-- LIBRO -->
+
+        <button
+            class="hotspot book-hotspot"
+            onclick="discoverObject(this, 'Book')"
+            title="Book"
+            aria-label="Book"
+        >
+        </button>
+
+
+        <!-- PUERTA -->
+
+        <button
+            class="hotspot door-hotspot"
+            onclick="discoverObject(this, 'Door')"
+            title="Door"
+            aria-label="Door"
+        >
+        </button>
+
+
+        <!-- PARED -->
+
+        <button
+            class="hotspot wall-hotspot"
+            onclick="discoverObject(this, 'Wall')"
+            title="Wall"
+            aria-label="Wall"
+        >
+        </button>
+
+
+        <!-- PISO -->
+
+        <button
+            class="hotspot floor-hotspot"
+            onclick="discoverObject(this, 'Floor')"
+            title="Floor"
+            aria-label="Floor"
+        >
+        </button>
+
+
+        <!-- =================================================
+             CONTROLES
+        ================================================== -->
+
+        <div class="movement-controls">
+
+
+            <button
+                type="button"
+                onclick="moveGirl('left')"
+                aria-label="Move left"
+            >
+
+                ◀
+
+            </button>
+
+
+            <button
+                type="button"
+                onclick="moveGirl('right')"
+                aria-label="Move right"
+            >
+
+                ▶
+
+            </button>
+
+
+        </div>
+
+
+        <!-- MENSAJE -->
+
+        <div
+            id="feedback"
+            class="feedback"
+        >
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         FINAL
+    ====================================================== -->
+
+    <div
+        id="completeScreen"
+        class="complete-screen"
+    >
+
+
+        <div class="complete-stars">
+
+            ⭐ ⭐ ⭐
+
+        </div>
+
+
+        <h1>
+
+            Great job! 🎉
+
+        </h1>
+
+
+        <p>
+
+            You found all the objects!
+
+        </p>
+
+
+        <button
+            class="continue-btn"
+            onclick="continueGame()"
+        >
+
+            Continue 🚀
+
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+    /* =====================================================
+       DATOS DEL JUGADOR
+    ===================================================== */
+
+    const playerName =
+
+        localStorage.getItem(
+            "myLittleEnglishName"
+        ) ||
+
+        "Little Explorer";
+
+
+    const selectedCharacter =
+
+        localStorage.getItem(
+            "myLittleEnglishCharacter"
+        ) ||
+
+        "girl";
+
+
+    let stars =
+
+        parseInt(
+
+            localStorage.getItem(
+                "myLittleEnglishStars"
+            ) ||
+
+            "0"
+
+        );
+
+
+    document
+        .getElementById(
+            "playerName"
+        )
+        .textContent =
+            playerName;
+
+
+    document
+        .getElementById(
+            "starCount"
+        )
+        .textContent =
+            stars;
+
+
+    /* =====================================================
+       PERSONAJE
+    ===================================================== */
+
+    const character =
+
+        document.getElementById(
+            "character"
+        );
+
+
+    const characterImage =
+
+        document.getElementById(
+            "characterImage"
+        );
+
+
+    /*
+       Si eligió niño:
+       usamos nino.png.
+
+       Si eligió niña:
+       usamos nina.png.
+    */
+
+    if (
+
+        selectedCharacter ===
+        "boy"
+
+    ) {
+
+        characterImage.src =
+
+            "{% static 'juego/images/personaje-niño.png' %}";
+
+    } else {
+
+        characterImage.src =
+
+            "{% static 'juego/images/personaje-niña.png' %}";
+
+    }
+
+
+    /*
+       IMPORTANTE:
+       No ponemos "Girl" ni "Boy" en alt.
+       Así, si la imagen no existe, no aparecerá
+       esa palabra sobre la pantalla.
+    */
+
+    characterImage.alt = "";
+
+
+    /* =====================================================
+       OBJETOS DEL NIVEL
+    ===================================================== */
+
+    const levelObjects = [
+
+        "Bed",
+
+        "Window",
+
+        "Bookshelf",
+
+        "Wardrobe",
+
+        "Clothes",
+
+        "Shoes",
+
+        "Chair",
+
+        "Mirror",
+
+        "Teddy Bear",
+
+        "Plant",
+
+        "Lamp",
+
+        "Toys",
+
+        "Book",
+
+        "Door",
+
+        "Wall",
+
+        "Floor"
+
+    ];
+
+
+    /* =====================================================
+       OBJETOS ENCONTRADOS
+    ===================================================== */
+
+    let objectsFound;
+
+
+    try {
+
+        objectsFound =
+
+            JSON.parse(
+
+                localStorage.getItem(
+                    "myLittleEnglishObjects"
+                ) ||
+
+                "[]"
+
+            );
+
+    } catch (
+
+        error
+
+    ) {
+
+        objectsFound = [];
+
+    }
+
+
+    if (
+
+        !Array.isArray(
+            objectsFound
+        )
+
+    ) {
+
+        objectsFound = [];
+
+    }
+
+
+    /*
+       Solamente conservamos objetos
+       pertenecientes a este nivel.
+    */
+
+    objectsFound =
+
+        objectsFound.filter(
+
+            object =>
+
+                levelObjects.includes(
+                    object
+                )
+
+        );
+
+
+    localStorage.setItem(
+
+        "myLittleEnglishObjects",
+
+        JSON.stringify(
+            objectsFound
+        )
+
+    );
+
+
+    /* =====================================================
+       REFERENCIAS
+    ===================================================== */
+
+    const room =
+
+        document.getElementById(
+            "room"
+        );
+
+
+    const feedback =
+
+        document.getElementById(
+            "feedback"
+        );
+
+
+    /* =====================================================
+       POSICIÓN
+    ===================================================== */
+
+    let girlX =
+
+        48;
+
+
+    let girlY =
+
+        72;
+
+
+    let walkingTimer =
+
+        null;
+
+
+    let pointingTimer =
+
+        null;
+
+
+    /* =====================================================
+       VOZ
+    ===================================================== */
+
+    function speakWord(
+
+        word
+
+    ) {
+
+        if (
+
+            !(
+                "speechSynthesis"
+                in window
+            )
+
+        ) {
+
+            console.log(
+                "Speech synthesis is not supported."
+            );
+
+            return;
+
+        }
+
+
+        window
+            .speechSynthesis
+            .cancel();
+
+
+        const utterance =
+
+            new SpeechSynthesisUtterance(
+                word
+            );
+
+
+        utterance.lang =
+            "en-US";
+
+
+        utterance.rate =
+            0.72;
+
+
+        utterance.pitch =
+            1.08;
+
+
+        utterance.volume =
+            1;
+
+
+        window
+            .speechSynthesis
+            .speak(
+                utterance
+            );
+
+    }
+
+
+    /* =====================================================
+       MISIÓN
+    ===================================================== */
+
+    function repeatMission() {
+
+        speakWord(
+            "Find the objects!"
+        );
+
+
+        showFeedback(
+            "🔊 Find the objects!"
+        );
+
+    }
+
+
+    /* =====================================================
+       MENSAJE
+    ===================================================== */
+
+    function showFeedback(
+
+        message
+
+    ) {
+
+        feedback.textContent =
+            message;
+
+
+        feedback.classList.add(
+            "show"
+        );
+
+
+        clearTimeout(
+            feedback.hideTimer
+        );
+
+
+        feedback.hideTimer =
+
+            setTimeout(
+
+                () => {
+
+                    feedback
+                        .classList
+                        .remove(
+                            "show"
+                        );
+
+                },
+
+                1800
+
+            );
+
+    }
+
+
+    /* =====================================================
+       MOVER MANUALMENTE
+    ===================================================== */
+
+    function moveGirl(
+
+        direction
+
+    ) {
+
+        const step =
+            4;
+
+
+        if (
+
+            direction ===
+            "left"
+
+        ) {
+
+            girlX -=
+                step;
+
+
+            character.style.transform =
+                "scaleX(-1)";
+
+        }
+
+
+        if (
+
+            direction ===
+            "right"
+
+        ) {
+
+            girlX +=
+                step;
+
+
+            character.style.transform =
+                "scaleX(1)";
+
+        }
+
+
+        girlX =
+
+            Math.max(
+
+                2,
+
+                Math.min(
+
+                    88,
+
+                    girlX
+
+                )
+
+            );
+
+
+        character.style.left =
+            girlX + "%";
+
+
+        character.style.top =
+            girlY + "%";
+
+
+        character.classList.add(
+            "walking"
+        );
+
+
+        clearTimeout(
+            walkingTimer
+        );
+
+
+        walkingTimer =
+
+            setTimeout(
+
+                () => {
+
+                    character
+                        .classList
+                        .remove(
+                            "walking"
+                        );
+
+                },
+
+                350
+
+            );
+
+    }
+
+
+    /* =====================================================
+       TECLADO
+    ===================================================== */
+
+    document.addEventListener(
+
+        "keydown",
+
+        function(
+
+            event
+
+        ) {
+
+
+            if (
+
+                event.key ===
+                "ArrowLeft"
+
+            ) {
+
+                event.preventDefault();
+
+                moveGirl(
+                    "left"
+                );
+
+            }
+
+
+            if (
+
+                event.key ===
+                "ArrowRight"
+
+            ) {
+
+                event.preventDefault();
+
+                moveGirl(
+                    "right"
+                );
+
+            }
+
+        }
+
+    );
+
+
+    /* =====================================================
+       CAMINAR HACIA EL OBJETO
+    ===================================================== */
+
+    function moveCharacter(
+
+        element
+
+    ) {
+
+
+        const roomRect =
+
+            room
+                .getBoundingClientRect();
+
+
+        const objectRect =
+
+            element
+                .getBoundingClientRect();
+
+
+        /*
+           Centro horizontal
+           del objeto.
+        */
+
+        let targetX =
+
+            (
+
+                objectRect.left -
+
+                roomRect.left +
+
+                objectRect.width / 2
+
+            ) - 55;
+
+
+        /*
+           Posición vertical.
+        */
+
+        let targetY =
+
+            (
+
+                objectRect.top -
+
+                roomRect.top +
+
+                objectRect.height
+
+            ) - 130;
+
+
+        const characterWidth =
+            110;
+
+
+        const characterHeight =
+            160;
+
+
+        /*
+           Evitar salir de la habitación.
+        */
+
+        targetX =
+
+            Math.max(
+
+                5,
+
+                Math.min(
+
+                    roomRect.width -
+
+                    characterWidth -
+
+                    5,
+
+                    targetX
+
+                )
+
+            );
+
+
+        targetY =
+
+            Math.max(
+
+                100,
+
+                Math.min(
+
+                    roomRect.height -
+
+                    characterHeight -
+
+                    5,
+
+                    targetY
+
+                )
+
+            );
+
+
+        /*
+           Determinar dirección.
+        */
+
+        const currentX =
+
+            character.offsetLeft;
+
+
+        if (
+
+            targetX <
+            currentX
+
+        ) {
+
+            character.style.transform =
+                "scaleX(-1)";
+
+        } else {
+
+            character.style.transform =
+                "scaleX(1)";
+
+        }
+
+
+        /*
+           Empezar a caminar.
+        */
+
+        character.classList.remove(
+            "pointing"
+        );
+
+
+        character.classList.add(
+            "walking"
+        );
+
+
+        character.style.left =
+            targetX + "px";
+
+
+        character.style.top =
+            targetY + "px";
+
+
+        /*
+           Guardar posición.
+        */
+
+        girlX =
+
+            (
+
+                targetX /
+                roomRect.width
+
+            ) * 100;
+
+
+        girlY =
+
+            (
+
+                targetY /
+                roomRect.height
+
+            ) * 100;
+
+
+        clearTimeout(
+            walkingTimer
+        );
+
+
+        walkingTimer =
+
+            setTimeout(
+
+                () => {
+
+                    character
+                        .classList
+                        .remove(
+                            "walking"
+                        );
+
+                },
+
+                1150
+
+            );
+
+    }
+
+
+    /* =====================================================
+       SEÑALAR
+    ===================================================== */
+
+    function pointAtObject() {
+
+        clearTimeout(
+            pointingTimer
+        );
+
+
+        character.classList.add(
+            "pointing"
+        );
+
+
+        pointingTimer =
+
+            setTimeout(
+
+                () => {
+
+                    character
+                        .classList
+                        .remove(
+                            "pointing"
+                        );
+
+                },
+
+                2200
+
+            );
+
+    }
+
+
+    /* =====================================================
+       ANIMAR OBJETO
+    ===================================================== */
+
+    function animateObject(
+
+        element
+
+    ) {
+
+        element.animate(
+
+            [
+
+                {
+
+                    transform:
+                        "scale(1)"
+
+                },
+
+                {
+
+                    transform:
+                        "scale(1.12)"
+
+                },
+
+                {
+
+                    transform:
+                        "scale(1)"
+
+                }
+
+            ],
+
+            {
+
+                duration:
+                    500,
+
+                easing:
+                    "ease-out"
+
+            }
+
+        );
+
+    }
+
+
+    /* =====================================================
+       ESTRELLA FLOTANTE
+    ===================================================== */
+
+    function createFloatingStar(
+
+        element
+
+    ) {
+
+
+        const rect =
+
+            element
+                .getBoundingClientRect();
+
+
+        const roomRect =
+
+            room
+                .getBoundingClientRect();
+
+
+        const star =
+
+            document.createElement(
+                "div"
+            );
+
+
+        star.className =
+            "floating-star";
+
+
+        star.textContent =
+            "⭐ +1";
+
+
+        star.style.left =
+
+            (
+
+                rect.left -
+
+                roomRect.left +
+
+                rect.width / 2
+
+            ) + "px";
+
+
+        star.style.top =
+
+            (
+
+                rect.top -
+
+                roomRect.top +
+
+                rect.height / 2
+
+            ) + "px";
+
+
+        room.appendChild(
+            star
+        );
+
+
+        setTimeout(
+
+            () => {
+
+                star.remove();
+
+            },
+
+            1100
+
+        );
+
+    }
+
+
+    /* =====================================================
+       DESCUBRIR OBJETO
+    ===================================================== */
+
+    function discoverObject(
+
+        element,
+
+        word
+
+    ) {
+
+
+        /*
+           1.
+           La niña/niño camina.
+        */
+
+        moveCharacter(
+            element
+        );
+
+
+        /*
+           2.
+           Esperamos que llegue.
+        */
+
+        setTimeout(
+
+            () => {
+
+
+                /*
+                   3.
+                   Señala.
+                */
+
+                pointAtObject();
+
+
+                /*
+                   4.
+                   Pronuncia.
+                */
+
+                speakWord(
+                    word
+                );
+
+
+                /*
+                   5.
+                   ¿Ya lo encontró?
+                */
+
+                if (
+
+                    objectsFound
+                        .includes(
+                            word
+                        )
+
+                ) {
+
+
+                    showFeedback(
+
+                        "🔊 " +
+                        word
+
+                    );
+
+
+                    animateObject(
+                        element
+                    );
+
+
+                    return;
+
+                }
+
+
+                /*
+                   6.
+                   Nuevo objeto.
+                */
+
+                objectsFound.push(
+                    word
+                );
+
+
+                localStorage.setItem(
+
+                    "myLittleEnglishObjects",
+
+                    JSON.stringify(
+                        objectsFound
+                    )
+
+                );
+
+
+                /*
+                   7.
+                   +1 estrella.
+                */
+
+                stars++;
+
+
+                localStorage.setItem(
+
+                    "myLittleEnglishStars",
+
+                    stars
+
+                );
+
+
+                document
+                    .getElementById(
+                        "starCount"
+                    )
+                    .textContent =
+                        stars;
+
+
+                /*
+                   8.
+                   Animar objeto.
+                */
+
+                animateObject(
+                    element
+                );
+
+
+                /*
+                   9.
+                   Mensaje.
+                */
+
+                showFeedback(
+
+                    "⭐ +1  " +
+                    word
+
+                );
+
+
+                /*
+                   10.
+                   Estrella flotante.
+                */
+
+                createFloatingStar(
+                    element
+                );
+
+
+                /*
+                   11.
+                   ¿Terminó?
+                */
+
+                if (
+
+                    objectsFound.length >=
+                    levelObjects.length
+
+                ) {
+
+                    setTimeout(
+
+                        finishLevel,
+
+                        1800
+
+                    );
+
+                }
+
+            },
+
+            1200
+
+        );
+
+    }
+
+
+    /* =====================================================
+       FINAL DEL NIVEL
+    ===================================================== */
+
+    function finishLevel() {
+
+        speakWord(
+
+            "Great job! You found all the objects!"
+
+        );
+
+
+        setTimeout(
+
+            () => {
+
+                document
+                    .getElementById(
+                        "completeScreen"
+                    )
+                    .classList
+                    .add(
+                        "show"
+                    );
+
+            },
+
+            500
+
+        );
+
+    }
+
+
+    /* =====================================================
+       CONTINUAR
+    ===================================================== */
+
+    function continueGame() {
+
+        showFeedback(
+
+            "🚀 Coming soon!"
+
+        );
+
+    }
+
+
+    /* =====================================================
+       SALUDO
+    ===================================================== */
+
+    setTimeout(
+
+        () => {
+
+            speakWord(
+
+                "Hello " +
+                playerName +
+                "!"
+
+            );
+
+        },
+
+        900
+
+    );
+
+</script>
+
+
+</body>
+
+</html>
