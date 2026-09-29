@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +17,7 @@
         body {
             min-height: 100vh;
             font-family: "Trebuchet MS", Arial, sans-serif;
+
             background:
                 linear-gradient(
                     180deg,
@@ -24,12 +26,13 @@
                     #ffe6a8 48%,
                     #ffd27d 100%
                 );
+
             overflow-x: hidden;
         }
 
         /* =========================
            FONDO
-        ========================= */
+        ========================== */
 
         .sky {
             position: fixed;
@@ -108,118 +111,167 @@
         }
 
         /* =========================
-           CONTENEDOR PRINCIPAL
-        ========================= */
+           CONTENEDOR
+        ========================== */
 
         .game {
             position: relative;
             z-index: 2;
+
             width: 100%;
             min-height: 100vh;
+
             display: flex;
             justify-content: center;
             align-items: center;
+
             padding: 30px 18px;
         }
 
         .card {
-            width: min(560px, 100%);
+            width: min(650px, 100%);
+
             background: rgba(255, 255, 255, 0.96);
+
             border-radius: 32px;
+
             padding: 35px 30px 30px;
+
             text-align: center;
+
             box-shadow:
                 0 20px 45px rgba(61, 91, 110, 0.22);
         }
 
         /* =========================
-           TITULO
-        ========================= */
+           LOGO
+        ========================== */
 
         .logo {
             font-size: clamp(34px, 8vw, 55px);
+
             font-weight: 900;
+
             color: #155e75;
+
             letter-spacing: 1px;
-            text-shadow: 3px 4px 0 #b9f0ff;
+
+            text-shadow:
+                3px 4px 0 #b9f0ff;
         }
 
         .subtitle {
             margin-top: 8px;
+
             font-size: 20px;
+
             color: #52717b;
+
             font-weight: 700;
         }
 
         .stars {
             margin: 18px 0 25px;
+
             font-size: 27px;
+
             letter-spacing: 8px;
         }
 
         /* =========================
            PERSONAJES
-        ========================= */
+        ========================== */
 
         .question {
             font-size: 26px;
+
             color: #243b53;
+
             font-weight: 900;
+
             margin-bottom: 20px;
         }
 
         .characters {
             display: flex;
+
             justify-content: center;
+
             gap: 25px;
+
             margin-bottom: 30px;
         }
 
         .character {
             width: 180px;
+
             min-height: 190px;
+
             border: 4px solid transparent;
+
             border-radius: 25px;
+
             background: #f8fbff;
+
             cursor: pointer;
+
             padding: 15px;
+
             transition: 0.2s ease;
+
+            font-family: inherit;
         }
 
         .character:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+
+            box-shadow:
+                0 12px 25px rgba(0, 0, 0, 0.12);
         }
 
         .character.selected {
             border-color: #ffb703;
+
             background: #fff8dc;
-            transform: translateY(-5px) scale(1.03);
-            box-shadow: 0 12px 25px rgba(255, 183, 3, 0.25);
+
+            transform:
+                translateY(-5px)
+                scale(1.03);
+
+            box-shadow:
+                0 12px 25px rgba(255, 183, 3, 0.25);
         }
 
         .avatar {
             width: 105px;
             height: 105px;
+
             margin: auto;
+
             border-radius: 50%;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             font-size: 72px;
+
             background: #e0f7ff;
         }
 
         .character-name {
             margin-top: 10px;
+
             font-size: 22px;
+
             font-weight: 900;
+
             color: #243b53;
         }
 
         /* =========================
            NOMBRE
-        ========================= */
+        ========================== */
 
         .name-section {
             margin-top: 5px;
@@ -227,48 +279,77 @@
 
         .name-section label {
             display: block;
+
             font-size: 23px;
+
             font-weight: 900;
+
             color: #243b53;
+
             margin-bottom: 12px;
         }
 
         .name-input {
             width: 100%;
+
             height: 58px;
+
             border: 3px solid #b8dbe8;
+
             border-radius: 18px;
+
             padding: 0 18px;
+
             font-size: 22px;
+
             text-align: center;
+
             font-family: inherit;
+
             outline: none;
+
             color: #243b53;
+
             background: #f9fdff;
         }
 
         .name-input:focus {
             border-color: #38bdf8;
-            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+
+            box-shadow:
+                0 0 0 4px rgba(56, 189, 248, 0.15);
         }
 
         /* =========================
-           BOTON PLAY
-        ========================= */
+           BOTONES
+        ========================== */
 
         .play-button {
             width: 100%;
+
             margin-top: 25px;
+
             height: 64px;
+
             border: none;
+
             border-radius: 20px;
+
             background: #22c55e;
+
             color: white;
+
             font-family: inherit;
+
             font-size: 28px;
+
             font-weight: 900;
+
             cursor: pointer;
-            box-shadow: 0 7px 0 #159447;
+
+            box-shadow:
+                0 7px 0 #159447;
+
             transition: 0.15s ease;
         }
 
@@ -278,24 +359,64 @@
 
         .play-button:active {
             transform: translateY(5px);
-            box-shadow: 0 2px 0 #159447;
+
+            box-shadow:
+                0 2px 0 #159447;
+        }
+
+        .continue-button {
+            margin-top: 25px;
+
+            width: 100%;
+
+            height: 60px;
+
+            border: none;
+
+            border-radius: 18px;
+
+            background: #f59e0b;
+
+            color: white;
+
+            font-family: inherit;
+
+            font-size: 24px;
+
+            font-weight: 900;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 6px 0 #c77700;
+        }
+
+        .continue-button:active {
+            transform: translateY(4px);
+
+            box-shadow:
+                0 2px 0 #c77700;
         }
 
         /* =========================
            MENSAJE
-        ========================= */
+        ========================== */
 
         .message {
             min-height: 25px;
+
             margin-top: 15px;
+
             color: #dc2626;
+
             font-weight: 800;
+
             font-size: 16px;
         }
 
         /* =========================
            PANTALLA BIENVENIDA
-        ========================= */
+        ========================== */
 
         .welcome {
             display: none;
@@ -303,78 +424,213 @@
 
         .welcome.active {
             display: block;
-            animation: appear 0.5s ease;
+
+            animation:
+                appear 0.5s ease;
         }
 
         .welcome-avatar {
             width: 150px;
             height: 150px;
+
             margin: 20px auto;
+
             border-radius: 50%;
+
             background: #e0f7ff;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             font-size: 105px;
         }
 
         .welcome h2 {
             font-size: 35px;
+
             color: #155e75;
+
             margin-bottom: 12px;
         }
 
         .welcome p {
             font-size: 21px;
+
             line-height: 1.5;
+
             color: #526b76;
+
             font-weight: 700;
         }
 
-        .continue-button {
-            margin-top: 25px;
-            width: 100%;
-            height: 60px;
-            border: none;
-            border-radius: 18px;
-            background: #f59e0b;
-            color: white;
-            font-family: inherit;
-            font-size: 24px;
-            font-weight: 900;
-            cursor: pointer;
-            box-shadow: 0 6px 0 #c77700;
+        /* =========================
+           ESCENARIOS
+        ========================== */
+
+        .scenarios {
+            display: none;
         }
 
-        .continue-button:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 #c77700;
+        .scenarios.active {
+            display: block;
+
+            animation:
+                appear 0.5s ease;
+        }
+
+        .scenario-title {
+            font-size: 34px;
+
+            color: #155e75;
+
+            font-weight: 900;
+
+            margin-top: 10px;
+
+            margin-bottom: 8px;
+        }
+
+        .scenario-subtitle {
+            font-size: 20px;
+
+            color: #526b76;
+
+            font-weight: 700;
+
+            margin-bottom: 25px;
+        }
+
+        .scenario-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+        }
+
+        .scenario-card {
+            border: 4px solid transparent;
+
+            border-radius: 25px;
+
+            background: #f8fbff;
+
+            padding: 15px;
+
+            cursor: pointer;
+
+            font-family: inherit;
+
+            transition: 0.2s ease;
+
+            box-shadow:
+                0 7px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .scenario-card:hover {
+            transform: translateY(-6px);
+
+            box-shadow:
+                0 13px 25px rgba(0, 0, 0, 0.15);
+
+            border-color: #38bdf8;
+        }
+
+        .scenario-image {
+            width: 100%;
+
+            height: 180px;
+
+            border-radius: 18px;
+
+            object-fit: cover;
+
+            display: block;
+        }
+
+        .scenario-icon {
+            width: 100%;
+
+            height: 180px;
+
+            border-radius: 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 90px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #dff7ff,
+                    #fff3c4
+                );
+        }
+
+        .scenario-name {
+            margin-top: 13px;
+
+            font-size: 25px;
+
+            color: #243b53;
+
+            font-weight: 900;
+        }
+
+        .scenario-description {
+            margin-top: 5px;
+
+            font-size: 15px;
+
+            color: #64748b;
+
+            font-weight: 700;
         }
 
         /* =========================
            ANIMACION
-        ========================= */
+        ========================== */
 
         @keyframes appear {
+
             from {
                 opacity: 0;
-                transform: translateY(15px);
+
+                transform:
+                    translateY(15px);
             }
 
             to {
                 opacity: 1;
-                transform: translateY(0);
+
+                transform:
+                    translateY(0);
             }
         }
 
         /* =========================
            RESPONSIVE
-        ========================= */
+        ========================== */
 
-        @media (max-width: 500px) {
+        @media (max-width: 600px) {
+
+            .game {
+                padding:
+                    20px 12px;
+            }
 
             .card {
-                padding: 28px 18px 22px;
+                padding:
+                    28px 18px 22px;
+
                 border-radius: 25px;
             }
 
@@ -384,12 +640,14 @@
 
             .character {
                 width: 145px;
+
                 min-height: 170px;
             }
 
             .avatar {
                 width: 90px;
                 height: 90px;
+
                 font-size: 60px;
             }
 
@@ -399,6 +657,25 @@
 
             .question {
                 font-size: 23px;
+            }
+
+            .scenario-grid {
+                grid-template-columns: 1fr;
+
+                gap: 15px;
+            }
+
+            .scenario-image,
+            .scenario-icon {
+                height: 170px;
+            }
+
+            .scenario-title {
+                font-size: 29px;
+            }
+
+            .scenario-subtitle {
+                font-size: 17px;
             }
         }
     </style>
@@ -411,9 +688,13 @@
     ========================== -->
 
     <div class="sky">
+
         <div class="sun"></div>
+
         <div class="cloud one"></div>
+
         <div class="cloud two"></div>
+
     </div>
 
 
@@ -425,7 +706,11 @@
 
         <section class="card">
 
-            <!-- PANTALLA DE CREACION -->
+
+            <!-- =================================================
+                 PANTALLA 1
+                 PERSONAJE + NOMBRE
+            ================================================== -->
 
             <div id="setupScreen">
 
@@ -448,6 +733,7 @@
 
 
                 <div class="characters">
+
 
                     <!-- NIÑA -->
 
@@ -491,8 +777,6 @@
                 </div>
 
 
-                <!-- NOMBRE -->
-
                 <div class="name-section">
 
                     <label for="playerName">
@@ -528,9 +812,10 @@
             </div>
 
 
-            <!-- =========================
+            <!-- =================================================
+                 PANTALLA 2
                  BIENVENIDA
-            ========================== -->
+            ================================================== -->
 
             <div
                 id="welcomeScreen"
@@ -541,6 +826,7 @@
                     MY LITTLE ENGLISH
                 </div>
 
+
                 <div
                     id="welcomeAvatar"
                     class="welcome-avatar"
@@ -548,9 +834,11 @@
                     👧
                 </div>
 
+
                 <h2 id="welcomeTitle">
                     Hi!
                 </h2>
+
 
                 <p>
                     Welcome to your
@@ -558,11 +846,13 @@
                     <strong>English Adventure!</strong> 🌴
                 </p>
 
+
                 <p style="margin-top: 10px;">
                     Let's learn English
                     <br>
                     and have fun! ⭐
                 </p>
+
 
                 <button
                     type="button"
@@ -571,6 +861,103 @@
                 >
                     LET'S GO! 🚀
                 </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 PANTALLA 3
+                 ELEGIR ESCENARIO
+            ================================================== -->
+
+            <div
+                id="scenarioScreen"
+                class="scenarios"
+            >
+
+                <div class="logo">
+                    MY LITTLE ENGLISH
+                </div>
+
+
+                <div
+                    id="scenarioAvatar"
+                    class="welcome-avatar"
+                >
+                    👧
+                </div>
+
+
+                <div
+                    id="scenarioWelcome"
+                    class="scenario-title"
+                >
+                    Choose your adventure!
+                </div>
+
+
+                <div class="scenario-subtitle">
+                    Where do you want to learn English?
+                </div>
+
+
+                <div class="scenario-grid">
+
+
+                    <!-- =========================
+                         MY ROOM
+                    ========================== -->
+
+                    <button
+                        type="button"
+                        class="scenario-card"
+                        onclick="goToScenario('room')"
+                    >
+
+                        <img
+                            src="{% static 'juego/images/my-room.jpeg' %}"
+                            class="scenario-image"
+                            alt="My Room"
+                        >
+
+                        <div class="scenario-name">
+                            🛏️ My Room
+                        </div>
+
+                        <div class="scenario-description">
+                            Find objects in the bedroom!
+                        </div>
+
+                    </button>
+
+
+                    <!-- =========================
+                         MY KITCHEN
+                    ========================== -->
+
+                    <button
+                        type="button"
+                        class="scenario-card"
+                        onclick="goToScenario('kitchen')"
+                    >
+
+                        <img
+                            src="{% static 'juego/images/my-kitchen.jpeg' %}"
+                            class="scenario-image"
+                            alt="My Kitchen"
+                        >
+
+                        <div class="scenario-name">
+                            🍳 My Kitchen
+                        </div>
+
+                        <div class="scenario-description">
+                            Find objects in the kitchen!
+                        </div>
+
+                    </button>
+
+                </div>
 
             </div>
 
@@ -588,62 +975,197 @@
         let selectedCharacter = null;
 
 
-        // ==========================================
-        // ELEGIR PERSONAJE
-        // ==========================================
+        /* =====================================================
+           ELEGIR PERSONAJE
+        ===================================================== */
 
         function selectCharacter(character) {
 
-            selectedCharacter = character;
+            selectedCharacter =
+                character;
 
-            const girlButton = document.getElementById("girlButton");
-            const boyButton = document.getElementById("boyButton");
 
-            girlButton.classList.remove("selected");
-            boyButton.classList.remove("selected");
+            const girlButton =
+                document.getElementById(
+                    "girlButton"
+                );
 
-            if (character === "girl") {
-                girlButton.classList.add("selected");
+            const boyButton =
+                document.getElementById(
+                    "boyButton"
+                );
+
+
+            girlButton.classList.remove(
+                "selected"
+            );
+
+            boyButton.classList.remove(
+                "selected"
+            );
+
+
+            if (
+                character === "girl"
+            ) {
+
+                girlButton.classList.add(
+                    "selected"
+                );
+
             }
 
-            if (character === "boy") {
-                boyButton.classList.add("selected");
+
+            if (
+                character === "boy"
+            ) {
+
+                boyButton.classList.add(
+                    "selected"
+                );
+
             }
 
-            document.getElementById("message").textContent = "";
+
+            document.getElementById(
+                "message"
+            ).textContent = "";
+
+
+            /* VOZ */
+
+            speakEnglish(
+                character === "girl"
+                    ? "Girl"
+                    : "Boy"
+            );
         }
 
 
-        // ==========================================
-        // COMENZAR JUEGO
-        // ==========================================
+        /* =====================================================
+           VOZ
+        ===================================================== */
 
-        function startGame() {
+        function speakEnglish(text) {
 
-            const nameInput = document.getElementById("playerName");
-
-            const name = nameInput.value.trim();
-
-            const message = document.getElementById("message");
-
-
-            // Comprobar personaje
-
-            if (!selectedCharacter) {
-
-                message.textContent =
-                    "Choose GIRL or BOY first! 😊";
+            if (
+                !("speechSynthesis" in window)
+            ) {
 
                 return;
             }
 
 
-            // Comprobar nombre
+            try {
+
+                window.speechSynthesis.cancel();
+
+
+                const utterance =
+                    new SpeechSynthesisUtterance(
+                        text
+                    );
+
+
+                utterance.lang =
+                    "en-US";
+
+
+                utterance.rate =
+                    0.72;
+
+
+                utterance.pitch =
+                    1.08;
+
+
+                utterance.volume =
+                    1;
+
+
+                const voices =
+                    window.speechSynthesis.getVoices();
+
+
+                const englishVoice =
+                    voices.find(
+                        voice =>
+                            voice.lang &&
+                            voice.lang
+                                .toLowerCase()
+                                .startsWith("en")
+                    );
+
+
+                if (
+                    englishVoice
+                ) {
+
+                    utterance.voice =
+                        englishVoice;
+
+                }
+
+
+                window.speechSynthesis.speak(
+                    utterance
+                );
+
+            } catch (error) {
+
+                console.log(
+                    "Voice error:",
+                    error
+                );
+            }
+        }
+
+
+        /* =====================================================
+           COMENZAR
+        ===================================================== */
+
+        function startGame() {
+
+            const nameInput =
+                document.getElementById(
+                    "playerName"
+                );
+
+
+            const name =
+                nameInput.value.trim();
+
+
+            const message =
+                document.getElementById(
+                    "message"
+                );
+
+
+            if (
+                !selectedCharacter
+            ) {
+
+                message.textContent =
+                    "Choose GIRL or BOY first! 😊";
+
+                speakEnglish(
+                    "Choose girl or boy first"
+                );
+
+                return;
+            }
+
 
             if (!name) {
 
                 message.textContent =
                     "Tell me your name! 😊";
+
+                speakEnglish(
+                    "Tell me your name"
+                );
 
                 nameInput.focus();
 
@@ -651,7 +1173,9 @@
             }
 
 
-            // Guardar datos del jugador
+            /* =====================================
+               GUARDAR NOMBRE
+            ===================================== */
 
             localStorage.setItem(
                 "myLittleEnglishName",
@@ -664,29 +1188,61 @@
             );
 
 
-            // Cambiar pantalla
+            /*
+             * Estas dos claves son las que
+             * también reconoce la cocina.
+             */
+
+            localStorage.setItem(
+                "playerName",
+                name
+            );
+
+            localStorage.setItem(
+                "characterGender",
+                selectedCharacter
+            );
+
+
+            /* =====================================
+               PANTALLA BIENVENIDA
+            ===================================== */
 
             const setupScreen =
-                document.getElementById("setupScreen");
+                document.getElementById(
+                    "setupScreen"
+                );
+
 
             const welcomeScreen =
-                document.getElementById("welcomeScreen");
+                document.getElementById(
+                    "welcomeScreen"
+                );
+
 
             const welcomeAvatar =
-                document.getElementById("welcomeAvatar");
+                document.getElementById(
+                    "welcomeAvatar"
+                );
+
 
             const welcomeTitle =
-                document.getElementById("welcomeTitle");
+                document.getElementById(
+                    "welcomeTitle"
+                );
 
 
-            if (selectedCharacter === "girl") {
+            if (
+                selectedCharacter === "girl"
+            ) {
 
-                welcomeAvatar.textContent = "👧";
+                welcomeAvatar.textContent =
+                    "👧";
 
             } else {
 
-                welcomeAvatar.textContent = "👦";
-
+                welcomeAvatar.textContent =
+                    "👦";
             }
 
 
@@ -694,39 +1250,262 @@
                 "Hi, " + name + "! 👋";
 
 
-            setupScreen.style.display = "none";
+            setupScreen.style.display =
+                "none";
 
-            welcomeScreen.classList.add("active");
 
+            welcomeScreen.classList.add(
+                "active"
+            );
+
+
+            speakEnglish(
+                "Hi, " + name + "! Welcome to My Little English!"
+            );
         }
 
 
-        // ==========================================
-        // CONTINUAR
-        // ==========================================
+        /* =====================================================
+           IR A ELEGIR ESCENARIO
+        ===================================================== */
 
         function continueGame() {
 
-            window.location.href = "/habitacion/";
+            const welcomeScreen =
+                document.getElementById(
+                    "welcomeScreen"
+                );
 
+
+            const scenarioScreen =
+                document.getElementById(
+                    "scenarioScreen"
+                );
+
+
+            const scenarioAvatar =
+                document.getElementById(
+                    "scenarioAvatar"
+                );
+
+
+            const name =
+                localStorage.getItem(
+                    "playerName"
+                ) ||
+                localStorage.getItem(
+                    "myLittleEnglishName"
+                ) ||
+                "Friend";
+
+
+            const character =
+                localStorage.getItem(
+                    "characterGender"
+                ) ||
+                localStorage.getItem(
+                    "myLittleEnglishCharacter"
+                ) ||
+                "boy";
+
+
+            if (
+                character === "girl"
+            ) {
+
+                scenarioAvatar.textContent =
+                    "👧";
+
+            } else {
+
+                scenarioAvatar.textContent =
+                    "👦";
+            }
+
+
+            welcomeScreen.classList.remove(
+                "active"
+            );
+
+
+            welcomeScreen.style.display =
+                "none";
+
+
+            scenarioScreen.classList.add(
+                "active"
+            );
+
+
+            speakEnglish(
+                "Choose your adventure"
+            );
         }
 
 
-        // ==========================================
-        // ENTER PARA JUGAR
-        // ==========================================
+        /* =====================================================
+           ELEGIR ESCENARIO
+        ===================================================== */
+
+        function goToScenario(
+            scenario
+        ) {
+
+            /*
+             * Guardamos el escenario elegido.
+             */
+
+            localStorage.setItem(
+                "selectedScenario",
+                scenario
+            );
+
+
+            if (
+                scenario === "room"
+            ) {
+
+                speakEnglish(
+                    "My Room"
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "/habitacion/";
+
+                    },
+                    400
+                );
+
+                return;
+            }
+
+
+            if (
+                scenario === "kitchen"
+            ) {
+
+                speakEnglish(
+                    "My Kitchen"
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "/cocina/";
+
+                    },
+                    400
+                );
+
+                return;
+            }
+        }
+
+
+        /* =====================================================
+           ENTER
+        ===================================================== */
 
         document
-            .getElementById("playerName")
-            .addEventListener("keydown", function(event) {
+            .getElementById(
+                "playerName"
+            )
+            .addEventListener(
+                "keydown",
+                function(event) {
 
-                if (event.key === "Enter") {
+                    if (
+                        event.key === "Enter"
+                    ) {
 
-                    startGame();
+                        startGame();
+
+                    }
 
                 }
+            );
 
-            });
+
+        /* =====================================================
+           RECUPERAR DATOS SI YA EXISTEN
+        ===================================================== */
+
+        window.addEventListener(
+            "load",
+            function() {
+
+                const savedName =
+                    localStorage.getItem(
+                        "playerName"
+                    ) ||
+                    localStorage.getItem(
+                        "myLittleEnglishName"
+                    );
+
+
+                const savedCharacter =
+                    localStorage.getItem(
+                        "characterGender"
+                    ) ||
+                    localStorage.getItem(
+                        "myLittleEnglishCharacter"
+                    );
+
+
+                if (
+                    savedName
+                ) {
+
+                    document.getElementById(
+                        "playerName"
+                    ).value =
+                        savedName;
+                }
+
+
+                if (
+                    savedCharacter
+                ) {
+
+                    selectedCharacter =
+                        savedCharacter;
+
+
+                    if (
+                        savedCharacter ===
+                        "girl"
+                    ) {
+
+                        document
+                            .getElementById(
+                                "girlButton"
+                            )
+                            .classList
+                            .add(
+                                "selected"
+                            );
+
+                    } else {
+
+                        document
+                            .getElementById(
+                                "boyButton"
+                            )
+                            .classList
+                            .add(
+                                "selected"
+                            );
+                    }
+                }
+
+            }
+        );
 
     </script>
 
