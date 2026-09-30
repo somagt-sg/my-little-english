@@ -3,11 +3,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
 
     <title>My Little English - My Kitchen</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
@@ -17,25 +22,34 @@
         body {
             margin: 0;
             padding: 0;
+
             width: 100%;
             height: 100%;
+
             overflow: hidden;
+
             font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            touch-action: pan-x;
+
+            background: #ddd;
+
+            touch-action: none;
         }
 
-        /* =========================
+
+        /* =========================================
            BARRA SUPERIOR
-        ========================== */
+        ========================================= */
 
         .top-bar {
             position: fixed;
+
             top: 0;
             left: 0;
+
             width: 100%;
             height: 72px;
-            z-index: 1000;
+
+            z-index: 3000;
 
             display: flex;
             align-items: center;
@@ -43,15 +57,19 @@
 
             padding: 0 20px;
 
-            background: linear-gradient(
-                90deg,
-                #ffcf33,
-                #ffb703
-            );
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffcf33,
+                    #ffb703
+                );
 
             color: #4a3000;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+
+            box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.20);
         }
+
 
         .game-title {
             font-size: 26px;
@@ -59,24 +77,30 @@
             white-space: nowrap;
         }
 
+
         .mission {
             font-size: 18px;
             font-weight: bold;
+
             text-align: center;
         }
+
 
         .stars {
             font-size: 20px;
             font-weight: bold;
+
             white-space: nowrap;
         }
 
-        /* =========================
+
+        /* =========================================
            CONTENEDOR DEL JUEGO
-        ========================== */
+        ========================================= */
 
         .game-container {
             position: fixed;
+
             top: 72px;
             left: 0;
             right: 0;
@@ -86,54 +110,84 @@
 
             background: #ddd;
 
-            touch-action: pan-x;
+            touch-action: none;
         }
 
-        /* =========================
-           MUNDO / HABITACIÓN
-        ========================== */
+
+        /* =========================================
+           VENTANA DE LA HABITACIÓN
+        ========================================= */
 
         .room-scroll {
             position: absolute;
+
             top: 0;
             left: 0;
 
             width: 100%;
             height: 100%;
 
-            overflow-x: auto;
-            overflow-y: hidden;
-
-            -webkit-overflow-scrolling: touch;
-            overscroll-behavior-x: contain;
-
-            touch-action: pan-x;
+            overflow: auto;
 
             scrollbar-width: none;
+
+            -webkit-overflow-scrolling: touch;
+
+            touch-action: none;
+
+            overscroll-behavior: none;
         }
+
 
         .room-scroll::-webkit-scrollbar {
             display: none;
         }
 
-        .room {
+
+        /* =========================================
+           CONTENEDOR QUE DEFINE EL TAMAÑO REAL
+           DESPUÉS DEL ZOOM
+        ========================================= */
+
+        #roomSizer {
             position: relative;
 
             width: 1536px;
             height: 1024px;
 
-            min-width: 1536px;
-            min-height: 1024px;
+            flex-shrink: 0;
+        }
 
-            background-image: url("{% static 'juego/images/my-kitchen.jpeg' %}");
+
+        /* =========================================
+           HABITACIÓN
+        ========================================= */
+
+        .room {
+            position: absolute;
+
+            left: 0;
+            top: 0;
+
+            width: 1536px;
+            height: 1024px;
+
+            transform-origin: top left;
+
+            background-image:
+                url("{% static 'juego/images/my-kitchen.jpeg' %}");
+
             background-size: 1536px 1024px;
+
             background-repeat: no-repeat;
+
             background-position: top left;
         }
 
-        /* =========================
+
+        /* =========================================
            PERSONAJE
-        ========================== */
+        ========================================= */
 
         #character {
             position: absolute;
@@ -150,18 +204,22 @@
 
             user-select: none;
             -webkit-user-select: none;
+
             pointer-events: none;
         }
+
 
         #character.girl-character {
             width: 220px;
             height: 300px;
+
             bottom: 15px;
         }
 
-        /* =========================
+
+        /* =========================================
            OBJETOS
-        ========================== */
+        ========================================= */
 
         .hotspot {
             position: absolute;
@@ -172,146 +230,172 @@
 
             border-radius: 20px;
 
-            touch-action: manipulation;
-
             user-select: none;
             -webkit-user-select: none;
 
+            touch-action: none;
+
             transition:
-                transform 0.2s ease,
-                background 0.2s ease;
+                background 0.2s ease,
+                box-shadow 0.2s ease;
         }
+
 
         .hotspot:hover {
-            background: rgba(255, 255, 0, 0.12);
+            background:
+                rgba(255, 255, 0, 0.12);
         }
+
 
         .hotspot.found {
-            background: rgba(76, 175, 80, 0.25);
+            background:
+                rgba(76, 175, 80, 0.25);
+
             box-shadow:
-                0 0 0 4px rgba(76, 175, 80, 0.5),
-                0 0 20px rgba(76, 175, 80, 0.8);
+                0 0 0 4px rgba(76, 175, 80, 0.50),
+                0 0 20px rgba(76, 175, 80, 0.80);
         }
 
-        /* =========================
+
+        /* =========================================
            1. APPLE
-        ========================== */
+        ========================================= */
 
         .apple {
             left: 815px;
             top: 570px;
+
             width: 115px;
             height: 105px;
         }
 
-        /* =========================
+
+        /* =========================================
            2. BREAD
-        ========================== */
+        ========================================= */
 
         .bread {
             left: 900px;
             top: 535px;
+
             width: 180px;
             height: 120px;
         }
 
-        /* =========================
+
+        /* =========================================
            3. EGGS
-        ========================== */
+        ========================================= */
 
         .eggs {
             left: 1080px;
             top: 565px;
+
             width: 135px;
             height: 105px;
         }
 
-        /* =========================
+
+        /* =========================================
            4. CUP
-        ========================== */
+        ========================================= */
 
         .cup {
             left: 1060px;
             top: 650px;
+
             width: 105px;
             height: 105px;
         }
 
-        /* =========================
+
+        /* =========================================
            5. BOWL
-        ========================== */
+        ========================================= */
 
         .bowl {
             left: 1190px;
             top: 660px;
+
             width: 150px;
             height: 115px;
         }
 
-        /* =========================
+
+        /* =========================================
            6. GLASS
-        ========================== */
+        ========================================= */
 
         .glass {
             left: 1310px;
             top: 660px;
+
             width: 100px;
             height: 145px;
         }
 
-        /* =========================
+
+        /* =========================================
            7. SPOON
-        ========================== */
+        ========================================= */
 
         .spoon {
             left: 930px;
             top: 675px;
+
             width: 85px;
             height: 155px;
 
             transform: rotate(-25deg);
         }
 
-        /* =========================
+
+        /* =========================================
            8. FORK
-        ========================== */
+        ========================================= */
 
         .fork {
             left: 1000px;
             top: 675px;
+
             width: 85px;
             height: 155px;
 
             transform: rotate(-25deg);
         }
 
-        /* =========================
+
+        /* =========================================
            9. KNIFE
-        ========================== */
+        ========================================= */
 
         .knife {
             left: 1070px;
             top: 670px;
+
             width: 85px;
             height: 160px;
 
             transform: rotate(-25deg);
         }
 
-        /* =========================
+
+        /* =========================================
            10. REFRIGERATOR
-        ========================== */
+        ========================================= */
 
         .refrigerator {
             left: 90px;
             top: 25px;
+
             width: 225px;
             height: 825px;
         }
 
-        /* =========================
-           MENSAJE DE ACIERTO
-        ========================== */
+
+        /* =========================================
+           FEEDBACK
+        ========================================= */
 
         #feedback {
             position: fixed;
@@ -319,18 +403,24 @@
             top: 50%;
             left: 50%;
 
-            transform: translate(-50%, -50%) scale(0.8);
+            transform:
+                translate(-50%, -50%)
+                scale(0.8);
 
-            z-index: 2000;
+            z-index: 4000;
 
             padding: 25px 40px;
 
-            background: rgba(255, 255, 255, 0.97);
+            width: max-content;
+            max-width: 90%;
+
+            background:
+                rgba(255, 255, 255, 0.97);
 
             border-radius: 25px;
 
             box-shadow:
-                0 10px 40px rgba(0, 0, 0, 0.3);
+                0 10px 40px rgba(0, 0, 0, 0.30);
 
             font-size: 32px;
             font-weight: bold;
@@ -338,6 +428,7 @@
             color: #198754;
 
             opacity: 0;
+
             pointer-events: none;
 
             transition:
@@ -347,25 +438,32 @@
             text-align: center;
         }
 
+
         #feedback.show {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
+
+            transform:
+                translate(-50%, -50%)
+                scale(1);
         }
 
-        /* =========================
+
+        /* =========================================
            CONTROLES
-        ========================== */
+        ========================================= */
 
         .controls {
             position: fixed;
 
             left: 0;
             right: 0;
+
             bottom: 18px;
 
-            z-index: 1500;
+            z-index: 3500;
 
             display: flex;
+
             justify-content: center;
             align-items: center;
 
@@ -374,6 +472,7 @@
             pointer-events: none;
         }
 
+
         .control-button {
             pointer-events: auto;
 
@@ -381,9 +480,11 @@
             height: 65px;
 
             border: none;
+
             border-radius: 50%;
 
             background: #198754;
+
             color: white;
 
             font-size: 30px;
@@ -400,12 +501,15 @@
             touch-action: manipulation;
         }
 
+
         .control-button:active {
             transform: scale(0.92);
         }
 
+
         .continue-button {
             width: auto;
+
             min-width: 150px;
 
             height: 58px;
@@ -419,83 +523,86 @@
             font-size: 18px;
         }
 
-        /* =========================
+
+        /* =========================================
            CELULAR
-        ========================== */
+        ========================================= */
 
         @media (max-width: 700px) {
 
             .top-bar {
                 height: 60px;
+
                 padding: 0 10px;
             }
 
-            .game-title {
-                font-size: 17px;
-            }
-
-            .mission {
-                font-size: 13px;
-            }
-
-            .stars {
-                font-size: 14px;
-            }
 
             .game-container {
                 top: 60px;
             }
 
-            .room-scroll {
-                touch-action: pan-x;
-                overflow-x: auto;
+
+            .game-title {
+                font-size: 17px;
             }
+
+
+            .mission {
+                font-size: 13px;
+            }
+
+
+            .stars {
+                font-size: 14px;
+            }
+
 
             .control-button {
                 width: 58px;
                 height: 58px;
+
                 font-size: 26px;
             }
 
+
             .continue-button {
                 min-width: 125px;
+
                 height: 52px;
+
                 padding: 0 16px;
+
                 font-size: 15px;
             }
 
+
+            .controls {
+                bottom: 10px;
+
+                gap: 8px;
+            }
+
+
             #feedback {
                 width: 85%;
+
                 padding: 20px;
 
                 font-size: 24px;
             }
 
-            #character {
-                width: 150px;
-                height: 205px;
-                bottom: 45px;
-            }
-
-            #character.girl-character {
-                width: 210px;
-                height: 285px;
-                bottom: 15px;
-            }
-
-            .controls {
-                bottom: 10px;
-                gap: 8px;
-            }
         }
+
     </style>
 </head>
 
+
 <body>
 
-    <!-- =========================
+
+    <!-- =========================================
          BARRA SUPERIOR
-    ========================== -->
+    ========================================== -->
 
     <div class="top-bar">
 
@@ -503,9 +610,11 @@
             🍳 My Kitchen
         </div>
 
+
         <div class="mission">
             Find the objects!
         </div>
+
 
         <div class="stars">
             ⭐ <span id="score">0</span>/10
@@ -514,124 +623,180 @@
     </div>
 
 
-    <!-- =========================
+
+    <!-- =========================================
          JUEGO
-    ========================== -->
+    ========================================== -->
 
     <div class="game-container">
 
         <div
-            class="room-scroll"
             id="roomScroll"
+            class="room-scroll"
         >
 
             <div
-                class="room"
-                id="room"
+                id="roomSizer"
             >
 
-                <!-- PERSONAJE -->
-
-                <img
-                    id="character"
-                    src="{% static 'juego/images/personaje-niño.png' %}"
-                    alt="Character"
-                    draggable="false"
+                <div
+                    id="room"
+                    class="room"
                 >
 
 
-                <!-- =========================
-                     OBJETOS
-                ========================== -->
+                    <!-- =================================
+                         PERSONAJE
+                    ================================== -->
 
-                <div
-                    class="hotspot apple"
-                    data-object="apple"
-                    data-word="Apple"
-                    data-sentence="This is an apple."
-                    aria-label="Apple"
-                ></div>
-
-
-                <div
-                    class="hotspot bread"
-                    data-object="bread"
-                    data-word="Bread"
-                    data-sentence="This is bread."
-                    aria-label="Bread"
-                ></div>
+                    <img
+                        id="character"
+                        src="{% static 'juego/images/personaje-niño.png' %}"
+                        alt="Character"
+                        draggable="false"
+                    >
 
 
-                <div
-                    class="hotspot eggs"
-                    data-object="eggs"
-                    data-word="Eggs"
-                    data-sentence="These are eggs."
-                    aria-label="Eggs"
-                ></div>
+
+                    <!-- =================================
+                         1. APPLE
+                    ================================== -->
+
+                    <div
+                        class="hotspot apple"
+                        data-object="apple"
+                        data-word="Apple"
+                        data-sentence="This is an apple."
+                        aria-label="Apple"
+                    ></div>
 
 
-                <div
-                    class="hotspot cup"
-                    data-object="cup"
-                    data-word="Cup"
-                    data-sentence="This is a cup."
-                    aria-label="Cup"
-                ></div>
+
+                    <!-- =================================
+                         2. BREAD
+                    ================================== -->
+
+                    <div
+                        class="hotspot bread"
+                        data-object="bread"
+                        data-word="Bread"
+                        data-sentence="This is bread."
+                        aria-label="Bread"
+                    ></div>
 
 
-                <div
-                    class="hotspot bowl"
-                    data-object="bowl"
-                    data-word="Bowl"
-                    data-sentence="This is a bowl."
-                    aria-label="Bowl"
-                ></div>
+
+                    <!-- =================================
+                         3. EGGS
+                    ================================== -->
+
+                    <div
+                        class="hotspot eggs"
+                        data-object="eggs"
+                        data-word="Eggs"
+                        data-sentence="These are eggs."
+                        aria-label="Eggs"
+                    ></div>
 
 
-                <div
-                    class="hotspot glass"
-                    data-object="glass"
-                    data-word="Glass"
-                    data-sentence="This is a glass."
-                    aria-label="Glass"
-                ></div>
+
+                    <!-- =================================
+                         4. CUP
+                    ================================== -->
+
+                    <div
+                        class="hotspot cup"
+                        data-object="cup"
+                        data-word="Cup"
+                        data-sentence="This is a cup."
+                        aria-label="Cup"
+                    ></div>
 
 
-                <div
-                    class="hotspot spoon"
-                    data-object="spoon"
-                    data-word="Spoon"
-                    data-sentence="This is a spoon."
-                    aria-label="Spoon"
-                ></div>
+
+                    <!-- =================================
+                         5. BOWL
+                    ================================== -->
+
+                    <div
+                        class="hotspot bowl"
+                        data-object="bowl"
+                        data-word="Bowl"
+                        data-sentence="This is a bowl."
+                        aria-label="Bowl"
+                    ></div>
 
 
-                <div
-                    class="hotspot fork"
-                    data-object="fork"
-                    data-word="Fork"
-                    data-sentence="This is a fork."
-                    aria-label="Fork"
-                ></div>
+
+                    <!-- =================================
+                         6. GLASS
+                    ================================== -->
+
+                    <div
+                        class="hotspot glass"
+                        data-object="glass"
+                        data-word="Glass"
+                        data-sentence="This is a glass."
+                        aria-label="Glass"
+                    ></div>
 
 
-                <div
-                    class="hotspot knife"
-                    data-object="knife"
-                    data-word="Knife"
-                    data-sentence="This is a knife."
-                    aria-label="Knife"
-                ></div>
+
+                    <!-- =================================
+                         7. SPOON
+                    ================================== -->
+
+                    <div
+                        class="hotspot spoon"
+                        data-object="spoon"
+                        data-word="Spoon"
+                        data-sentence="This is a spoon."
+                        aria-label="Spoon"
+                    ></div>
 
 
-                <div
-                    class="hotspot refrigerator"
-                    data-object="refrigerator"
-                    data-word="Refrigerator"
-                    data-sentence="This is a refrigerator."
-                    aria-label="Refrigerator"
-                ></div>
+
+                    <!-- =================================
+                         8. FORK
+                    ================================== -->
+
+                    <div
+                        class="hotspot fork"
+                        data-object="fork"
+                        data-word="Fork"
+                        data-sentence="This is a fork."
+                        aria-label="Fork"
+                    ></div>
+
+
+
+                    <!-- =================================
+                         9. KNIFE
+                    ================================== -->
+
+                    <div
+                        class="hotspot knife"
+                        data-object="knife"
+                        data-word="Knife"
+                        data-sentence="This is a knife."
+                        aria-label="Knife"
+                    ></div>
+
+
+
+                    <!-- =================================
+                         10. REFRIGERATOR
+                    ================================== -->
+
+                    <div
+                        class="hotspot refrigerator"
+                        data-object="refrigerator"
+                        data-word="Refrigerator"
+                        data-sentence="This is a refrigerator."
+                        aria-label="Refrigerator"
+                    ></div>
+
+                </div>
 
             </div>
 
@@ -640,18 +805,20 @@
     </div>
 
 
-    <!-- =========================
-         MENSAJE
-    ========================== -->
+
+    <!-- =========================================
+         FEEDBACK
+    ========================================== -->
 
     <div id="feedback">
         ⭐ Great job! ⭐
     </div>
 
 
-    <!-- =========================
+
+    <!-- =========================================
          CONTROLES
-    ========================== -->
+    ========================================== -->
 
     <div class="controls">
 
@@ -686,6 +853,7 @@
     </div>
 
 
+
     <script>
 
         /* =====================================================
@@ -694,6 +862,9 @@
 
         const roomScroll =
             document.getElementById("roomScroll");
+
+        const roomSizer =
+            document.getElementById("roomSizer");
 
         const room =
             document.getElementById("room");
@@ -717,12 +888,16 @@
             document.getElementById("continueButton");
 
 
+
         /* =====================================================
            PERSONAJE NIÑO / NIÑA
         ====================================================== */
 
         const selectedCharacter =
-            localStorage.getItem("myLittleEnglishCharacter");
+            localStorage.getItem(
+                "myLittleEnglishCharacter"
+            );
+
 
         if (
             selectedCharacter === "girl" ||
@@ -733,15 +908,51 @@
             character.src =
                 "{% static 'juego/images/personaje-niña.png' %}";
 
-            character.classList.add("girl-character");
+            character.classList.add(
+                "girl-character"
+            );
 
         } else {
 
             character.src =
                 "{% static 'juego/images/personaje-niño.png' %}";
 
-            character.classList.remove("girl-character");
+            character.classList.remove(
+                "girl-character"
+            );
+
         }
+
+
+
+        /* =====================================================
+           ZOOM
+        ====================================================== */
+
+        let zoom = 1;
+
+        const MIN_ZOOM = 0.55;
+        const MAX_ZOOM = 2.20;
+
+
+        function updateZoom() {
+
+            room.style.transform =
+                "scale(" + zoom + ")";
+
+
+            roomSizer.style.width =
+                (1536 * zoom) + "px";
+
+
+            roomSizer.style.height =
+                (1024 * zoom) + "px";
+
+        }
+
+
+        updateZoom();
+
 
 
         /* =====================================================
@@ -755,65 +966,92 @@
 
         function moveCharacter(direction) {
 
-            characterX += direction * movementSpeed;
+            characterX +=
+                direction *
+                movementSpeed;
+
 
             const maxX =
-                room.offsetWidth -
+                1536 -
                 character.offsetWidth -
                 20;
 
+
             if (characterX < 0) {
+
                 characterX = 0;
+
             }
 
+
             if (characterX > maxX) {
+
                 characterX = maxX;
+
             }
+
 
             character.style.left =
                 characterX + "px";
 
 
-            /* Auto desplazamiento de la pantalla */
+            /* ---------------------------------
+               AUTOSCROLL
+            ---------------------------------- */
 
             const viewportWidth =
                 roomScroll.clientWidth;
 
+
             const currentScroll =
                 roomScroll.scrollLeft;
+
 
             const characterCenter =
                 characterX +
                 character.offsetWidth / 2;
 
 
+            const scaledCharacterCenter =
+                characterCenter *
+                zoom;
+
+
             const leftLimit =
                 currentScroll +
                 viewportWidth * 0.30;
+
 
             const rightLimit =
                 currentScroll +
                 viewportWidth * 0.70;
 
 
-            if (characterCenter > rightLimit) {
+            if (
+                scaledCharacterCenter >
+                rightLimit
+            ) {
 
                 roomScroll.scrollLeft +=
-                    characterCenter -
+                    scaledCharacterCenter -
                     rightLimit;
 
             }
 
 
-            if (characterCenter < leftLimit) {
+            if (
+                scaledCharacterCenter <
+                leftLimit
+            ) {
 
                 roomScroll.scrollLeft -=
                     leftLimit -
-                    characterCenter;
+                    scaledCharacterCenter;
 
             }
 
         }
+
 
 
         /* =====================================================
@@ -822,33 +1060,36 @@
 
         leftButton.addEventListener(
             "pointerdown",
-            function (event) {
+            function(event) {
 
                 event.preventDefault();
 
                 moveCharacter(-1);
+
             }
         );
 
 
         rightButton.addEventListener(
             "pointerdown",
-            function (event) {
+            function(event) {
 
                 event.preventDefault();
 
                 moveCharacter(1);
+
             }
         );
 
 
+
         /* =====================================================
-           TECLADO PC
+           TECLADO
         ====================================================== */
 
         document.addEventListener(
             "keydown",
-            function (event) {
+            function(event) {
 
                 if (
                     event.key === "ArrowLeft" ||
@@ -858,6 +1099,7 @@
                     event.preventDefault();
 
                     moveCharacter(-1);
+
                 }
 
 
@@ -869,103 +1111,171 @@
                     event.preventDefault();
 
                     moveCharacter(1);
+
                 }
 
             }
         );
 
 
+
         /* =====================================================
-           DESPLAZAMIENTO TÁCTIL
-           
-           IMPORTANTE:
-           El usuario puede deslizar el dedo directamente
-           sobre la cocina para desplazarse horizontalmente.
+           ZOOM + DESPLAZAMIENTO TÁCTIL
         ====================================================== */
 
-        let touchStartX = 0;
-        let touchStartY = 0;
-        let touchStartScrollLeft = 0;
+        let touches = [];
 
-        let isTouchScrolling = false;
+        let startDistance = 0;
+
+        let startZoom = 1;
+
+        let startScrollLeft = 0;
+
+        let startScrollTop = 0;
+
+        let startCenterX = 0;
+
+        let startCenterY = 0;
+
+        let dragging = false;
+
+        let pinchZooming = false;
+
+
+
+        function getDistance(
+            touch1,
+            touch2
+        ) {
+
+            const dx =
+                touch2.clientX -
+                touch1.clientX;
+
+            const dy =
+                touch2.clientY -
+                touch1.clientY;
+
+
+            return Math.sqrt(
+                dx * dx +
+                dy * dy
+            );
+
+        }
+
+
+
+        function getCenter(
+            touch1,
+            touch2
+        ) {
+
+            return {
+
+                x:
+                    (
+                        touch1.clientX +
+                        touch2.clientX
+                    ) / 2,
+
+                y:
+                    (
+                        touch1.clientY +
+                        touch2.clientY
+                    ) / 2
+
+            };
+
+        }
+
 
 
         roomScroll.addEventListener(
             "touchstart",
-            function (event) {
+            function(event) {
+
+                event.preventDefault();
+
+
+                touches =
+                    Array.from(
+                        event.touches
+                    );
+
 
                 if (
-                    !event.touches ||
-                    event.touches.length !== 1
+                    touches.length === 1
                 ) {
-                    return;
+
+                    dragging = true;
+
+                    pinchZooming = false;
+
+
+                    startCenterX =
+                        touches[0].clientX;
+
+                    startCenterY =
+                        touches[0].clientY;
+
+
+                    startScrollLeft =
+                        roomScroll.scrollLeft;
+
+                    startScrollTop =
+                        roomScroll.scrollTop;
+
                 }
 
-                touchStartX =
-                    event.touches[0].clientX;
-
-                touchStartY =
-                    event.touches[0].clientY;
-
-                touchStartScrollLeft =
-                    roomScroll.scrollLeft;
-
-                isTouchScrolling = false;
-
-            },
-            {
-                passive: true
-            }
-        );
-
-
-        roomScroll.addEventListener(
-            "touchmove",
-            function (event) {
 
                 if (
-                    !event.touches ||
-                    event.touches.length !== 1
-                ) {
-                    return;
-                }
-
-                const currentX =
-                    event.touches[0].clientX;
-
-                const currentY =
-                    event.touches[0].clientY;
-
-                const deltaX =
-                    currentX - touchStartX;
-
-                const deltaY =
-                    currentY - touchStartY;
-
-
-                /*
-                 * Si el movimiento es principalmente
-                 * horizontal, desplazamos la cocina.
-                 */
-
-                if (
-                    Math.abs(deltaX) >
-                    Math.abs(deltaY)
+                    touches.length >= 2
                 ) {
 
-                    isTouchScrolling = true;
+                    dragging = false;
 
-                    roomScroll.scrollLeft =
-                        touchStartScrollLeft -
-                        deltaX;
+                    pinchZooming = true;
 
-                    /*
-                     * Evitamos que el navegador
-                     * convierta el gesto horizontal
-                     * en otro comportamiento.
-                     */
 
-                    event.preventDefault();
+                    const touch1 =
+                        touches[0];
+
+                    const touch2 =
+                        touches[1];
+
+
+                    startDistance =
+                        getDistance(
+                            touch1,
+                            touch2
+                        );
+
+
+                    startZoom =
+                        zoom;
+
+
+                    const center =
+                        getCenter(
+                            touch1,
+                            touch2
+                        );
+
+
+                    startCenterX =
+                        center.x;
+
+                    startCenterY =
+                        center.y;
+
+
+                    startScrollLeft =
+                        roomScroll.scrollLeft;
+
+                    startScrollTop =
+                        roomScroll.scrollTop;
+
                 }
 
             },
@@ -975,11 +1285,253 @@
         );
 
 
+
+        roomScroll.addEventListener(
+            "touchmove",
+            function(event) {
+
+                event.preventDefault();
+
+
+                touches =
+                    Array.from(
+                        event.touches
+                    );
+
+
+                /* =================================
+                   DOS DEDOS = ZOOM
+                ================================== */
+
+                if (
+                    touches.length >= 2
+                ) {
+
+                    pinchZooming = true;
+
+                    dragging = false;
+
+
+                    const touch1 =
+                        touches[0];
+
+                    const touch2 =
+                        touches[1];
+
+
+                    const currentDistance =
+                        getDistance(
+                            touch1,
+                            touch2
+                        );
+
+
+                    if (
+                        startDistance <= 0
+                    ) {
+                        return;
+                    }
+
+
+                    const scaleChange =
+                        currentDistance /
+                        startDistance;
+
+
+                    let newZoom =
+                        startZoom *
+                        scaleChange;
+
+
+                    if (
+                        newZoom < MIN_ZOOM
+                    ) {
+
+                        newZoom =
+                            MIN_ZOOM;
+
+                    }
+
+
+                    if (
+                        newZoom > MAX_ZOOM
+                    ) {
+
+                        newZoom =
+                            MAX_ZOOM;
+
+                    }
+
+
+                    /*
+                     * Punto central del zoom.
+                     */
+
+                    const center =
+                        getCenter(
+                            touch1,
+                            touch2
+                        );
+
+
+                    const oldZoom =
+                        zoom;
+
+
+                    const scrollXBefore =
+                        roomScroll.scrollLeft;
+
+
+                    const scrollYBefore =
+                        roomScroll.scrollTop;
+
+
+                    /*
+                     * Posición del contenido
+                     * que está debajo del centro
+                     * de los dedos.
+                     */
+
+                    const contentX =
+                        (
+                            scrollXBefore +
+                            center.x
+                        ) / oldZoom;
+
+
+                    const contentY =
+                        (
+                            scrollYBefore +
+                            center.y
+                        ) / oldZoom;
+
+
+                    zoom =
+                        newZoom;
+
+
+                    updateZoom();
+
+
+                    /*
+                     * Conservamos el punto
+                     * debajo de los dedos.
+                     */
+
+                    roomScroll.scrollLeft =
+                        (
+                            contentX *
+                            zoom
+                        ) -
+                        center.x;
+
+
+                    roomScroll.scrollTop =
+                        (
+                            contentY *
+                            zoom
+                        ) -
+                        center.y;
+
+                }
+
+
+                /* =================================
+                   UN DEDO = DESPLAZAMIENTO
+                ================================== */
+
+                else if (
+                    touches.length === 1 &&
+                    !pinchZooming
+                ) {
+
+                    const currentX =
+                        touches[0].clientX;
+
+                    const currentY =
+                        touches[0].clientY;
+
+
+                    const deltaX =
+                        currentX -
+                        startCenterX;
+
+
+                    const deltaY =
+                        currentY -
+                        startCenterY;
+
+
+                    roomScroll.scrollLeft =
+                        startScrollLeft -
+                        deltaX;
+
+
+                    roomScroll.scrollTop =
+                        startScrollTop -
+                        deltaY;
+
+                }
+
+            },
+            {
+                passive: false
+            }
+        );
+
+
+
         roomScroll.addEventListener(
             "touchend",
-            function () {
+            function(event) {
 
-                isTouchScrolling = false;
+                touches =
+                    Array.from(
+                        event.touches
+                    );
+
+
+                if (
+                    touches.length === 0
+                ) {
+
+                    dragging = false;
+
+                    pinchZooming = false;
+
+                }
+
+
+                if (
+                    touches.length === 1
+                ) {
+
+                    /*
+                     * Cuando termina el pinch,
+                     * permitimos nuevamente
+                     * el desplazamiento con
+                     * un dedo.
+                     */
+
+                    pinchZooming = false;
+
+                    dragging = true;
+
+
+                    startCenterX =
+                        touches[0].clientX;
+
+                    startCenterY =
+                        touches[0].clientY;
+
+
+                    startScrollLeft =
+                        roomScroll.scrollLeft;
+
+                    startScrollTop =
+                        roomScroll.scrollTop;
+
+                }
 
             },
             {
@@ -988,56 +1540,22 @@
         );
 
 
+
         /* =====================================================
-           EVITAR QUE UN SWIPE ABRA UN OBJETO
+           EVITAR ARRASTRE DE IMÁGENES
         ====================================================== */
 
-        let objectTouchStartX = 0;
-        let objectTouchStartY = 0;
-
-
         document.querySelectorAll(
-            ".hotspot"
+            "img"
         ).forEach(
-            function (hotspot) {
+            function(image) {
 
-                hotspot.addEventListener(
-                    "touchstart",
-                    function (event) {
+                image.addEventListener(
+                    "dragstart",
+                    function(event) {
 
-                        if (
-                            event.touches.length === 1
-                        ) {
+                        event.preventDefault();
 
-                            objectTouchStartX =
-                                event.touches[0].clientX;
-
-                            objectTouchStartY =
-                                event.touches[0].clientY;
-                        }
-
-                    },
-                    {
-                        passive: true
-                    }
-                );
-
-
-                hotspot.addEventListener(
-                    "click",
-                    function () {
-
-                        /*
-                         * Si el usuario estaba
-                         * deslizando, no activamos
-                         * el objeto.
-                         */
-
-                        if (isTouchScrolling) {
-                            return;
-                        }
-
-                        findObject(this);
                     }
                 );
 
@@ -1045,12 +1563,14 @@
         );
 
 
+
         /* =====================================================
-           OBJETOS ENCONTRADOS
+           OBJETOS
         ====================================================== */
 
         const storageKey =
             "myKitchenFoundObjects";
+
 
         let foundObjects = [];
 
@@ -1059,13 +1579,17 @@
 
             foundObjects =
                 JSON.parse(
-                    localStorage.getItem(storageKey)
+                    localStorage.getItem(
+                        storageKey
+                    )
                 ) || [];
 
         } catch (error) {
 
             foundObjects = [];
+
         }
+
 
 
         function updateScore() {
@@ -1077,10 +1601,11 @@
             document.querySelectorAll(
                 ".hotspot"
             ).forEach(
-                function (hotspot) {
+                function(hotspot) {
 
                     const objectName =
                         hotspot.dataset.object;
+
 
                     if (
                         foundObjects.includes(
@@ -1100,11 +1625,35 @@
         }
 
 
+
         /* =====================================================
-           ENCONTRAR OBJETO
+           ACTIVAR OBJETO
         ====================================================== */
 
-        function findObject(hotspot) {
+        document.querySelectorAll(
+            ".hotspot"
+        ).forEach(
+            function(hotspot) {
+
+                hotspot.addEventListener(
+                    "click",
+                    function() {
+
+                        findObject(
+                            hotspot
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+
+        function findObject(
+            hotspot
+        ) {
 
             const objectName =
                 hotspot.dataset.object;
@@ -1122,11 +1671,10 @@
                 )
             ) {
 
-                speak(
-                    word
-                );
+                speak(word);
 
                 return;
+
             }
 
 
@@ -1137,7 +1685,9 @@
 
             localStorage.setItem(
                 storageKey,
-                JSON.stringify(foundObjects)
+                JSON.stringify(
+                    foundObjects
+                )
             );
 
 
@@ -1149,13 +1699,13 @@
             updateScore();
 
 
-            speak(
-                sentence
-            );
+            speak(sentence);
 
 
             showFeedback(
-                "⭐ " + word + "! ⭐"
+                "⭐ " +
+                word +
+                "! ⭐"
             );
 
 
@@ -1164,7 +1714,7 @@
             ) {
 
                 setTimeout(
-                    function () {
+                    function() {
 
                         showFeedback(
                             "🎉 Great job! You found all 10 objects! 🎉"
@@ -1173,9 +1723,11 @@
                     },
                     1300
                 );
+
             }
 
         }
+
 
 
         /* =====================================================
@@ -1185,9 +1737,14 @@
         function speak(text) {
 
             if (
-                !("speechSynthesis" in window)
+                !(
+                    "speechSynthesis"
+                    in window
+                )
             ) {
+
                 return;
+
             }
 
 
@@ -1200,33 +1757,45 @@
                 );
 
 
-            utterance.lang = "en-US";
+            utterance.lang =
+                "en-US";
 
-            utterance.rate = 0.72;
 
-            utterance.pitch = 1.08;
+            utterance.rate =
+                0.72;
+
+
+            utterance.pitch =
+                1.08;
 
 
             const voices =
-                window.speechSynthesis.getVoices();
+                window.speechSynthesis
+                    .getVoices();
 
 
             const englishVoice =
                 voices.find(
-                    function (voice) {
+                    function(voice) {
 
-                        return voice.lang &&
+                        return (
+                            voice.lang &&
                             voice.lang
                                 .toLowerCase()
-                                .startsWith("en");
+                                .startsWith("en")
+                        );
+
                     }
                 );
 
 
-            if (englishVoice) {
+            if (
+                englishVoice
+            ) {
 
                 utterance.voice =
                     englishVoice;
+
             }
 
 
@@ -1237,6 +1806,7 @@
         }
 
 
+
         /* =====================================================
            FEEDBACK
         ====================================================== */
@@ -1244,10 +1814,13 @@
         let feedbackTimer;
 
 
-        function showFeedback(message) {
+        function showFeedback(
+            message
+        ) {
 
             feedback.textContent =
                 message;
+
 
             feedback.classList.add(
                 "show"
@@ -1261,7 +1834,7 @@
 
             feedbackTimer =
                 setTimeout(
-                    function () {
+                    function() {
 
                         feedback.classList.remove(
                             "show"
@@ -1274,13 +1847,14 @@
         }
 
 
+
         /* =====================================================
            CONTINUAR
         ====================================================== */
 
         continueButton.addEventListener(
             "click",
-            function () {
+            function() {
 
                 window.location.href =
                     "/habitacion/";
@@ -1288,27 +1862,6 @@
             }
         );
 
-
-        /* =====================================================
-           EVITAR ARRASTRAR IMÁGENES
-        ====================================================== */
-
-        document.querySelectorAll(
-            "img"
-        ).forEach(
-            function (image) {
-
-                image.addEventListener(
-                    "dragstart",
-                    function (event) {
-
-                        event.preventDefault();
-
-                    }
-                );
-
-            }
-        );
 
 
         /* =====================================================
@@ -1318,21 +1871,24 @@
         updateScore();
 
 
+
         /* =====================================================
            CARGAR VOCES
         ====================================================== */
 
         if (
-            "speechSynthesis" in window
+            "speechSynthesis"
+            in window
         ) {
 
             window.speechSynthesis.onvoiceschanged =
-                function () {
+                function() {
 
                     window.speechSynthesis
                         .getVoices();
 
                 };
+
         }
 
     </script>
