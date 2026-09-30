@@ -20,11 +20,11 @@
             height: 100%;
             overflow: hidden;
             font-family: Arial, sans-serif;
-            background: #f5ead8;
+            background: #222;
         }
 
         /* =========================
-           BARRA SUPERIOR
+           TOP BAR
         ========================= */
 
         .top-bar {
@@ -33,26 +33,26 @@
             left: 0;
             width: 100%;
             height: 72px;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.96);
             z-index: 1000;
 
             display: flex;
             align-items: center;
             justify-content: space-between;
 
-            padding: 8px 18px;
+            padding: 0 20px;
 
-            box-shadow: 0 3px 12px rgba(0,0,0,0.18);
+            box-shadow: 0 3px 10px rgba(0,0,0,.25);
         }
 
-        .game-title {
-            font-size: 22px;
+        .title {
+            font-size: 24px;
             font-weight: bold;
-            color: #ff7a00;
+            color: #14532d;
         }
 
-        .player-name {
-            font-size: 17px;
+        .mission {
+            font-size: 18px;
             font-weight: bold;
             color: #333;
         }
@@ -60,47 +60,55 @@
         .stars {
             font-size: 20px;
             font-weight: bold;
-            color: #f5b400;
+            color: #f59e0b;
             white-space: nowrap;
         }
 
         /* =========================
-           ZONA DE JUEGO
+           GAME AREA
         ========================= */
 
-        .room-scroll {
+        .game-container {
             position: absolute;
+
             top: 72px;
             left: 0;
             right: 0;
             bottom: 0;
 
-            overflow-x: hidden;
+            overflow: hidden;
+
+            background: #ddd;
+        }
+
+        .room-scroll {
+            width: 100%;
+            height: 100%;
+
+            overflow-x: auto;
             overflow-y: hidden;
 
-            background: #f5ead8;
+            -webkit-overflow-scrolling: touch;
         }
 
         .room {
             position: relative;
 
-            width: 1312px;
-            min-width: 1312px;
+            width: 1536px;
+            min-width: 1536px;
+            height: 1024px;
 
-            height: 1199px;
-
-            overflow: hidden;
+            background: #eee;
         }
 
         .room-background {
             position: absolute;
+
             left: 0;
             top: 0;
 
-            width: 1312px;
-            height: 1199px;
-
-            display: block;
+            width: 1536px;
+            height: 1024px;
 
             object-fit: fill;
 
@@ -109,389 +117,275 @@
         }
 
         /* =========================
-           PERSONAJE
+           CHARACTER
         ========================= */
 
         #character {
             position: absolute;
 
-            left: 150px;
-            bottom: 35px;
+            left: 120px;
+            bottom: 45px;
 
-            width: 120px;
+            width: 150px;
+            height: 205px;
 
             z-index: 100;
+
+            object-fit: contain;
 
             user-select: none;
             pointer-events: none;
 
-            transition: left 0.08s linear;
-        }
-
-        #character.walking {
-            transform: translateY(-2px);
-        }
-
-        #character.pointing {
-            animation: pointing 0.6s ease-in-out;
-        }
-
-        @keyframes pointing {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.08);
-            }
-
-            100% {
-                transform: scale(1);
-            }
+            transition: left .08s linear;
         }
 
         /* =========================
-           MISION
+           NIÑA MÁS GRANDE
         ========================= */
 
-        .mission {
-            position: fixed;
-
-            top: 88px;
-            left: 50%;
-
-            transform: translateX(-50%);
-
-            background: rgba(255,255,255,0.96);
-
-            padding: 10px 20px;
-
-            border-radius: 25px;
-
-            font-size: 18px;
-            font-weight: bold;
-
-            color: #333;
-
-            z-index: 900;
-
-            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-
-            text-align: center;
-
-            white-space: nowrap;
+        #character.girl-character {
+            width: 220px;
+            height: 300px;
+            bottom: 15px;
         }
 
         /* =========================
-           OBJETOS INVISIBLES
+           HOTSPOTS
         ========================= */
 
         .hotspot {
             position: absolute;
 
-            border: none;
-            background: transparent;
+            border: 3px dashed rgba(255,255,255,0);
+            border-radius: 20px;
 
             cursor: pointer;
 
             z-index: 50;
 
-            outline: none;
+            transition: all .2s ease;
         }
 
         .hotspot:hover {
-            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,.75);
+            background: rgba(255,255,255,.12);
         }
 
         .hotspot.found {
-            background: rgba(76,175,80,0.18);
-            border: 3px solid rgba(76,175,80,0.55);
-            border-radius: 15px;
+            border: 4px solid #22c55e;
+            background: rgba(34,197,94,.28);
+
+            cursor: default;
         }
 
         /* =========================
-           NOMBRE DEL OBJETO
+           OBJECT LABEL
         ========================= */
 
         .object-label {
             position: absolute;
 
-            transform: translate(-50%, -100%);
+            left: 50%;
+            top: -42px;
 
-            background: #ffffff;
+            transform: translateX(-50%);
 
-            padding: 7px 12px;
+            background: #14532d;
+            color: white;
+
+            padding: 7px 14px;
 
             border-radius: 15px;
 
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
 
-            color: #333;
+            white-space: nowrap;
 
-            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-
-            z-index: 200;
-
+            opacity: 0;
             pointer-events: none;
 
-            animation: labelIn 0.25s ease-out;
+            transition: opacity .2s ease;
+
+            box-shadow: 0 3px 8px rgba(0,0,0,.3);
         }
 
-        @keyframes labelIn {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -80%) scale(0.8);
-            }
-
-            to {
-                opacity: 1;
-                transform: translate(-50%, -100%) scale(1);
-            }
+        .hotspot.found .object-label {
+            opacity: 1;
         }
 
         /* =========================
-           MENSAJE FINAL
+           FEEDBACK
         ========================= */
 
-        .completion {
-            display: none;
-
+        #feedback {
             position: fixed;
 
-            top: 50%;
             left: 50%;
+            top: 50%;
 
-            transform: translate(-50%, -50%);
-
-            width: min(90%, 500px);
+            transform: translate(-50%, -50%) scale(.8);
 
             background: white;
 
-            padding: 30px;
+            padding: 25px 35px;
 
             border-radius: 25px;
 
-            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,.35);
+
+            font-size: 30px;
+            font-weight: bold;
+
+            color: #14532d;
 
             z-index: 2000;
 
-            box-shadow: 0 8px 35px rgba(0,0,0,0.3);
+            opacity: 0;
+            pointer-events: none;
+
+            transition: all .25s ease;
+
+            text-align: center;
         }
 
-        .completion.show {
-            display: block;
-        }
+        #feedback.show {
+            opacity: 1;
 
-        .completion h2 {
-            color: #ff7a00;
-            margin-bottom: 15px;
-            font-size: 28px;
-        }
-
-        .completion p {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #444;
-        }
-
-        .continue-button {
-            border: none;
-
-            background: #ff7a00;
-            color: white;
-
-            padding: 13px 28px;
-
-            border-radius: 25px;
-
-            font-size: 17px;
-            font-weight: bold;
-
-            cursor: pointer;
-        }
-
-        .continue-button:hover {
-            background: #e86d00;
+            transform:
+                translate(-50%, -50%)
+                scale(1);
         }
 
         /* =========================
-           CONTROLES
+           CONTROLS
         ========================= */
 
         .controls {
             position: fixed;
 
-            bottom: 20px;
+            bottom: 18px;
             left: 50%;
 
             transform: translateX(-50%);
 
-            display: flex;
+            z-index: 1200;
 
+            display: flex;
             gap: 15px;
 
-            z-index: 1000;
+            align-items: center;
         }
 
         .control-button {
-            width: 62px;
-            height: 52px;
+            width: 65px;
+            height: 65px;
 
             border: none;
+            border-radius: 50%;
 
-            border-radius: 18px;
+            background: white;
 
-            background: rgba(255,255,255,0.94);
+            font-size: 30px;
 
-            font-size: 28px;
+            box-shadow:
+                0 4px 12px rgba(0,0,0,.3);
 
             cursor: pointer;
 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            user-select: none;
         }
 
         .control-button:active {
-            transform: scale(0.92);
+            transform: scale(.9);
         }
 
-        /* =========================
-           MENSAJE DE VOZ
-        ========================= */
-
-        .voice-status {
-            position: fixed;
-
-            right: 18px;
-            bottom: 20px;
-
-            background: rgba(255,255,255,0.95);
-
-            padding: 9px 14px;
-
-            border-radius: 20px;
-
-            font-size: 14px;
-            font-weight: bold;
-
-            color: #555;
-
-            z-index: 1000;
-
-            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-        }
-
-        /* =========================
-           AYUDA MÓVIL
-        ========================= */
-
-        .swipe-hint {
+        .continue-button {
             display: none;
 
-            position: fixed;
+            padding: 14px 25px;
 
-            bottom: 85px;
-            left: 50%;
+            border: none;
+            border-radius: 25px;
 
-            transform: translateX(-50%);
-
-            background: rgba(0,0,0,0.72);
-
+            background: #14532d;
             color: white;
 
-            padding: 8px 16px;
+            font-size: 18px;
+            font-weight: bold;
 
-            border-radius: 20px;
+            cursor: pointer;
 
-            font-size: 14px;
-
-            z-index: 1000;
-
-            white-space: nowrap;
+            box-shadow:
+                0 4px 12px rgba(0,0,0,.3);
         }
 
         /* =========================
-           MÓVIL
+           MOBILE
         ========================= */
 
         @media (max-width: 700px) {
 
             .top-bar {
                 height: 62px;
-                padding: 7px 10px;
+                padding: 0 10px;
             }
 
-            .game-title {
+            .title {
                 font-size: 17px;
             }
 
-            .player-name {
+            .mission {
                 font-size: 14px;
             }
 
             .stars {
-                font-size: 16px;
+                font-size: 15px;
+            }
+
+            .game-container {
+                top: 62px;
             }
 
             .room-scroll {
-                top: 62px;
-
                 overflow-x: auto;
                 overflow-y: hidden;
-
-                -webkit-overflow-scrolling: touch;
-
-                scrollbar-width: none;
-            }
-
-            .room-scroll::-webkit-scrollbar {
-                display: none;
             }
 
             .room {
-                width: 1312px;
-                min-width: 1312px;
-
-                height: 1199px;
+                width: 1536px;
+                min-width: 1536px;
+                height: 1024px;
             }
 
             .room-background {
-                width: 1312px;
-                height: 1199px;
+                width: 1536px;
+                height: 1024px;
             }
 
             #character {
-                width: 105px;
+                width: 150px;
+                height: 205px;
+                bottom: 45px;
             }
 
-            .mission {
-                top: 72px;
-
-                font-size: 15px;
-
-                padding: 8px 15px;
-            }
-
-            .controls {
+            #character.girl-character {
+                width: 220px;
+                height: 300px;
                 bottom: 15px;
             }
 
+            .controls {
+                bottom: 10px;
+            }
+
             .control-button {
-                width: 55px;
-                height: 48px;
-                font-size: 25px;
+                width: 58px;
+                height: 58px;
             }
 
-            .voice-status {
-                right: 10px;
-                bottom: 78px;
-
-                font-size: 12px;
-                padding: 7px 11px;
-            }
-
-            .swipe-hint {
-                display: block;
+            .object-label {
+                font-size: 16px;
             }
         }
     </style>
@@ -500,249 +394,289 @@
 <body>
 
     <!-- =========================
-         BARRA SUPERIOR
-    ========================== -->
+         TOP BAR
+    ========================= -->
 
     <div class="top-bar">
 
-        <div class="game-title">
-            🍳 My Little English
+        <div class="title">
+            🍳 My Kitchen
         </div>
 
-        <div class="player-name" id="playerName">
-            Hello!
+        <div class="mission">
+            Find the objects!
         </div>
 
-        <div class="stars" id="stars">
-            ⭐ 0
+        <div class="stars">
+            ⭐ <span id="starCount">0</span>/10
         </div>
 
     </div>
 
 
     <!-- =========================
-         MISIÓN
-    ========================== -->
+         GAME
+    ========================= -->
 
-    <div class="mission" id="mission">
-        🔎 Find the objects!
-    </div>
+    <div class="game-container">
 
+        <div class="room-scroll" id="roomScroll">
 
-    <!-- =========================
-         COCINA
-    ========================== -->
+            <div class="room" id="room">
 
-    <div class="room-scroll" id="roomScroll">
+                <!-- =========================
+                     BACKGROUND
+                ========================= -->
 
-        <div class="room" id="room">
-
-            <img
-                src="{% static 'juego/images/my-kitchen.jpeg' %}"
-                class="room-background"
-                alt="My Kitchen"
-                draggable="false"
-            >
+                <img
+                    src="{% static 'juego/images/my-kitchen.jpeg' %}"
+                    class="room-background"
+                    alt="My Kitchen"
+                >
 
 
-            <!-- =========================
-                 PERSONAJE
-            ========================== -->
+                <!-- =========================
+                     1. APPLE
+                ========================= -->
 
-            <img
-                id="character"
-                src="{% static 'juego/images/personaje-niño.png' %}"
-                alt="Character"
-                draggable="false"
-            >
-
-
-            <!-- =========================
-                 OBJETOS
-            ========================== -->
-
-            <!-- APPLE -->
-            <button
-                class="hotspot"
-                data-word="Apple"
-                data-x="150"
-                data-y="300"
-                style="left:100px; top:250px; width:100px; height:100px;"
-                aria-label="Apple"
-            ></button>
+                <div
+                    class="hotspot"
+                    id="apple"
+                    data-word="Apple"
+                    style="
+                        left: 815px;
+                        top: 570px;
+                        width: 115px;
+                        height: 105px;
+                    "
+                >
+                    <div class="object-label">
+                        🍎 Apple
+                    </div>
+                </div>
 
 
-            <!-- BANANA -->
-            <button
-                class="hotspot"
-                data-word="Banana"
-                data-x="300"
-                data-y="300"
-                style="left:250px; top:250px; width:100px; height:100px;"
-                aria-label="Banana"
-            ></button>
+                <!-- =========================
+                     2. BREAD
+                ========================= -->
+
+                <div
+                    class="hotspot"
+                    id="bread"
+                    data-word="Bread"
+                    style="
+                        left: 900px;
+                        top: 535px;
+                        width: 180px;
+                        height: 120px;
+                    "
+                >
+                    <div class="object-label">
+                        🍞 Bread
+                    </div>
+                </div>
 
 
-            <!-- PLATE -->
-            <button
-                class="hotspot"
-                data-word="Plate"
-                data-x="450"
-                data-y="300"
-                style="left:400px; top:250px; width:100px; height:100px;"
-                aria-label="Plate"
-            ></button>
+                <!-- =========================
+                     3. EGGS
+                ========================= -->
+
+                <div
+                    class="hotspot"
+                    id="eggs"
+                    data-word="Eggs"
+                    style="
+                        left: 1080px;
+                        top: 565px;
+                        width: 135px;
+                        height: 105px;
+                    "
+                >
+                    <div class="object-label">
+                        🥚 Eggs
+                    </div>
+                </div>
 
 
-            <!-- SPOON -->
-            <button
-                class="hotspot"
-                data-word="Spoon"
-                data-x="600"
-                data-y="300"
-                style="left:550px; top:250px; width:100px; height:100px;"
-                aria-label="Spoon"
-            ></button>
+                <!-- =========================
+                     4. CUP
+                ========================= -->
+
+                <div
+                    class="hotspot"
+                    id="cup"
+                    data-word="Cup"
+                    style="
+                        left: 1060px;
+                        top: 650px;
+                        width: 105px;
+                        height: 105px;
+                    "
+                >
+                    <div class="object-label">
+                        ☕ Cup
+                    </div>
+                </div>
 
 
-            <!-- FORK -->
-            <button
-                class="hotspot"
-                data-word="Fork"
-                data-x="730"
-                data-y="300"
-                style="left:680px; top:250px; width:100px; height:100px;"
-                aria-label="Fork"
-            ></button>
+                <!-- =========================
+                     5. BOWL
+                ========================= -->
+
+                <div
+                    class="hotspot"
+                    id="bowl"
+                    data-word="Bowl"
+                    style="
+                        left: 1190px;
+                        top: 660px;
+                        width: 150px;
+                        height: 115px;
+                    "
+                >
+                    <div class="object-label">
+                        🥣 Bowl
+                    </div>
+                </div>
 
 
-            <!-- KNIFE -->
-            <button
-                class="hotspot"
-                data-word="Knife"
-                data-x="860"
-                data-y="300"
-                style="left:810px; top:250px; width:100px; height:100px;"
-                aria-label="Knife"
-            ></button>
+                <!-- =========================
+                     6. GLASS
+                ========================= -->
+
+                <div
+                    class="hotspot"
+                    id="glass"
+                    data-word="Glass"
+                    style="
+                        left: 1310px;
+                        top: 660px;
+                        width: 100px;
+                        height: 145px;
+                    "
+                >
+                    <div class="object-label">
+                        🥛 Glass
+                    </div>
+                </div>
 
 
-            <!-- GLASS -->
-            <button
-                class="hotspot"
-                data-word="Glass"
-                data-x="1000"
-                data-y="300"
-                style="left:950px; top:250px; width:100px; height:100px;"
-                aria-label="Glass"
-            ></button>
+                <!-- =========================
+                     7. SPOON
+                ========================= -->
+
+                <div
+                    class="hotspot"
+                    id="spoon"
+                    data-word="Spoon"
+                    style="
+                        left: 930px;
+                        top: 675px;
+                        width: 85px;
+                        height: 155px;
+                        transform: rotate(-25deg);
+                    "
+                >
+                    <div class="object-label">
+                        🥄 Spoon
+                    </div>
+                </div>
 
 
-            <!-- CUP -->
-            <button
-                class="hotspot"
-                data-word="Cup"
-                data-x="1130"
-                data-y="300"
-                style="left:1080px; top:250px; width:100px; height:100px;"
-                aria-label="Cup"
-            ></button>
+                <!-- =========================
+                     8. FORK
+                ========================= -->
+
+                <div
+                    class="hotspot"
+                    id="fork"
+                    data-word="Fork"
+                    style="
+                        left: 1000px;
+                        top: 675px;
+                        width: 85px;
+                        height: 155px;
+                        transform: rotate(-25deg);
+                    "
+                >
+                    <div class="object-label">
+                        🍴 Fork
+                    </div>
+                </div>
 
 
-            <!-- BREAD -->
-            <button
-                class="hotspot"
-                data-word="Bread"
-                data-x="200"
-                data-y="550"
-                style="left:150px; top:500px; width:100px; height:100px;"
-                aria-label="Bread"
-            ></button>
+                <!-- =========================
+                     9. KNIFE
+                ========================= -->
+
+                <div
+                    class="hotspot"
+                    id="knife"
+                    data-word="Knife"
+                    style="
+                        left: 1070px;
+                        top: 670px;
+                        width: 85px;
+                        height: 160px;
+                        transform: rotate(-25deg);
+                    "
+                >
+                    <div class="object-label">
+                        🔪 Knife
+                    </div>
+                </div>
 
 
-            <!-- EGG -->
-            <button
-                class="hotspot"
-                data-word="Egg"
-                data-x="370"
-                data-y="550"
-                style="left:320px; top:500px; width:100px; height:100px;"
-                aria-label="Egg"
-            ></button>
+                <!-- =========================
+                     10. REFRIGERATOR
+                ========================= -->
+
+                <div
+                    class="hotspot"
+                    id="refrigerator"
+                    data-word="Refrigerator"
+                    style="
+                        left: 90px;
+                        top: 25px;
+                        width: 225px;
+                        height: 825px;
+                    "
+                >
+                    <div class="object-label">
+                        🧊 Refrigerator
+                    </div>
+                </div>
 
 
-            <!-- REFRIGERATOR -->
-            <button
-                class="hotspot"
-                data-word="Refrigerator"
-                data-x="115"
-                data-y="350"
-                style="left:30px; top:150px; width:170px; height:400px;"
-                aria-label="Refrigerator"
-            ></button>
+                <!-- =========================
+                     CHARACTER
+                ========================= -->
 
+                <img
+                    id="character"
+                    src="{% static 'juego/images/personaje-niño.png' %}"
+                    alt="Character"
+                >
 
-            <!-- STOVE -->
-            <button
-                class="hotspot"
-                data-word="Stove"
-                data-x="530"
-                data-y="230"
-                style="left:420px; top:120px; width:220px; height:220px;"
-                aria-label="Stove"
-            ></button>
-
-
-            <!-- CABINET -->
-            <button
-                class="hotspot"
-                data-word="Cabinet"
-                data-x="820"
-                data-y="190"
-                style="left:690px; top:100px; width:260px; height:180px;"
-                aria-label="Cabinet"
-            ></button>
-
-
-            <!-- CHAIR -->
-            <button
-                class="hotspot"
-                data-word="Chair"
-                data-x="935"
-                data-y="760"
-                style="left:850px; top:650px; width:170px; height:220px;"
-                aria-label="Chair"
-            ></button>
-
-
-            <!-- KETTLE -->
-            <button
-                class="hotspot"
-                data-word="Kettle"
-                data-x="1105"
-                data-y="215"
-                style="left:1040px; top:150px; width:130px; height:130px;"
-                aria-label="Kettle"
-            ></button>
-
-
-            <!-- TRASH CAN -->
-            <button
-                class="hotspot"
-                data-word="Trash can"
-                data-x="1220"
-                data-y="690"
-                style="left:1160px; top:600px; width:120px; height:180px;"
-                aria-label="Trash can"
-            ></button>
+            </div>
 
         </div>
+
     </div>
 
 
     <!-- =========================
-         CONTROLES
-    ========================== -->
+         FEEDBACK
+    ========================= -->
+
+    <div id="feedback">
+        ⭐ Great job! ⭐
+    </div>
+
+
+    <!-- =========================
+         CONTROLS
+    ========================= -->
 
     <div class="controls">
 
@@ -750,16 +684,22 @@
             class="control-button"
             id="leftButton"
             type="button"
-            aria-label="Move left"
         >
             ◀
+        </button>
+
+        <button
+            class="continue-button"
+            id="continueButton"
+            type="button"
+        >
+            🚀 Continue
         </button>
 
         <button
             class="control-button"
             id="rightButton"
             type="button"
-            aria-label="Move right"
         >
             ▶
         </button>
@@ -767,596 +707,276 @@
     </div>
 
 
-    <!-- =========================
-         ESTADO DE VOZ
-    ========================== -->
-
-    <div class="voice-status" id="voiceStatus">
-        🔊 English voice
-    </div>
-
-
-    <!-- =========================
-         AYUDA MÓVIL
-    ========================== -->
-
-    <div class="swipe-hint" id="swipeHint">
-        👆 Swipe left or right to explore
-    </div>
-
-
-    <!-- =========================
-         COMPLETADO
-    ========================== -->
-
-    <div class="completion" id="completion">
-
-        <h2>🎉 Great job!</h2>
-
-        <p>
-            You found all the objects!
-        </p>
-
-        <button
-            class="continue-button"
-            id="continueButton"
-            type="button"
-        >
-            🚀 Coming soon!
-        </button>
-
-    </div>
-
-
     <script>
 
-        /* =====================================================
-           VARIABLES
-        ===================================================== */
+        /* ========================================
+           PERSONAJE SELECCIONADO
+        ======================================== */
 
-        const room = document.getElementById("room");
-        const roomScroll = document.getElementById("roomScroll");
-        const character = document.getElementById("character");
+        const character =
+            document.getElementById("character");
 
-        const playerNameElement =
-            document.getElementById("playerName");
-
-        const starsElement =
-            document.getElementById("stars");
-
-        const mission =
-            document.getElementById("mission");
-
-        const completion =
-            document.getElementById("completion");
-
-        const voiceStatus =
-            document.getElementById("voiceStatus");
-
-        const swipeHint =
-            document.getElementById("swipeHint");
-
-        const leftButton =
-            document.getElementById("leftButton");
-
-        const rightButton =
-            document.getElementById("rightButton");
-
-        const continueButton =
-            document.getElementById("continueButton");
-
-
-        /* =====================================================
-           DATOS DEL JUGADOR
-        ===================================================== */
-
-        let playerName =
-            localStorage.getItem("playerName") ||
-            localStorage.getItem("nombreJugador") ||
-            "Friend";
-
-        let characterGender =
-            localStorage.getItem("characterGender") ||
-            localStorage.getItem("generoPersonaje") ||
-            "boy";
-
-        let stars =
-            parseInt(
-                localStorage.getItem("stars") || "0",
-                10
-            );
-
-        let foundObjects =
-            JSON.parse(
-                localStorage.getItem("kitchenFoundObjects") || "[]"
+        const selectedCharacter =
+            localStorage.getItem(
+                "myLittleEnglishCharacter"
             );
 
 
-        /* =====================================================
-           MOSTRAR NOMBRE
-        ===================================================== */
-
-        playerNameElement.textContent =
-            "Hi, " + playerName + "!";
-
-
-        /* =====================================================
-           PERSONAJE NIÑO / NIÑA
-        ===================================================== */
+        /*
+           NIÑA
+        */
 
         if (
-            characterGender === "girl" ||
-            characterGender === "niña" ||
-            characterGender === "nina"
+            selectedCharacter === "girl" ||
+            selectedCharacter === "niña" ||
+            selectedCharacter === "nina"
         ) {
 
             character.src =
                 "{% static 'juego/images/personaje-niña.png' %}";
 
-        } else {
+            character.classList.add(
+                "girl-character"
+            );
+
+        }
+
+        /*
+           NIÑO
+        */
+
+        else {
 
             character.src =
                 "{% static 'juego/images/personaje-niño.png' %}";
 
-        }
-
-
-        /* =====================================================
-           ESTRELLAS
-        ===================================================== */
-
-        function updateStars() {
-
-            starsElement.textContent =
-                "⭐ " + stars;
-
-            localStorage.setItem(
-                "stars",
-                stars
-            );
-        }
-
-        updateStars();
-
-
-        /* =====================================================
-           VOZ EN INGLÉS
-        ===================================================== */
-
-        let voiceReady = false;
-
-
-        function loadEnglishVoice() {
-
-            if (
-                !("speechSynthesis" in window)
-            ) {
-
-                voiceStatus.textContent =
-                    "🔇 Voice unavailable";
-
-                return;
-            }
-
-            const voices =
-                window.speechSynthesis.getVoices();
-
-            if (!voices || voices.length === 0) {
-                return;
-            }
-
-            voiceReady = true;
-
-            voiceStatus.textContent =
-                "🔊 English voice";
-        }
-
-
-        if ("speechSynthesis" in window) {
-
-            window.speechSynthesis.onvoiceschanged =
-                loadEnglishVoice;
-
-            loadEnglishVoice();
-        }
-
-
-        /*
-         * Esta función es la importante.
-         *
-         * Siempre habla en inglés.
-         */
-
-        function speakEnglish(text) {
-
-            if (
-                !("speechSynthesis" in window)
-            ) {
-
-                return;
-            }
-
-            try {
-
-                /*
-                 * Cancelamos cualquier voz anterior
-                 * para que no se acumulen palabras.
-                 */
-
-                window.speechSynthesis.cancel();
-
-                const utterance =
-                    new SpeechSynthesisUtterance(text);
-
-                utterance.lang = "en-US";
-
-                utterance.rate = 0.72;
-
-                utterance.pitch = 1.08;
-
-                utterance.volume = 1;
-
-                /*
-                 * Buscamos una voz inglesa disponible.
-                 */
-
-                const voices =
-                    window.speechSynthesis.getVoices();
-
-                const englishVoice =
-                    voices.find(
-                        voice =>
-                            voice.lang &&
-                            voice.lang.toLowerCase().startsWith("en")
-                    );
-
-                if (englishVoice) {
-
-                    utterance.voice =
-                        englishVoice;
-                }
-
-                utterance.onstart = function() {
-
-                    voiceStatus.textContent =
-                        "🔊 Speaking...";
-                };
-
-                utterance.onend = function() {
-
-                    voiceStatus.textContent =
-                        "🔊 English voice";
-                };
-
-                utterance.onerror = function() {
-
-                    voiceStatus.textContent =
-                        "🔊 English voice";
-                };
-
-                window.speechSynthesis.speak(
-                    utterance
-                );
-
-            } catch (error) {
-
-                console.log(
-                    "Voice error:",
-                    error
-                );
-
-                voiceStatus.textContent =
-                    "🔊 English voice";
-            }
-        }
-
-
-        /*
-         * Activamos el sistema de voz después
-         * de la primera interacción del usuario.
-         *
-         * Esto ayuda con Chrome/Edge.
-         */
-
-        let voiceUnlocked = false;
-
-        function unlockVoice() {
-
-            if (voiceUnlocked) {
-                return;
-            }
-
-            voiceUnlocked = true;
-
-            if (
-                "speechSynthesis" in window
-            ) {
-
-                try {
-
-                    window.speechSynthesis.cancel();
-
-                    const unlockUtterance =
-                        new SpeechSynthesisUtterance("");
-
-                    unlockUtterance.lang =
-                        "en-US";
-
-                    unlockUtterance.volume =
-                        0;
-
-                    window.speechSynthesis.speak(
-                        unlockUtterance
-                    );
-
-                } catch (error) {
-
-                    console.log(
-                        "Voice unlock:",
-                        error
-                    );
-                }
-            }
-
-            loadEnglishVoice();
-        }
-
-
-        document.addEventListener(
-            "click",
-            unlockVoice,
-            {
-                once: true
-            }
-        );
-
-
-        document.addEventListener(
-            "touchstart",
-            unlockVoice,
-            {
-                once: true,
-                passive: true
-            }
-        );
-
-
-        /* =====================================================
-           HABLAR AL ENTRAR
-        ===================================================== */
-
-        function sayWelcome() {
-
-            setTimeout(
-                function() {
-
-                    speakEnglish(
-                        "Welcome to the kitchen!"
-                    );
-
-                },
-                600
+            character.classList.remove(
+                "girl-character"
             );
         }
 
 
-        /*
-         * No intentamos hablar automáticamente antes
-         * de la interacción porque Chrome puede bloquearlo.
-         *
-         * La primera interacción desbloquea la voz.
-         */
+        /* ========================================
+           VARIABLES
+        ======================================== */
 
-        /* =====================================================
+        let characterX = 120;
+
+        let movingLeft = false;
+        let movingRight = false;
+
+        const movementSpeed = 7;
+
+        const room =
+            document.getElementById("room");
+
+        const roomScroll =
+            document.getElementById("roomScroll");
+
+
+        /* ========================================
            OBJETOS
-        ===================================================== */
+        ======================================== */
 
         const hotspots =
-            document.querySelectorAll(
-                ".hotspot"
+            document.querySelectorAll(".hotspot");
+
+        const starCount =
+            document.getElementById("starCount");
+
+        const feedback =
+            document.getElementById("feedback");
+
+        const continueButton =
+            document.getElementById(
+                "continueButton"
             );
 
 
-        function showObjectLabel(
-            hotspot,
-            word
-        ) {
+        /* ========================================
+           OBJETOS ENCONTRADOS
+        ======================================== */
 
-            const label =
-                document.createElement(
-                    "div"
-                );
+        const storageKey =
+            "myKitchenFoundObjects";
 
-            label.className =
-                "object-label";
+        let foundObjects =
+            JSON.parse(
+                localStorage.getItem(
+                    storageKey
+                ) || "[]"
+            );
 
-            label.textContent =
-                word;
 
-            label.style.left =
-                (
-                    parseFloat(
-                        hotspot.style.left
-                    ) +
-                    parseFloat(
-                        hotspot.style.width
-                    ) / 2
-                ) + "px";
+        /* ========================================
+           RESTAURAR OBJETOS
+        ======================================== */
 
-            label.style.top =
-                (
-                    parseFloat(
-                        hotspot.style.top
+        hotspots.forEach(
+            hotspot => {
+
+                if (
+                    foundObjects.includes(
+                        hotspot.id
                     )
-                ) + "px";
+                ) {
 
-            room.appendChild(label);
+                    hotspot.classList.add(
+                        "found"
+                    );
 
-            setTimeout(
-                function() {
+                }
 
-                    label.remove();
-
-                },
-                2200
-            );
-        }
+            }
+        );
 
 
-        function findObject(
-            hotspot
-        ) {
+        starCount.textContent =
+            foundObjects.length;
 
-            unlockVoice();
 
-            const word =
-                hotspot.dataset.word;
+        /* ========================================
+           VOZ
+        ======================================== */
 
-            /*
-             * HABLA EL NOMBRE DEL OBJETO
-             */
-
-            speakEnglish(word);
-
-            /*
-             * Si ya fue encontrado,
-             * solamente vuelve a pronunciarlo.
-             */
+        function speakWord(word) {
 
             if (
-                foundObjects.includes(word)
+                !("speechSynthesis" in window)
             ) {
+                return;
+            }
 
-                hotspot.classList.add(
-                    "found"
-                );
+            window.speechSynthesis.cancel();
 
-                character.classList.remove(
-                    "pointing"
-                );
-
-                void character.offsetWidth;
-
-                character.classList.add(
-                    "pointing"
-                );
-
-                showObjectLabel(
-                    hotspot,
+            const utterance =
+                new SpeechSynthesisUtterance(
                     word
                 );
 
-                return;
-            }
+            utterance.lang = "en-US";
+            utterance.rate = 0.72;
+            utterance.pitch = 1.08;
 
+            const voices =
+                window.speechSynthesis
+                    .getVoices();
 
-            /*
-             * Nuevo objeto.
-             */
-
-            foundObjects.push(
-                word
-            );
-
-            localStorage.setItem(
-                "kitchenFoundObjects",
-                JSON.stringify(
-                    foundObjects
-                )
-            );
-
-
-            /*
-             * Estrella
-             */
-
-            stars++;
-
-            updateStars();
-
-
-            /*
-             * Marcar encontrado
-             */
-
-            hotspot.classList.add(
-                "found"
-            );
-
-
-            /*
-             * Personaje señala
-             */
-
-            character.classList.remove(
-                "pointing"
-            );
-
-            void character.offsetWidth;
-
-            character.classList.add(
-                "pointing"
-            );
-
-
-            /*
-             * Mostrar palabra
-             */
-
-            showObjectLabel(
-                hotspot,
-                word
-            );
-
-
-            /*
-             * Actualizar misión
-             */
-
-            const total =
-                hotspots.length;
-
-            const found =
-                foundObjects.length;
-
-
-            if (
-                found < total
-            ) {
-
-                mission.textContent =
-                    "🔎 Find the objects! " +
-                    found +
-                    " / " +
-                    total;
-
-            } else {
-
-                mission.textContent =
-                    "🎉 Great job!";
-
-                setTimeout(
-                    completeGame,
-                    700
+            const englishVoice =
+                voices.find(
+                    voice =>
+                        voice.lang &&
+                        voice.lang
+                            .toLowerCase()
+                            .startsWith("en")
                 );
+
+            if (englishVoice) {
+
+                utterance.voice =
+                    englishVoice;
+
             }
+
+            window.speechSynthesis.speak(
+                utterance
+            );
         }
 
 
+        /* ========================================
+           FEEDBACK
+        ======================================== */
+
+        function showFeedback(word) {
+
+            feedback.textContent =
+                "⭐ Great job! " +
+                word +
+                "! ⭐";
+
+            feedback.classList.add(
+                "show"
+            );
+
+            setTimeout(
+                () => {
+
+                    feedback.classList.remove(
+                        "show"
+                    );
+
+                },
+                1200
+            );
+        }
+
+
+        /* ========================================
+           CLICK EN OBJETOS
+        ======================================== */
+
         hotspots.forEach(
-            function(hotspot) {
+            hotspot => {
 
                 hotspot.addEventListener(
                     "click",
-                    function(event) {
+                    () => {
 
-                        event.preventDefault();
+                        if (
+                            hotspot.classList
+                                .contains("found")
+                        ) {
+                            return;
+                        }
 
-                        unlockVoice();
+                        const word =
+                            hotspot.dataset.word;
 
-                        findObject(
-                            hotspot
+                        hotspot.classList.add(
+                            "found"
                         );
+
+                        foundObjects.push(
+                            hotspot.id
+                        );
+
+                        localStorage.setItem(
+                            storageKey,
+                            JSON.stringify(
+                                foundObjects
+                            )
+                        );
+
+                        starCount.textContent =
+                            foundObjects.length;
+
+                        speakWord(word);
+
+                        showFeedback(word);
+
+
+                        /* =========================
+                           COMPLETADO
+                        ========================= */
+
+                        if (
+                            foundObjects.length === 10
+                        ) {
+
+                            setTimeout(
+                                () => {
+
+                                    continueButton
+                                        .style
+                                        .display =
+                                        "block";
+
+                                },
+                                1300
+                            );
+                        }
+
                     }
                 );
 
@@ -1364,219 +984,316 @@
         );
 
 
-        /* =====================================================
-           RECUPERAR OBJETOS YA ENCONTRADOS
-        ===================================================== */
+        /* ========================================
+           MOVIMIENTO
+        ======================================== */
 
-        hotspots.forEach(
-            function(hotspot) {
+        function moveCharacter() {
 
-                const word =
-                    hotspot.dataset.word;
+            const characterWidth =
+                character.classList.contains(
+                    "girl-character"
+                )
+                    ? 220
+                    : 150;
 
-                if (
-                    foundObjects.includes(
-                        word
-                    )
-                ) {
 
-                    hotspot.classList.add(
-                        "found"
-                    );
-                }
+            if (movingLeft) {
+
+                characterX -=
+                    movementSpeed;
             }
-        );
 
 
-        mission.textContent =
-            foundObjects.length >= hotspots.length
-                ? "🎉 Great job!"
-                : "🔎 Find the objects! " +
-                  foundObjects.length +
-                  " / " +
-                  hotspots.length;
+            if (movingRight) {
 
-
-        /* =====================================================
-           MOVIMIENTO DEL PERSONAJE
-        ===================================================== */
-
-        let characterX = 150;
-
-        const characterSpeed = 8;
-
-        const roomWidth = 1312;
-
-        const characterWidth = 120;
-
-
-        function updateCharacter() {
-
-            character.style.left =
-                characterX + "px";
-
-
-            /*
-             * Mantener al personaje visible
-             * mientras caminamos.
-             */
-
-            const viewportWidth =
-                roomScroll.clientWidth;
-
-
-            const targetScroll =
-                characterX -
-                viewportWidth / 2 +
-                characterWidth / 2;
-
-
-            if (
-                roomScroll.scrollWidth >
-                viewportWidth
-            ) {
-
-                roomScroll.scrollLeft =
-                    Math.max(
-                        0,
-                        Math.min(
-                            targetScroll,
-                            roomScroll.scrollWidth -
-                            viewportWidth
-                        )
-                    );
+                characterX +=
+                    movementSpeed;
             }
-        }
-
-
-        function moveCharacter(
-            direction
-        ) {
-
-            unlockVoice();
-
-            characterX +=
-                direction *
-                characterSpeed;
 
 
             const maxX =
-                roomWidth -
+                room.offsetWidth -
                 characterWidth -
                 20;
 
 
-            if (
-                characterX < 10
-            ) {
+            if (characterX < 20) {
 
-                characterX = 10;
+                characterX = 20;
             }
 
 
-            if (
-                characterX > maxX
-            ) {
+            if (characterX > maxX) {
 
                 characterX = maxX;
             }
 
 
-            character.classList.add(
-                "walking"
-            );
-
-            updateCharacter();
+            character.style.left =
+                characterX + "px";
 
 
-            setTimeout(
-                function() {
+            /* =========================
+               AUTO SCROLL
+            ========================= */
 
-                    character.classList.remove(
-                        "walking"
+            const visibleWidth =
+                roomScroll.clientWidth;
+
+            const scrollLeft =
+                roomScroll.scrollLeft;
+
+            const characterRight =
+                characterX +
+                characterWidth;
+
+            const margin = 150;
+
+
+            if (
+                characterRight >
+                scrollLeft +
+                visibleWidth -
+                margin
+            ) {
+
+                roomScroll.scrollLeft =
+                    Math.min(
+                        characterRight -
+                            visibleWidth +
+                            margin,
+
+                        room.offsetWidth -
+                            visibleWidth
                     );
+            }
 
-                },
-                100
+
+            if (
+                characterX <
+                scrollLeft + margin
+            ) {
+
+                roomScroll.scrollLeft =
+                    Math.max(
+                        characterX -
+                            margin,
+
+                        0
+                    );
+            }
+
+
+            requestAnimationFrame(
+                moveCharacter
             );
         }
 
 
-        /* =====================================================
-           BOTONES
-        ===================================================== */
+        moveCharacter();
+
+
+        /* ========================================
+           TECLADO
+        ======================================== */
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key === "ArrowLeft" ||
+                    event.key.toLowerCase() === "a"
+                ) {
+
+                    movingLeft = true;
+                }
+
+
+                if (
+                    event.key === "ArrowRight" ||
+                    event.key.toLowerCase() === "d"
+                ) {
+
+                    movingRight = true;
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "keyup",
+            event => {
+
+                if (
+                    event.key === "ArrowLeft" ||
+                    event.key.toLowerCase() === "a"
+                ) {
+
+                    movingLeft = false;
+                }
+
+
+                if (
+                    event.key === "ArrowRight" ||
+                    event.key.toLowerCase() === "d"
+                ) {
+
+                    movingRight = false;
+                }
+
+            }
+        );
+
+
+        /* ========================================
+           BOTÓN IZQUIERDO
+        ======================================== */
+
+        const leftButton =
+            document.getElementById(
+                "leftButton"
+            );
+
 
         leftButton.addEventListener(
-            "click",
-            function() {
+            "pointerdown",
+            event => {
 
-                moveCharacter(-1);
+                event.preventDefault();
 
+                movingLeft = true;
+            }
+        );
+
+
+        leftButton.addEventListener(
+            "pointerup",
+            () => {
+
+                movingLeft = false;
+            }
+        );
+
+
+        leftButton.addEventListener(
+            "pointerleave",
+            () => {
+
+                movingLeft = false;
+            }
+        );
+
+
+        leftButton.addEventListener(
+            "pointercancel",
+            () => {
+
+                movingLeft = false;
+            }
+        );
+
+
+        /* ========================================
+           BOTÓN DERECHO
+        ======================================== */
+
+        const rightButton =
+            document.getElementById(
+                "rightButton"
+            );
+
+
+        rightButton.addEventListener(
+            "pointerdown",
+            event => {
+
+                event.preventDefault();
+
+                movingRight = true;
             }
         );
 
 
         rightButton.addEventListener(
-            "click",
-            function() {
+            "pointerup",
+            () => {
 
-                moveCharacter(1);
-
+                movingRight = false;
             }
         );
 
 
-        /* =====================================================
-           TECLADO
-        ===================================================== */
+        rightButton.addEventListener(
+            "pointerleave",
+            () => {
 
-        document.addEventListener(
-            "keydown",
-            function(event) {
-
-                if (
-                    event.key === "ArrowLeft"
-                ) {
-
-                    event.preventDefault();
-
-                    moveCharacter(-1);
-                }
-
-
-                if (
-                    event.key === "ArrowRight"
-                ) {
-
-                    event.preventDefault();
-
-                    moveCharacter(1);
-                }
-
+                movingRight = false;
             }
         );
 
 
-        /* =====================================================
-           TOQUE / DESLIZAMIENTO
-        ===================================================== */
+        rightButton.addEventListener(
+            "pointercancel",
+            () => {
 
-        let touchStartX = 0;
+                movingRight = false;
+            }
+        );
 
-        let touchStartY = 0;
+
+        /* ========================================
+           TOUCH / SWIPE
+        ======================================== */
+
+        let touchStartX = null;
 
 
         roomScroll.addEventListener(
             "touchstart",
-            function(event) {
+            event => {
 
-                unlockVoice();
+                if (
+                    event.touches.length !== 1
+                ) {
+                    return;
+                }
 
                 touchStartX =
                     event.touches[0].clientX;
 
-                touchStartY =
-                    event.touches[0].clientY;
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        roomScroll.addEventListener(
+            "touchmove",
+            event => {
+
+                if (
+                    touchStartX === null ||
+                    event.touches.length !== 1
+                ) {
+                    return;
+                }
+
+                const currentX =
+                    event.touches[0].clientX;
+
+                const difference =
+                    touchStartX -
+                    currentX;
+
+                roomScroll.scrollLeft +=
+                    difference;
+
+                touchStartX =
+                    currentX;
 
             },
             {
@@ -1587,39 +1304,9 @@
 
         roomScroll.addEventListener(
             "touchend",
-            function(event) {
+            () => {
 
-                const touchEndX =
-                    event.changedTouches[0].clientX;
-
-                const touchEndY =
-                    event.changedTouches[0].clientY;
-
-
-                const differenceX =
-                    touchEndX -
-                    touchStartX;
-
-
-                const differenceY =
-                    touchEndY -
-                    touchStartY;
-
-
-                /*
-                 * Si el movimiento es principalmente
-                 * horizontal, permitimos explorar.
-                 */
-
-                if (
-                    Math.abs(differenceX) > 50 &&
-                    Math.abs(differenceX) >
-                    Math.abs(differenceY)
-                ) {
-
-                    roomScroll.scrollLeft -=
-                        differenceX;
-                }
+                touchStartX = null;
 
             },
             {
@@ -1628,73 +1315,37 @@
         );
 
 
-        /* =====================================================
-           COMPLETAR JUEGO
-        ===================================================== */
-
-        function completeGame() {
-
-            completion.classList.add(
-                "show"
-            );
-
-            speakEnglish(
-                "Great job! You found all the objects!"
-            );
-        }
-
-
-        /* =====================================================
-           BOTÓN CONTINUAR
-        ===================================================== */
+        /* ========================================
+           CONTINUAR
+           SIN NAMESPACE juego
+        ======================================== */
 
         continueButton.addEventListener(
             "click",
-            function() {
+            () => {
 
-                unlockVoice();
-
-                speakEnglish(
-                    "Coming soon!"
-                );
-
-                /*
-                 * Por ahora no cambiamos de página.
-                 * Esta parte queda preparada para
-                 * el siguiente escenario.
-                 */
-
+                window.location.href =
+                    "/habitacion/";
             }
         );
 
 
-        /* =====================================================
-           OCULTAR AYUDA MÓVIL
-        ===================================================== */
+        /* ========================================
+           CARGA DE VOCES
+        ======================================== */
 
-        setTimeout(
-            function() {
+        if (
+            "speechSynthesis" in window
+        ) {
 
-                if (swipeHint) {
+            window.speechSynthesis
+                .onvoiceschanged =
+                () => {
 
-                    swipeHint.style.opacity =
-                        "0";
-
-                    swipeHint.style.transition =
-                        "opacity 0.5s";
-
-                }
-
-            },
-            5000
-        );
-
-
-        /* =====================================================
-           POSICIÓN INICIAL
-        ===================================================== */
-
-        updateCharacter();
+                    window.speechSynthesis
+                        .getVoices();
+                };
+        }
 
     </script>
 
