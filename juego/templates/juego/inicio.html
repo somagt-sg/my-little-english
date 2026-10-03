@@ -620,7 +620,7 @@
            RESPONSIVE
         ========================== */
 
-        @media (max-width: 600px) {
+        @media (max-width: 800px) {
 
             .game {
                 padding:
@@ -678,6 +678,7 @@
                 font-size: 17px;
             }
         }
+
     </style>
 </head>
 
@@ -956,6 +957,57 @@
                         </div>
 
                     </button>
+
+
+                    <!-- =========================
+                         LEARNING TIME
+                    ========================== -->
+
+                    <button
+                        type="button"
+                        class="scenario-card"
+                        onclick="goToScenario('learning')"
+                    >
+
+                        <div class="scenario-icon">
+                            📚🌈⭐
+                        </div>
+
+                        <div class="scenario-name">
+                            📚 Learning Time
+                        </div>
+
+                        <div class="scenario-description">
+                            Learn fruits, colors and objects!
+                        </div>
+
+                    </button>
+
+
+                    <!-- =========================
+                         TALK WITH SOFI
+                    ========================== -->
+
+                    <button
+                        type="button"
+                        class="scenario-card"
+                        onclick="window.location.href='/sofi/';"
+                    >
+
+                        <div class="scenario-icon">
+                            🗣️💖👩
+                        </div>
+
+                        <div class="scenario-name">
+                            🗣️ Talk with Sofi
+                        </div>
+
+                        <div class="scenario-description">
+                            Talk and practice English with Sofi!
+                        </div>
+
+                    </button>
+
 
                 </div>
 
@@ -1361,6 +1413,10 @@
             );
 
 
+            /* =====================================
+               MY ROOM
+            ===================================== */
+
             if (
                 scenario === "room"
             ) {
@@ -1384,6 +1440,10 @@
             }
 
 
+            /* =====================================
+               MY KITCHEN
+            ===================================== */
+
             if (
                 scenario === "kitchen"
             ) {
@@ -1405,6 +1465,63 @@
 
                 return;
             }
+
+
+            /* =====================================
+               LEARNING TIME
+               OPCIÓN INDEPENDIENTE
+            ===================================== */
+
+            if (
+                scenario === "learning"
+            ) {
+
+                speakEnglish(
+                    "Learning Time"
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "/aprendizaje/";
+
+                    },
+                    400
+                );
+
+                return;
+            }
+
+
+            /* =====================================
+               TALK WITH SOFI
+               OPCIÓN INDEPENDIENTE
+            ===================================== */
+
+            if (
+                scenario === "sofi"
+            ) {
+
+                speakEnglish(
+                    "Talk with Sofi"
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "/sofi/";
+
+                    },
+                    400
+                );
+
+                return;
+            }
+
         }
 
 

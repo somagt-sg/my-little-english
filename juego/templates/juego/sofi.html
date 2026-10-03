@@ -1,0 +1,2347 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <title id="pageTitle">Talk with Sofi | My Little English</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: "Comic Sans MS", "Trebuchet MS", Arial, sans-serif;
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff5fc 0%,
+                    #f1f8ff 50%,
+                    #fff8df 100%
+                );
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* =========================================================
+           TOP BAR
+        ========================================================= */
+
+        .top-bar {
+            width: 100%;
+            min-height: 76px;
+            background: linear-gradient(
+                90deg,
+                #ff75b5,
+                #ff9dcc,
+                #9bdcff
+            );
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 10px 22px;
+
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+
+            position: relative;
+            z-index: 20;
+        }
+
+        .top-title {
+            color: white;
+            font-size: clamp(22px, 4vw, 34px);
+            font-weight: 900;
+            text-shadow: 2px 3px 0 rgba(0, 0, 0, 0.15);
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            font-size: clamp(15px, 2.4vw, 21px);
+            font-weight: 800;
+        }
+
+        .player-mini-avatar {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            filter: drop-shadow(0 3px 3px rgba(0,0,0,.18));
+        }
+
+        .stars {
+            background: rgba(255,255,255,.92);
+            color: #f2a900;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-weight: 900;
+            box-shadow: 0 3px 8px rgba(0,0,0,.12);
+        }
+
+        /* =========================================================
+           MAIN CONTAINER
+        ========================================================= */
+
+        .page {
+            width: 100%;
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        .mission {
+            text-align: center;
+            margin: 10px auto 18px;
+        }
+
+        .mission h1 {
+            color: #ff4d9d;
+            font-size: clamp(30px, 5vw, 52px);
+            font-weight: 900;
+            text-shadow: 2px 3px 0 rgba(255,255,255,.9);
+        }
+
+        .mission p {
+            color: #555;
+            font-size: clamp(17px, 2.7vw, 25px);
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        /* =========================================================
+           CHAT AREA
+        ========================================================= */
+
+        .conversation {
+            width: 100%;
+            min-height: 620px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.96),
+                    rgba(249,244,255,.96)
+                );
+
+            border: 5px solid #ffd1e7;
+            border-radius: 35px;
+
+            box-shadow:
+                0 12px 35px rgba(0,0,0,.15);
+
+            padding: 25px;
+
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* =========================================================
+           CHAT BUBBLE
+        ========================================================= */
+
+        .speech-area {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .speech-bubble {
+            width: min(850px, 95%);
+            min-height: 105px;
+
+            background: white;
+
+            border: 4px solid #9bdcff;
+            border-radius: 30px;
+
+            padding: 20px 28px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            font-size: clamp(21px, 3vw, 34px);
+            font-weight: 900;
+            color: #444;
+
+            box-shadow: 0 7px 15px rgba(0,0,0,.12);
+
+            position: relative;
+        }
+
+        .speech-bubble::after {
+            content: "";
+            position: absolute;
+
+            bottom: -24px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 25px solid #9bdcff;
+        }
+
+        .speech-bubble::before {
+            content: "";
+            position: absolute;
+
+            bottom: -17px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            border-left: 16px solid transparent;
+            border-right: 16px solid transparent;
+            border-top: 20px solid white;
+
+            z-index: 2;
+        }
+
+        #sofiMessage {
+            transition: opacity .2s ease;
+        }
+
+        /* =========================================================
+           CHARACTERS
+        ========================================================= */
+
+        .characters-area {
+            flex: 1;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+
+            gap: 25px;
+
+            padding: 25px 15px 10px;
+
+            min-height: 340px;
+
+            position: relative;
+        }
+
+        .character-column {
+            width: 42%;
+            min-height: 320px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+
+            position: relative;
+        }
+
+        .character-label {
+            font-size: clamp(19px, 2.6vw, 27px);
+            font-weight: 900;
+            margin-bottom: 5px;
+            z-index: 3;
+        }
+
+        .player-label {
+            color: #ff4d9d;
+        }
+
+        .sofi-label {
+            color: #7d65e8;
+        }
+
+        .player-character {
+            width: clamp(180px, 25vw, 320px);
+            height: clamp(250px, 34vw, 430px);
+
+            object-fit: contain;
+
+            filter: drop-shadow(0 9px 8px rgba(0,0,0,.20));
+
+            transition:
+                transform .25s ease,
+                filter .25s ease;
+        }
+
+        .player-character.listening {
+            transform: scale(1.05);
+            filter:
+                drop-shadow(0 0 15px rgba(255, 91, 171, .65))
+                drop-shadow(0 9px 8px rgba(0,0,0,.20));
+        }
+
+        .sofi-character {
+            width: clamp(180px, 24vw, 310px);
+            height: clamp(240px, 32vw, 410px);
+
+            object-fit: contain;
+
+            filter:
+                drop-shadow(0 0 10px rgba(150,110,255,.18))
+                drop-shadow(0 9px 8px rgba(0,0,0,.20));
+
+            animation: sofiFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes sofiFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 34px;
+            animation: heartFloat 2.5s ease-in-out infinite;
+            opacity: .9;
+        }
+
+        .heart.one {
+            left: 12%;
+            top: 25%;
+        }
+
+        .heart.two {
+            left: 82%;
+            top: 20%;
+            animation-delay: .8s;
+        }
+
+        .heart.three {
+            left: 52%;
+            top: 8%;
+            animation-delay: 1.4s;
+        }
+
+        @keyframes heartFloat {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-12px) scale(1.1);
+            }
+        }
+
+        /* =========================================================
+           MICROPHONE AREA
+        ========================================================= */
+
+        .controls {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 16px;
+
+            padding-top: 10px;
+
+            position: relative;
+            z-index: 10;
+        }
+
+        .mic-button {
+            width: 105px;
+            height: 105px;
+
+            border: none;
+            border-radius: 50%;
+
+            background: linear-gradient(
+                135deg,
+                #ff4f9f,
+                #ff86be
+            );
+
+            color: white;
+
+            font-size: 48px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            box-shadow:
+                0 8px 0 #d9337e,
+                0 12px 25px rgba(255, 65, 145, .30);
+
+            transition:
+                transform .15s ease,
+                box-shadow .15s ease;
+        }
+
+        .mic-button:hover {
+            transform: translateY(-2px) scale(1.04);
+        }
+
+        .mic-button:active {
+            transform: translateY(6px);
+            box-shadow:
+                0 2px 0 #d9337e,
+                0 7px 15px rgba(255, 65, 145, .25);
+        }
+
+        .mic-button.listening {
+            animation: micPulse 1s infinite;
+            background: linear-gradient(
+                135deg,
+                #ff315d,
+                #ff6684
+            );
+        }
+
+        @keyframes micPulse {
+
+            0% {
+                transform: scale(1);
+                box-shadow:
+                    0 8px 0 #c91e43,
+                    0 0 0 0 rgba(255,49,93,.55);
+            }
+
+            50% {
+                transform: scale(1.08);
+                box-shadow:
+                    0 8px 0 #c91e43,
+                    0 0 0 20px rgba(255,49,93,0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow:
+                    0 8px 0 #c91e43,
+                    0 0 0 0 rgba(255,49,93,0);
+            }
+        }
+
+        .mic-text {
+            font-size: clamp(16px, 2.3vw, 22px);
+            font-weight: 900;
+            color: #555;
+        }
+
+        /* =========================================================
+           STATUS
+        ========================================================= */
+
+        .status {
+            min-height: 32px;
+
+            text-align: center;
+
+            font-size: clamp(15px, 2vw, 20px);
+            font-weight: 800;
+
+            color: #777;
+
+            margin-top: 8px;
+        }
+
+        .status.listening {
+            color: #ff397f;
+        }
+
+        .status.success {
+            color: #35a86b;
+        }
+
+        .status.error {
+            color: #d94848;
+        }
+
+        /* =========================================================
+           PLAYER SPOKEN TEXT
+        ========================================================= */
+
+        .player-said {
+            width: min(750px, 95%);
+            margin: 5px auto 0;
+
+            min-height: 48px;
+
+            border-radius: 18px;
+
+            background: #eef8ff;
+            border: 2px solid #b8e5ff;
+
+            padding: 10px 15px;
+
+            text-align: center;
+
+            color: #456;
+            font-size: clamp(15px, 2vw, 20px);
+            font-weight: 700;
+
+            opacity: 0;
+            transform: translateY(5px);
+
+            transition:
+                opacity .25s ease,
+                transform .25s ease;
+        }
+
+        .player-said.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================================================
+           BOTTOM BUTTONS
+        ========================================================= */
+
+        .bottom-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+
+            margin-top: 14px;
+        }
+
+        .action-button {
+            border: none;
+
+            padding: 13px 23px;
+
+            border-radius: 22px;
+
+            font-size: clamp(15px, 2vw, 19px);
+            font-weight: 900;
+
+            color: white;
+
+            box-shadow: 0 5px 0 rgba(0,0,0,.16);
+
+            transition:
+                transform .15s ease,
+                box-shadow .15s ease;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .action-button:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 rgba(0,0,0,.16);
+        }
+
+        .listen-button {
+            background: linear-gradient(
+                135deg,
+                #7c68e8,
+                #a58df4
+            );
+        }
+
+        .back-button {
+            background: linear-gradient(
+                135deg,
+                #55a9df,
+                #7bc8f0
+            );
+        }
+
+        .clear-button {
+            background: linear-gradient(
+                135deg,
+                #ff9a58,
+                #ffb777
+            );
+        }
+
+        /* =========================================================
+           HELP MESSAGE
+        ========================================================= */
+
+        .help-box {
+            max-width: 850px;
+            margin: 12px auto 0;
+
+            background: #fff8d9;
+
+            border: 2px solid #f4d46a;
+            border-radius: 18px;
+
+            padding: 10px 16px;
+
+            text-align: center;
+
+            color: #735f20;
+
+            font-size: clamp(14px, 1.8vw, 18px);
+            font-weight: 700;
+        }
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 760px) {
+
+            .top-bar {
+                min-height: 68px;
+                padding: 8px 12px;
+            }
+
+            .player-info {
+                gap: 6px;
+            }
+
+            .player-mini-avatar {
+                width: 40px;
+                height: 40px;
+            }
+
+            .stars {
+                padding: 6px 9px;
+            }
+
+            .page {
+                padding: 10px;
+            }
+
+            .conversation {
+                min-height: calc(100vh - 100px);
+                border-radius: 24px;
+                border-width: 3px;
+                padding: 12px;
+            }
+
+            .speech-bubble {
+                min-height: 90px;
+                padding: 15px 18px;
+                border-radius: 23px;
+            }
+
+            .characters-area {
+                min-height: 340px;
+                gap: 5px;
+                padding: 20px 0 0;
+            }
+
+            .character-column {
+                width: 50%;
+                min-height: 280px;
+            }
+
+            .player-character {
+                width: clamp(145px, 42vw, 230px);
+                height: clamp(210px, 58vw, 330px);
+            }
+
+            .sofi-character {
+                width: clamp(140px, 40vw, 220px);
+                height: clamp(200px, 55vw, 320px);
+            }
+
+            .mic-button {
+                width: 85px;
+                height: 85px;
+                font-size: 40px;
+            }
+
+            .controls {
+                gap: 10px;
+            }
+
+            .bottom-buttons {
+                gap: 8px;
+            }
+
+            .action-button {
+                padding: 10px 14px;
+            }
+
+            .heart {
+                font-size: 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .top-title {
+                font-size: 20px;
+            }
+
+            .player-info {
+                font-size: 13px;
+            }
+
+            .player-mini-avatar {
+                width: 34px;
+                height: 34px;
+            }
+
+            .stars {
+                font-size: 13px;
+                padding: 5px 7px;
+            }
+
+            .mission h1 {
+                font-size: 29px;
+            }
+
+            .mission p {
+                font-size: 16px;
+            }
+
+            .conversation {
+                padding: 9px;
+            }
+
+            .characters-area {
+                min-height: 300px;
+            }
+
+            .character-label {
+                font-size: 17px;
+            }
+
+            .player-character {
+                width: 155px;
+                height: 230px;
+            }
+
+            .sofi-character {
+                width: 150px;
+                height: 220px;
+            }
+
+            .speech-bubble {
+                font-size: 20px;
+            }
+
+            .mic-text {
+                font-size: 14px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================================
+         TOP BAR
+    ========================================================== -->
+
+    <header class="top-bar">
+
+        <div class="top-title" id="topTitle">
+            🗣️ Talk with Sofi
+        </div>
+
+        <div class="player-info">
+
+            <img
+                id="playerMiniAvatar"
+                class="player-mini-avatar"
+                src="{% static 'juego/images/personaje-niña.png' %}"
+                alt="Player"
+            >
+
+            <span id="playerMiniName">
+                Sofía
+            </span>
+
+            <div class="stars">
+                ⭐ <span id="starCount">0</span>
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         MAIN
+    ========================================================= -->
+
+    <main class="page">
+
+        <div class="mission">
+
+            <h1 id="missionTitle">
+                🗣️ Talk with Sofi
+            </h1>
+
+            <p id="missionDescription">
+                Practice English with your friend Sofi!
+            </p>
+
+        </div>
+
+
+        <section class="conversation">
+
+            <!-- =================================================
+                 COMPANION MESSAGE
+            ================================================== -->
+
+            <div class="speech-area">
+
+                <div class="speech-bubble">
+
+                    <span id="sofiMessage">
+                        Hello! What's your name?
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 CHARACTERS
+            ================================================== -->
+
+            <div class="characters-area">
+
+                <div class="heart one">
+                    💕
+                </div>
+
+                <div class="heart two">
+                    💖
+                </div>
+
+                <div class="heart three">
+                    ✨
+                </div>
+
+
+                <!-- PLAYER -->
+
+                <div class="character-column">
+
+                    <div
+                        class="character-label player-label"
+                        id="playerLabel"
+                    >
+                        👧 Sofía
+                    </div>
+
+                    <img
+                        id="playerCharacter"
+                        class="player-character"
+                        src="{% static 'juego/images/personaje-niña.png' %}"
+                        alt="Sofía"
+                    >
+
+                </div>
+
+
+                <!-- COMPANION -->
+
+                <div class="character-column">
+
+                    <div
+                        class="character-label sofi-label"
+                        id="companionLabel"
+                    >
+                        👩 Sofi
+                    </div>
+
+                    <img
+                        id="companionCharacter"
+                        class="sofi-character"
+                        src="{% static 'juego/images/personaje-niña.png' %}"
+                        alt="Sofi"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 WHAT PLAYER SAID
+            ================================================== -->
+
+            <div
+                id="playerSaid"
+                class="player-said"
+            >
+            </div>
+
+
+            <!-- =================================================
+                 MICROPHONE
+            ================================================== -->
+
+            <div class="controls">
+
+                <button
+                    type="button"
+                    id="micButton"
+                    class="mic-button"
+                    onclick="startListening()"
+                    aria-label="Speak"
+                >
+                    🎤
+                </button>
+
+                <div
+                    id="micText"
+                    class="mic-text"
+                >
+                    Tap the microphone and speak
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 STATUS
+            ================================================== -->
+
+            <div
+                id="status"
+                class="status"
+            >
+                Sofi is ready to listen! 😊
+            </div>
+
+
+            <!-- =================================================
+                 HELP
+            ================================================== -->
+
+            <div class="help-box">
+                💡 Speak in English. Try saying:
+                <strong>Hello!</strong>,
+                <strong>My name is...</strong>,
+                <strong>I am happy!</strong>
+            </div>
+
+
+            <!-- =================================================
+                 BUTTONS
+            ================================================== -->
+
+            <div class="bottom-buttons">
+
+                <button
+                    type="button"
+                    class="action-button listen-button"
+                    onclick="speakCurrentMessage()"
+                >
+                    🔊 Listen
+                </button>
+
+                <button
+                    type="button"
+                    class="action-button clear-button"
+                    onclick="clearConversation()"
+                >
+                    🔄 Start Again
+                </button>
+
+                <button
+                    type="button"
+                    class="action-button back-button"
+                    onclick="goBackToMenu()"
+                >
+                    🏠 Main Menu
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        /* =========================================================
+           PLAYER DATA
+        ========================================================== */
+
+        let playerName =
+            localStorage.getItem("myLittleEnglishName") ||
+            localStorage.getItem("playerName") ||
+            "";
+
+        let character =
+            localStorage.getItem("myLittleEnglishCharacter") ||
+            localStorage.getItem("characterGender") ||
+            "girl";
+
+
+        /*
+         * Normalize the character value.
+         */
+
+        character = character.toLowerCase();
+
+
+        /*
+         * If no valid name exists, use the correct
+         * default name according to the selected character.
+         */
+
+        if (character === "boy") {
+
+            if (!playerName) {
+                playerName = "Mateo";
+            }
+
+        } else {
+
+            character = "girl";
+
+            if (!playerName) {
+                playerName = "Sofía";
+            }
+
+        }
+
+
+        /* =========================================================
+           COMPANION DATA
+        ========================================================== */
+
+        /*
+         * IMPORTANT:
+         *
+         * If the player is a GIRL:
+         *      Player = Girl
+         *      Companion = Mateo
+         *
+         * If the player is a BOY:
+         *      Player = Boy
+         *      Companion = Sofi
+         */
+
+        let companionName = "";
+        let companionGender = "";
+        let companionImage = "";
+        let companionEmoji = "";
+        let companionPronoun = "";
+
+
+        if (character === "girl") {
+
+            companionName = "Mateo";
+            companionGender = "boy";
+
+            companionImage =
+                "{% static 'juego/images/personaje-niño.png' %}";
+
+            companionEmoji = "👦";
+
+            companionPronoun = "Mateo";
+
+        } else {
+
+            companionName = "Sofi";
+            companionGender = "girl";
+
+            companionImage =
+                "{% static 'juego/images/personaje-niña.png' %}";
+
+            companionEmoji = "👩";
+
+            companionPronoun = "Sofi";
+
+        }
+
+
+        /* =========================================================
+           ELEMENTS
+        ========================================================== */
+
+        const playerCharacter =
+            document.getElementById("playerCharacter");
+
+        const playerMiniAvatar =
+            document.getElementById("playerMiniAvatar");
+
+        const playerMiniName =
+            document.getElementById("playerMiniName");
+
+        const playerLabel =
+            document.getElementById("playerLabel");
+
+        const companionCharacter =
+            document.getElementById("companionCharacter");
+
+        const companionLabel =
+            document.getElementById("companionLabel");
+
+        const sofiMessage =
+            document.getElementById("sofiMessage");
+
+        const playerSaid =
+            document.getElementById("playerSaid");
+
+        const micButton =
+            document.getElementById("micButton");
+
+        const micText =
+            document.getElementById("micText");
+
+        const status =
+            document.getElementById("status");
+
+        const starCountElement =
+            document.getElementById("starCount");
+
+        const topTitle =
+            document.getElementById("topTitle");
+
+        const missionTitle =
+            document.getElementById("missionTitle");
+
+        const missionDescription =
+            document.getElementById("missionDescription");
+
+        const pageTitle =
+            document.getElementById("pageTitle");
+
+
+        /* =========================================================
+           CHARACTER SETUP
+        ========================================================== */
+
+        if (character === "boy") {
+
+            /*
+             * PLAYER = MATEO
+             */
+
+            playerCharacter.src =
+                "{% static 'juego/images/personaje-niño.png' %}";
+
+            playerCharacter.alt =
+                "Mateo";
+
+            playerMiniAvatar.src =
+                "{% static 'juego/images/personaje-niño.png' %}";
+
+            playerMiniAvatar.alt =
+                "Mateo";
+
+            playerMiniName.textContent =
+                "Mateo";
+
+            playerLabel.textContent =
+                "👦 Mateo";
+
+
+            /*
+             * COMPANION = SOFI
+             */
+
+            companionCharacter.src =
+                "{% static 'juego/images/personaje-niña.png' %}";
+
+            companionCharacter.alt =
+                "Sofi";
+
+            companionLabel.textContent =
+                "👩 Sofi";
+
+
+            topTitle.textContent =
+                "🗣️ Talk with Sofi";
+
+            missionTitle.textContent =
+                "🗣️ Talk with Sofi";
+
+            missionDescription.textContent =
+                "Practice English with your friend Sofi!";
+
+            pageTitle.textContent =
+                "Talk with Sofi | My Little English";
+
+        } else {
+
+            /*
+             * PLAYER = GIRL
+             */
+
+            playerCharacter.src =
+                "{% static 'juego/images/personaje-niña.png' %}";
+
+            playerCharacter.alt =
+                playerName;
+
+            playerMiniAvatar.src =
+                "{% static 'juego/images/personaje-niña.png' %}";
+
+            playerMiniAvatar.alt =
+                playerName;
+
+            playerMiniName.textContent =
+                playerName;
+
+            playerLabel.textContent =
+                "👧 " + playerName;
+
+
+            /*
+             * COMPANION = MATEO
+             */
+
+            companionCharacter.src =
+                "{% static 'juego/images/personaje-niño.png' %}";
+
+            companionCharacter.alt =
+                "Mateo";
+
+            companionLabel.textContent =
+                "👦 Mateo";
+
+
+            topTitle.textContent =
+                "🗣️ Talk with Mateo";
+
+            missionTitle.textContent =
+                "🗣️ Talk with Mateo";
+
+            missionDescription.textContent =
+                "Practice English with your friend Mateo!";
+
+            pageTitle.textContent =
+                "Talk with Mateo | My Little English";
+
+        }
+
+
+        /* =========================================================
+           STARS
+        ========================================================== */
+
+        let stars =
+            parseInt(
+                localStorage.getItem("myLittleEnglishSofiStars") || "0",
+                10
+            );
+
+        if (isNaN(stars)) {
+            stars = 0;
+        }
+
+        starCountElement.textContent = stars;
+
+
+        function addStar() {
+
+            stars++;
+
+            starCountElement.textContent =
+                stars;
+
+            localStorage.setItem(
+                "myLittleEnglishSofiStars",
+                stars
+            );
+
+        }
+
+
+        /* =========================================================
+           SPEECH SYNTHESIS
+        ========================================================== */
+
+        let selectedVoice = null;
+
+
+        function loadVoices() {
+
+            if (!("speechSynthesis" in window)) {
+                return;
+            }
+
+            const voices =
+                window.speechSynthesis.getVoices();
+
+            if (!voices || voices.length === 0) {
+                return;
+            }
+
+            selectedVoice =
+                voices.find(
+                    voice =>
+                        voice.lang &&
+                        voice.lang.toLowerCase().startsWith("en")
+                ) || voices[0];
+
+        }
+
+
+        loadVoices();
+
+
+        if ("speechSynthesis" in window) {
+
+            window.speechSynthesis.onvoiceschanged =
+                loadVoices;
+
+        }
+
+
+        function speakEnglish(text, callback = null) {
+
+            if (!("speechSynthesis" in window)) {
+
+                if (callback) {
+                    callback();
+                }
+
+                return;
+            }
+
+
+            window.speechSynthesis.cancel();
+
+
+            const utterance =
+                new SpeechSynthesisUtterance(text);
+
+
+            utterance.lang =
+                "en-US";
+
+            utterance.rate =
+                0.72;
+
+            utterance.pitch =
+                1.08;
+
+            utterance.volume =
+                1;
+
+
+            if (selectedVoice) {
+                utterance.voice =
+                    selectedVoice;
+            }
+
+
+            utterance.onend =
+                function () {
+
+                    if (callback) {
+                        callback();
+                    }
+
+                };
+
+
+            window.speechSynthesis.speak(
+                utterance
+            );
+
+        }
+
+
+        /* =========================================================
+           CURRENT COMPANION MESSAGE
+        ========================================================== */
+
+        /*
+         * The companion always starts by asking:
+         *
+         * "Hello! What's your name?"
+         *
+         * The only thing that changes is WHO says it:
+         *
+         * Girl player  -> Mateo
+         * Boy player   -> Sofi
+         */
+
+        let currentSofiMessage =
+            "Hello! What's your name?";
+
+
+        function setSofiMessage(message, speak = true) {
+
+            currentSofiMessage =
+                message;
+
+            sofiMessage.style.opacity =
+                "0";
+
+
+            setTimeout(function () {
+
+                sofiMessage.textContent =
+                    message;
+
+                sofiMessage.style.opacity =
+                    "1";
+
+            }, 120);
+
+
+            if (speak) {
+
+                setTimeout(function () {
+
+                    speakEnglish(message);
+
+                }, 200);
+
+            }
+
+        }
+
+
+        function speakCurrentMessage() {
+
+            speakEnglish(
+                currentSofiMessage
+            );
+
+        }
+
+
+        /* =========================================================
+           SPEECH RECOGNITION
+        ========================================================== */
+
+        const SpeechRecognition =
+            window.SpeechRecognition ||
+            window.webkitSpeechRecognition;
+
+
+        let recognition = null;
+
+        let isListening = false;
+
+
+        if (SpeechRecognition) {
+
+            recognition =
+                new SpeechRecognition();
+
+            recognition.lang =
+                "en-US";
+
+            recognition.continuous =
+                false;
+
+            recognition.interimResults =
+                false;
+
+            recognition.maxAlternatives =
+                3;
+
+
+            recognition.onstart =
+                function () {
+
+                    isListening =
+                        true;
+
+                    micButton.classList.add(
+                        "listening"
+                    );
+
+                    playerCharacter.classList.add(
+                        "listening"
+                    );
+
+                    micText.textContent =
+                        "I'm listening... 🎤";
+
+                    status.textContent =
+                        "Speak in English...";
+
+                    status.className =
+                        "status listening";
+
+                };
+
+
+            recognition.onresult =
+                function (event) {
+
+                    let transcript = "";
+
+
+                    for (
+                        let i = 0;
+                        i < event.results.length;
+                        i++
+                    ) {
+
+                        transcript +=
+                            event.results[i][0].transcript +
+                            " ";
+
+                    }
+
+
+                    transcript =
+                        transcript.trim();
+
+
+                    processPlayerSpeech(
+                        transcript
+                    );
+
+                };
+
+
+            recognition.onerror =
+                function (event) {
+
+                    console.log(
+                        "Speech recognition error:",
+                        event.error
+                    );
+
+
+                    isListening =
+                        false;
+
+                    micButton.classList.remove(
+                        "listening"
+                    );
+
+                    playerCharacter.classList.remove(
+                        "listening"
+                    );
+
+
+                    if (
+                        event.error ===
+                        "not-allowed"
+                    ) {
+
+                        status.textContent =
+                            "Please allow the microphone.";
+
+                        status.className =
+                            "status error";
+
+                    } else if (
+                        event.error ===
+                        "no-speech"
+                    ) {
+
+                        status.textContent =
+                            "I didn't hear you. Try again! 😊";
+
+                        status.className =
+                            "status";
+
+                    } else {
+
+                        status.textContent =
+                            "Let's try again! 😊";
+
+                        status.className =
+                            "status";
+
+                    }
+
+
+                    micText.textContent =
+                        "Tap the microphone and speak";
+
+                };
+
+
+            recognition.onend =
+                function () {
+
+                    isListening =
+                        false;
+
+                    micButton.classList.remove(
+                        "listening"
+                    );
+
+                    playerCharacter.classList.remove(
+                        "listening"
+                    );
+
+                    micText.textContent =
+                        "Tap the microphone and speak";
+
+                };
+
+        }
+
+
+        /* =========================================================
+           START LISTENING
+        ========================================================== */
+
+        function startListening() {
+
+            if (!recognition) {
+
+                status.textContent =
+                    "Voice recognition is not available in this browser.";
+
+                status.className =
+                    "status error";
+
+                return;
+
+            }
+
+
+            if (isListening) {
+
+                recognition.stop();
+
+                return;
+
+            }
+
+
+            try {
+
+                window.speechSynthesis.cancel();
+
+                recognition.start();
+
+            } catch (error) {
+
+                console.log(error);
+
+            }
+
+        }
+
+
+        /* =========================================================
+           PROCESS PLAYER SPEECH
+        ========================================================== */
+
+        function processPlayerSpeech(text) {
+
+            if (!text) {
+                return;
+            }
+
+
+            playerSaid.textContent =
+                `🎤 ${playerName}: "${text}"`;
+
+            playerSaid.classList.add(
+                "visible"
+            );
+
+
+            status.textContent =
+                `${companionName} is thinking... 💭`;
+
+            status.className =
+                "status";
+
+
+            /*
+             * Normalize the phrase.
+             */
+
+            const normalized =
+                text
+                    .toLowerCase()
+                    .trim();
+
+
+            /*
+             * Give the player a star
+             * for participating.
+             */
+
+            addStar();
+
+
+            /*
+             * Small delay so the conversation
+             * feels more natural.
+             */
+
+            setTimeout(
+                function () {
+
+                    respondToPlayer(
+                        normalized
+                    );
+
+                },
+                600
+            );
+
+        }
+
+
+        /* =========================================================
+           COMPANION CONVERSATION
+        ========================================================== */
+
+        function respondToPlayer(text) {
+
+            let response =
+                "";
+
+
+            /*
+             * GREETINGS
+             */
+
+            if (
+                text.includes("hello") ||
+                text.includes("hi") ||
+                text.includes("hey")
+            ) {
+
+                response =
+                    `Hello, ${playerName}! I'm so happy to talk with you! 😊`;
+
+            }
+
+
+            /*
+             * HOW ARE YOU
+             */
+
+            else if (
+                text.includes("how are you") ||
+                text.includes("how are u")
+            ) {
+
+                response =
+                    `I'm happy! Thank you for asking! How are you? 😊`;
+
+            }
+
+
+            /*
+             * HAPPY
+             */
+
+            else if (
+                text.includes("i am happy") ||
+                text.includes("i'm happy") ||
+                text.includes("im happy")
+            ) {
+
+                response =
+                    `Yay! I'm happy too! 🌈`;
+
+            }
+
+
+            /*
+             * SAD
+             */
+
+            else if (
+                text.includes("sad") ||
+                text.includes("i am sad") ||
+                text.includes("i'm sad")
+            ) {
+
+                response =
+                    `Oh! I'm here with you. You can smile with me! 💕`;
+
+            }
+
+
+            /*
+             * FAVORITE COLOR
+             */
+
+            else if (
+                text.includes("favorite color") ||
+                text.includes("favourite colour") ||
+                text.includes("favorite colour")
+            ) {
+
+                if (companionName === "Mateo") {
+
+                    response =
+                        "My favorite color is blue! What is your favorite color?";
+
+                } else {
+
+                    response =
+                        "My favorite color is pink! What is your favorite color?";
+
+                }
+
+            }
+
+
+            /*
+             * PINK
+             */
+
+            else if (
+                text.includes("pink")
+            ) {
+
+                response =
+                    "Pink! That's a beautiful color! 🩷";
+
+            }
+
+
+            /*
+             * BLUE
+             */
+
+            else if (
+                text.includes("blue")
+            ) {
+
+                response =
+                    "Blue! I like blue too! 💙";
+
+            }
+
+
+            /*
+             * RED
+             */
+
+            else if (
+                text.includes("red")
+            ) {
+
+                response =
+                    "Red! That's a bright color! ❤️";
+
+            }
+
+
+            /*
+             * GREEN
+             */
+
+            else if (
+                text.includes("green")
+            ) {
+
+                response =
+                    "Green! Green is wonderful! 💚";
+
+            }
+
+
+            /*
+             * FRUITS
+             */
+
+            else if (
+                text.includes("apple")
+            ) {
+
+                response =
+                    "Apple! 🍎 I like apples too!";
+
+            }
+
+
+            else if (
+                text.includes("banana")
+            ) {
+
+                response =
+                    "Banana! 🍌 Yummy!";
+
+            }
+
+
+            else if (
+                text.includes("orange")
+            ) {
+
+                response =
+                    "Orange! 🍊 That's a delicious fruit!";
+
+            }
+
+
+            else if (
+                text.includes("strawberry")
+            ) {
+
+                response =
+                    "Strawberry! 🍓 So sweet!";
+
+            }
+
+
+            else if (
+                text.includes("watermelon")
+            ) {
+
+                response =
+                    "Watermelon! 🍉 Yum!";
+
+            }
+
+
+            /*
+             * LIKE
+             */
+
+            else if (
+                text.includes("i like")
+            ) {
+
+                response =
+                    `That's wonderful, ${playerName}! I like it too! 😊`;
+
+            }
+
+
+            /*
+             * LOVE
+             */
+
+            else if (
+                text.includes("i love")
+            ) {
+
+                response =
+                    `Wow! You really love it! That's great, ${playerName}! ❤️`;
+
+            }
+
+
+            /*
+             * THANK YOU
+             */
+
+            else if (
+                text.includes("thank you") ||
+                text.includes("thanks")
+            ) {
+
+                response =
+                    "You're welcome! 😊";
+
+            }
+
+
+            /*
+             * YES
+             */
+
+            else if (
+                text === "yes" ||
+                text.includes("yes ")
+            ) {
+
+                response =
+                    "Yes! Great! ⭐";
+
+            }
+
+
+            /*
+             * NO
+             */
+
+            else if (
+                text === "no" ||
+                text.includes("no ")
+            ) {
+
+                response =
+                    "That's okay! Let's keep learning! 🌈";
+
+            }
+
+
+            /*
+             * BYE
+             */
+
+            else if (
+                text.includes("bye") ||
+                text.includes("goodbye")
+            ) {
+
+                response =
+                    `Goodbye, ${playerName}! See you soon! 👋`;
+
+            }
+
+
+            /*
+             * NAME
+             */
+
+            else if (
+                text.includes("my name is")
+            ) {
+
+                response =
+                    `Nice to meet you, ${playerName}! 😊`;
+
+            }
+
+
+            /*
+             * DEFAULT RESPONSE
+             */
+
+            else {
+
+                response =
+                    `That's interesting, ${playerName}! Tell me more! 😊`;
+
+            }
+
+
+            setSofiMessage(
+                response,
+                true
+            );
+
+
+            status.textContent =
+                `${companionName} is talking... 🔊`;
+
+            status.className =
+                "status success";
+
+
+            setTimeout(
+                function () {
+
+                    status.textContent =
+                        `${companionName} is ready to listen! 😊`;
+
+                    status.className =
+                        "status";
+
+                },
+                3500
+            );
+
+        }
+
+
+        /* =========================================================
+           CLEAR / START AGAIN
+        ========================================================== */
+
+        function clearConversation() {
+
+            if (recognition && isListening) {
+
+                try {
+                    recognition.stop();
+                } catch (error) {
+                    console.log(error);
+                }
+
+            }
+
+
+            if ("speechSynthesis" in window) {
+
+                window.speechSynthesis.cancel();
+
+            }
+
+
+            playerSaid.textContent =
+                "";
+
+            playerSaid.classList.remove(
+                "visible"
+            );
+
+
+            status.textContent =
+                `${companionName} is ready to listen! 😊`;
+
+            status.className =
+                "status";
+
+
+            /*
+             * When starting again, the selected
+             * companion asks the initial question.
+             */
+
+            currentSofiMessage =
+                "Hello! What's your name?";
+
+
+            sofiMessage.textContent =
+                currentSofiMessage;
+
+
+            setTimeout(
+                function () {
+
+                    speakEnglish(
+                        currentSofiMessage
+                    );
+
+                },
+                300
+            );
+
+        }
+
+
+        /* =========================================================
+           RETURN TO MAIN MENU
+        ========================================================== */
+
+        function goBackToMenu() {
+
+            if ("speechSynthesis" in window) {
+                window.speechSynthesis.cancel();
+            }
+
+
+            if (recognition && isListening) {
+
+                try {
+                    recognition.stop();
+                } catch (error) {
+                    console.log(error);
+                }
+
+            }
+
+
+            window.location.href = "/";
+
+        }
+
+
+        /* =========================================================
+           INITIAL MESSAGE
+        ========================================================== */
+
+        window.addEventListener(
+            "load",
+            function () {
+
+                /*
+                 * Make sure the selected player and
+                 * companion are reflected correctly.
+                 */
+
+
+                if (character === "boy") {
+
+                    /*
+                     * PLAYER = MATEO
+                     */
+
+                    playerCharacter.src =
+                        "{% static 'juego/images/personaje-niño.png' %}";
+
+                    playerCharacter.alt =
+                        "Mateo";
+
+                    playerMiniAvatar.src =
+                        "{% static 'juego/images/personaje-niño.png' %}";
+
+                    playerMiniAvatar.alt =
+                        "Mateo";
+
+                    playerMiniName.textContent =
+                        "Mateo";
+
+                    playerLabel.textContent =
+                        "👦 Mateo";
+
+
+                    /*
+                     * COMPANION = SOFI
+                     */
+
+                    companionCharacter.src =
+                        "{% static 'juego/images/personaje-niña.png' %}";
+
+                    companionCharacter.alt =
+                        "Sofi";
+
+                    companionLabel.textContent =
+                        "👩 Sofi";
+
+
+                    topTitle.textContent =
+                        "🗣️ Talk with Sofi";
+
+                    missionTitle.textContent =
+                        "🗣️ Talk with Sofi";
+
+                    missionDescription.textContent =
+                        "Practice English with your friend Sofi!";
+
+
+                    status.textContent =
+                        "Sofi is ready to listen! 😊";
+
+                } else {
+
+                    /*
+                     * PLAYER = GIRL
+                     */
+
+                    playerCharacter.src =
+                        "{% static 'juego/images/personaje-niña.png' %}";
+
+                    playerCharacter.alt =
+                        playerName;
+
+                    playerMiniAvatar.src =
+                        "{% static 'juego/images/personaje-niña.png' %}";
+
+                    playerMiniAvatar.alt =
+                        playerName;
+
+                    playerMiniName.textContent =
+                        playerName;
+
+                    playerLabel.textContent =
+                        "👧 " + playerName;
+
+
+                    /*
+                     * COMPANION = MATEO
+                     */
+
+                    companionCharacter.src =
+                        "{% static 'juego/images/personaje-niño.png' %}";
+
+                    companionCharacter.alt =
+                        "Mateo";
+
+                    companionLabel.textContent =
+                        "👦 Mateo";
+
+
+                    topTitle.textContent =
+                        "🗣️ Talk with Mateo";
+
+                    missionTitle.textContent =
+                        "🗣️ Talk with Mateo";
+
+                    missionDescription.textContent =
+                        "Practice English with your friend Mateo!";
+
+
+                    status.textContent =
+                        "Mateo is ready to listen! 😊";
+
+                }
+
+
+                /*
+                 * The companion greets the player.
+                 *
+                 * Girl selected:
+                 * Mateo speaks.
+                 *
+                 * Boy selected:
+                 * Sofi speaks.
+                 *
+                 * The sentence displayed and spoken
+                 * is exactly the same.
+                 */
+
+                setTimeout(
+                    function () {
+
+                        speakEnglish(
+                            currentSofiMessage
+                        );
+
+                    },
+                    700
+                );
+
+            }
+        );
+
+
+        /* =========================================================
+           KEYBOARD SUPPORT
+        ========================================================== */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                /*
+                 * Space bar activates microphone.
+                 */
+
+                if (
+                    event.code === "Space" &&
+                    document.activeElement.tagName !== "INPUT"
+                ) {
+
+                    event.preventDefault();
+
+                    startListening();
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>

@@ -15,3 +15,9 @@ def habitacion(request):
 
 def cocina(request):
     return render(request, "juego/cocina.html")
+
+def aprendizaje(request):
+    return render(request, "juego/aprendizaje.html")
+
+def sofi(request):
+    return render(request, "juego/sofi.html")

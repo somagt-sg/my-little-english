@@ -1,240 +1,681 @@
 {% load static %}
+
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
+```
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
 
-    <title>My Little English - My Kitchen</title>
-
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+<title>My Little English - My Kitchen</title>
 
 
-        html,
-        body {
+<style>
 
-            margin: 0;
-            padding: 0;
-
-            width: 100%;
-            height: 100%;
-
-            overflow: hidden;
-
-            font-family: Arial, sans-serif;
-
-            background: #dcdcdc;
-
-            touch-action: none;
-        }
+    * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
 
 
-        /* =====================================================
-           BARRA SUPERIOR
-        ====================================================== */
+    html,
+    body {
+
+        margin: 0;
+        padding: 0;
+
+        width: 100%;
+        height: 100%;
+
+        overflow: hidden;
+
+        font-family: Arial, sans-serif;
+
+        background: #dcdcdc;
+
+        touch-action: none;
+    }
+
+
+    /* =====================================================
+       BARRA SUPERIOR
+    ====================================================== */
+
+    .top-bar {
+
+        position: fixed;
+
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 72px;
+
+        z-index: 5000;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        padding: 0 20px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #ffcf33,
+                #ffb703
+            );
+
+        color: #4a3000;
+
+        box-shadow:
+            0 3px 10px rgba(0,0,0,0.20);
+    }
+
+
+    .game-title {
+
+        font-size: 26px;
+
+        font-weight: bold;
+
+        white-space: nowrap;
+    }
+
+
+    .mission {
+
+        font-size: 18px;
+
+        font-weight: bold;
+
+        text-align: center;
+    }
+
+
+    .stars {
+
+        font-size: 20px;
+
+        font-weight: bold;
+
+        white-space: nowrap;
+    }
+
+
+
+    /* =====================================================
+       CONTENEDOR DEL JUEGO
+    ====================================================== */
+
+    .game-container {
+
+        position: fixed;
+
+        top: 72px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        overflow: hidden;
+
+        background: #dcdcdc;
+
+        touch-action: none;
+    }
+
+
+
+    /* =====================================================
+       ÁREA DE DESPLAZAMIENTO
+    ====================================================== */
+
+    #roomScroll {
+
+        position: absolute;
+
+        left: 0;
+        top: 0;
+
+        width: 100%;
+        height: 100%;
+
+        overflow: auto;
+
+        scrollbar-width: none;
+
+        -ms-overflow-style: none;
+
+        touch-action: none;
+
+        overscroll-behavior: none;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+
+    #roomScroll::-webkit-scrollbar {
+        display: none;
+    }
+
+
+
+    /* =====================================================
+       TAMAÑO REAL DE LA COCINA
+    ====================================================== */
+
+    #roomSizer {
+
+        position: relative;
+
+        width: 1536px;
+        height: 1024px;
+
+        flex-shrink: 0;
+    }
+
+
+
+    /* =====================================================
+       IMAGEN / HABITACIÓN
+    ====================================================== */
+
+    #room {
+
+        position: absolute;
+
+        left: 0;
+        top: 0;
+
+        width: 1536px;
+        height: 1024px;
+
+        transform-origin: top left;
+
+        background-image:
+            url("{% static 'juego/images/my-kitchen.jpeg' %}");
+
+        background-size:
+            1536px 1024px;
+
+        background-repeat: no-repeat;
+
+        background-position:
+            top left;
+    }
+
+
+
+    /* =====================================================
+       PERSONAJE
+    ====================================================== */
+
+    #character {
+
+        position: absolute;
+
+        left: 120px;
+        bottom: 45px;
+
+        width: 150px;
+        height: 205px;
+
+        object-fit: contain;
+
+        z-index: 300;
+
+        pointer-events: none;
+
+        user-select: none;
+
+        -webkit-user-select: none;
+
+        touch-action: none;
+
+        transition:
+            left 0.05s linear;
+    }
+
+
+    #character.girl-character {
+
+        width: 220px;
+        height: 300px;
+
+        bottom: 15px;
+    }
+
+
+
+    /* =====================================================
+       ZONAS DE LOS OBJETOS
+    ====================================================== */
+
+    .hotspot {
+
+        position: absolute;
+
+        z-index: 1000;
+
+        display: block;
+
+        cursor: pointer;
+
+        background:
+            transparent;
+
+        border-radius: 22px;
+
+        user-select: none;
+
+        -webkit-user-select: none;
+
+        touch-action: none;
+
+        pointer-events: auto;
+
+        -webkit-touch-callout: none;
+    }
+
+
+    .hotspot.found {
+
+        background:
+            rgba(76,175,80,0.25);
+
+        box-shadow:
+            0 0 0 4px rgba(76,175,80,0.60),
+            0 0 22px rgba(76,175,80,0.80);
+    }
+
+
+
+    /* =====================================================
+       APPLE
+    ====================================================== */
+
+    .apple {
+
+        left: 790px;
+        top: 555px;
+
+        width: 150px;
+        height: 135px;
+    }
+
+
+
+    /* =====================================================
+       BREAD
+    ====================================================== */
+
+    .bread {
+
+        left: 875px;
+        top: 520px;
+
+        width: 205px;
+        height: 145px;
+    }
+
+
+
+    /* =====================================================
+       EGGS
+    ====================================================== */
+
+    .eggs {
+
+        left: 1050px;
+        top: 545px;
+
+        width: 165px;
+        height: 140px;
+    }
+
+
+
+    /* =====================================================
+       CUP
+    ====================================================== */
+
+    .cup {
+
+        left: 1035px;
+        top: 635px;
+
+        width: 135px;
+        height: 135px;
+    }
+
+
+
+    /* =====================================================
+       BOWL
+    ====================================================== */
+
+    .bowl {
+
+        left: 1170px;
+        top: 635px;
+
+        width: 175px;
+        height: 145px;
+    }
+
+
+
+    /* =====================================================
+       GLASS
+    ====================================================== */
+
+    .glass {
+
+        left: 1285px;
+        top: 640px;
+
+        width: 140px;
+        height: 175px;
+    }
+
+
+
+    /* =====================================================
+       SPOON
+    ====================================================== */
+
+    .spoon {
+
+        left: 905px;
+        top: 650px;
+
+        width: 115px;
+        height: 180px;
+    }
+
+
+
+    /* =====================================================
+       FORK
+    ====================================================== */
+
+    .fork {
+
+        left: 975px;
+        top: 650px;
+
+        width: 115px;
+        height: 180px;
+    }
+
+
+
+    /* =====================================================
+       KNIFE
+    ====================================================== */
+
+    .knife {
+
+        left: 1040px;
+        top: 650px;
+
+        width: 115px;
+        height: 185px;
+    }
+
+
+
+    /* =====================================================
+       REFRIGERATOR
+    ====================================================== */
+
+    .refrigerator {
+
+        left: 65px;
+        top: 15px;
+
+        width: 260px;
+        height: 850px;
+    }
+
+
+
+    /* =====================================================
+       MENSAJE
+    ====================================================== */
+
+    #feedback {
+
+        position: fixed;
+
+        top: 50%;
+        left: 50%;
+
+        transform:
+            translate(-50%, -50%)
+            scale(0.80);
+
+        z-index: 6000;
+
+        width: max-content;
+
+        max-width: 90%;
+
+        padding: 25px 40px;
+
+        background:
+            rgba(255,255,255,0.97);
+
+        border-radius: 25px;
+
+        box-shadow:
+            0 10px 40px rgba(0,0,0,0.30);
+
+        font-size: 32px;
+
+        font-weight: bold;
+
+        color: #198754;
+
+        text-align: center;
+
+        opacity: 0;
+
+        pointer-events: none;
+
+        transition:
+            opacity 0.25s ease,
+            transform 0.25s ease;
+    }
+
+
+    #feedback.show {
+
+        opacity: 1;
+
+        transform:
+            translate(-50%, -50%)
+            scale(1);
+    }
+
+
+
+    /* =====================================================
+       CONTROLES
+    ====================================================== */
+
+    .controls {
+
+        position: fixed;
+
+        left: 0;
+        right: 0;
+
+        bottom: 18px;
+
+        z-index: 5500;
+
+        display: flex;
+
+        justify-content: center;
+
+        align-items: center;
+
+        gap: 15px;
+
+        pointer-events: none;
+    }
+
+
+    .control-button {
+
+        pointer-events: auto;
+
+        width: 65px;
+        height: 65px;
+
+        border: none;
+
+        border-radius: 50%;
+
+        background: #198754;
+
+        color: white;
+
+        font-size: 30px;
+
+        font-weight: bold;
+
+        box-shadow:
+            0 5px 12px rgba(0,0,0,0.25);
+
+        cursor: pointer;
+
+        user-select: none;
+
+        -webkit-user-select: none;
+
+        touch-action: manipulation;
+    }
+
+
+    .control-button:active {
+
+        transform: scale(0.92);
+    }
+
+
+    .continue-button {
+
+        width: auto;
+
+        min-width: 150px;
+
+        height: 58px;
+
+        padding: 0 24px;
+
+        border-radius: 30px;
+
+        background: #ff9800;
+
+        font-size: 18px;
+    }
+
+
+
+    /* =====================================================
+       CELULAR
+    ====================================================== */
+
+    @media (max-width: 700px) {
 
         .top-bar {
 
-            position: fixed;
+            height: 60px;
 
-            top: 0;
-            left: 0;
+            padding: 0 10px;
+        }
 
-            width: 100%;
-            height: 72px;
 
-            z-index: 5000;
+        .game-container {
 
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            padding: 0 20px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    #ffcf33,
-                    #ffb703
-                );
-
-            color: #4a3000;
-
-            box-shadow:
-                0 3px 10px rgba(0,0,0,0.20);
+            top: 60px;
         }
 
 
         .game-title {
 
-            font-size: 26px;
-
-            font-weight: bold;
-
-            white-space: nowrap;
+            font-size: 17px;
         }
 
 
         .mission {
 
-            font-size: 18px;
-
-            font-weight: bold;
-
-            text-align: center;
+            font-size: 13px;
         }
 
 
         .stars {
 
-            font-size: 20px;
-
-            font-weight: bold;
-
-            white-space: nowrap;
+            font-size: 14px;
         }
 
 
+        .control-button {
 
-        /* =====================================================
-           CONTENEDOR DEL JUEGO
-        ====================================================== */
+            width: 58px;
+            height: 58px;
 
-        .game-container {
-
-            position: fixed;
-
-            top: 72px;
-            left: 0;
-            right: 0;
-            bottom: 0;
-
-            overflow: hidden;
-
-            background: #dcdcdc;
-
-            touch-action: none;
+            font-size: 26px;
         }
 
 
+        .continue-button {
 
-        /* =====================================================
-           ÁREA DE DESPLAZAMIENTO
-        ====================================================== */
+            min-width: 125px;
 
-        #roomScroll {
+            height: 52px;
 
-            position: absolute;
+            padding: 0 16px;
 
-            left: 0;
-            top: 0;
-
-            width: 100%;
-            height: 100%;
-
-            overflow: auto;
-
-            scrollbar-width: none;
-
-            -ms-overflow-style: none;
-
-            touch-action: none;
-
-            overscroll-behavior: none;
-
-            -webkit-overflow-scrolling: touch;
+            font-size: 15px;
         }
 
 
-        #roomScroll::-webkit-scrollbar {
-            display: none;
+        .controls {
+
+            bottom: 10px;
+
+            gap: 8px;
         }
 
 
+        #feedback {
 
-        /* =====================================================
-           TAMAÑO REAL DE LA COCINA
-        ====================================================== */
+            width: 85%;
 
-        #roomSizer {
+            padding: 20px;
 
-            position: relative;
-
-            width: 1536px;
-            height: 1024px;
-
-            flex-shrink: 0;
+            font-size: 24px;
         }
 
-
-
-        /* =====================================================
-           IMAGEN / HABITACIÓN
-        ====================================================== */
-
-        #room {
-
-            position: absolute;
-
-            left: 0;
-            top: 0;
-
-            width: 1536px;
-            height: 1024px;
-
-            transform-origin: top left;
-
-            background-image:
-                url("{% static 'juego/images/my-kitchen.jpeg' %}");
-
-            background-size:
-                1536px 1024px;
-
-            background-repeat: no-repeat;
-
-            background-position:
-                top left;
-        }
-
-
-
-        /* =====================================================
-           PERSONAJE
-        ====================================================== */
 
         #character {
-
-            position: absolute;
-
-            left: 120px;
-            bottom: 45px;
 
             width: 150px;
             height: 205px;
 
-            object-fit: contain;
-
-            z-index: 300;
-
-            pointer-events: none;
-
-            user-select: none;
-
-            -webkit-user-select: none;
+            bottom: 45px;
         }
 
 
@@ -246,639 +687,204 @@
             bottom: 15px;
         }
 
+    }
 
-
-        /* =====================================================
-           ZONAS DE LOS OBJETOS
-        ====================================================== */
-
-        .hotspot {
-
-            position: absolute;
-
-            z-index: 1000;
-
-            display: block;
-
-            cursor: pointer;
-
-            background:
-                transparent;
-
-            border-radius: 22px;
-
-            user-select: none;
-
-            -webkit-user-select: none;
-
-            touch-action: none;
-
-            pointer-events: auto;
-
-            -webkit-touch-callout: none;
-        }
-
-
-        .hotspot.found {
-
-            background:
-                rgba(76,175,80,0.25);
-
-            box-shadow:
-                0 0 0 4px rgba(76,175,80,0.60),
-                0 0 22px rgba(76,175,80,0.80);
-        }
-
-
-
-        /* =====================================================
-           APPLE
-        ====================================================== */
-
-        .apple {
-
-            left: 790px;
-            top: 555px;
-
-            width: 150px;
-            height: 135px;
-        }
-
-
-
-        /* =====================================================
-           BREAD
-        ====================================================== */
-
-        .bread {
-
-            left: 875px;
-            top: 520px;
-
-            width: 205px;
-            height: 145px;
-        }
-
-
-
-        /* =====================================================
-           EGGS
-        ====================================================== */
-
-        .eggs {
-
-            left: 1050px;
-            top: 545px;
-
-            width: 165px;
-            height: 140px;
-        }
-
-
-
-        /* =====================================================
-           CUP
-        ====================================================== */
-
-        .cup {
-
-            left: 1035px;
-            top: 635px;
-
-            width: 135px;
-            height: 135px;
-        }
-
-
-
-        /* =====================================================
-           BOWL
-        ====================================================== */
-
-        .bowl {
-
-            left: 1170px;
-            top: 635px;
-
-            width: 175px;
-            height: 145px;
-        }
-
-
-
-        /* =====================================================
-           GLASS
-        ====================================================== */
-
-        .glass {
-
-            left: 1285px;
-            top: 640px;
-
-            width: 140px;
-            height: 175px;
-        }
-
-
-
-        /* =====================================================
-           SPOON
-        ====================================================== */
-
-        .spoon {
-
-            left: 905px;
-            top: 650px;
-
-            width: 115px;
-            height: 180px;
-        }
-
-
-
-        /* =====================================================
-           FORK
-        ====================================================== */
-
-        .fork {
-
-            left: 975px;
-            top: 650px;
-
-            width: 115px;
-            height: 180px;
-        }
-
-
-
-        /* =====================================================
-           KNIFE
-        ====================================================== */
-
-        .knife {
-
-            left: 1040px;
-            top: 650px;
-
-            width: 115px;
-            height: 185px;
-        }
-
-
-
-        /* =====================================================
-           REFRIGERATOR
-        ====================================================== */
-
-        .refrigerator {
-
-            left: 65px;
-            top: 15px;
-
-            width: 260px;
-            height: 850px;
-        }
-
-
-
-        /* =====================================================
-           MENSAJE
-        ====================================================== */
-
-        #feedback {
-
-            position: fixed;
-
-            top: 50%;
-            left: 50%;
-
-            transform:
-                translate(-50%, -50%)
-                scale(0.80);
-
-            z-index: 6000;
-
-            width: max-content;
-
-            max-width: 90%;
-
-            padding: 25px 40px;
-
-            background:
-                rgba(255,255,255,0.97);
-
-            border-radius: 25px;
-
-            box-shadow:
-                0 10px 40px rgba(0,0,0,0.30);
-
-            font-size: 32px;
-
-            font-weight: bold;
-
-            color: #198754;
-
-            text-align: center;
-
-            opacity: 0;
-
-            pointer-events: none;
-
-            transition:
-                opacity 0.25s ease,
-                transform 0.25s ease;
-        }
-
-
-        #feedback.show {
-
-            opacity: 1;
-
-            transform:
-                translate(-50%, -50%)
-                scale(1);
-        }
-
-
-
-        /* =====================================================
-           CONTROLES
-        ====================================================== */
-
-        .controls {
-
-            position: fixed;
-
-            left: 0;
-            right: 0;
-
-            bottom: 18px;
-
-            z-index: 5500;
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: center;
-
-            gap: 15px;
-
-            pointer-events: none;
-        }
-
-
-        .control-button {
-
-            pointer-events: auto;
-
-            width: 65px;
-            height: 65px;
-
-            border: none;
-
-            border-radius: 50%;
-
-            background: #198754;
-
-            color: white;
-
-            font-size: 30px;
-
-            font-weight: bold;
-
-            box-shadow:
-                0 5px 12px rgba(0,0,0,0.25);
-
-            cursor: pointer;
-
-            user-select: none;
-
-            -webkit-user-select: none;
-
-            touch-action: manipulation;
-        }
-
-
-        .control-button:active {
-
-            transform: scale(0.92);
-        }
-
-
-        .continue-button {
-
-            width: auto;
-
-            min-width: 150px;
-
-            height: 58px;
-
-            padding: 0 24px;
-
-            border-radius: 30px;
-
-            background: #ff9800;
-
-            font-size: 18px;
-        }
-
-
-
-        /* =====================================================
-           CELULAR
-        ====================================================== */
-
-        @media (max-width: 700px) {
-
-            .top-bar {
-
-                height: 60px;
-
-                padding: 0 10px;
-            }
-
-
-            .game-container {
-
-                top: 60px;
-            }
-
-
-            .game-title {
-
-                font-size: 17px;
-            }
-
-
-            .mission {
-
-                font-size: 13px;
-            }
-
-
-            .stars {
-
-                font-size: 14px;
-            }
-
-
-            .control-button {
-
-                width: 58px;
-                height: 58px;
-
-                font-size: 26px;
-            }
-
-
-            .continue-button {
-
-                min-width: 125px;
-
-                height: 52px;
-
-                padding: 0 16px;
-
-                font-size: 15px;
-            }
-
-
-            .controls {
-
-                bottom: 10px;
-
-                gap: 8px;
-            }
-
-
-            #feedback {
-
-                width: 85%;
-
-                padding: 20px;
-
-                font-size: 24px;
-            }
-
-
-            #character {
-
-                width: 150px;
-                height: 205px;
-
-                bottom: 45px;
-            }
-
-
-            #character.girl-character {
-
-                width: 220px;
-                height: 300px;
-
-                bottom: 15px;
-            }
-
-        }
-
-    </style>
+</style>
+```
 
 </head>
 
-
 <body>
 
+```
+<!-- =====================================================
+     BARRA SUPERIOR
+====================================================== -->
 
-    <!-- =====================================================
-         BARRA SUPERIOR
-    ====================================================== -->
+<div class="top-bar">
 
-    <div class="top-bar">
-
-        <div class="game-title">
-            🍳 My Kitchen
-        </div>
-
-
-        <div class="mission">
-            Find the objects!
-        </div>
-
-
-        <div class="stars">
-            ⭐ <span id="score">0</span>/10
-        </div>
-
+    <div class="game-title">
+        🍳 My Kitchen
     </div>
 
 
-
-    <!-- =====================================================
-         JUEGO
-    ====================================================== -->
-
-    <div class="game-container">
-
-        <div id="roomScroll">
-
-            <div id="roomSizer">
-
-                <div id="room">
+    <div class="mission">
+        Find the objects!
+    </div>
 
 
-                    <!-- =================================================
-                         PERSONAJE
-                    ================================================== -->
+    <div class="stars">
+        ⭐ <span id="score">0</span>/10
+    </div>
 
-                    <img
-                        id="character"
-                        src="{% static 'juego/images/personaje-niño.png' %}"
-                        alt="Character"
-                        draggable="false"
-                    >
+</div>
 
 
 
-                    <!-- =================================================
-                         1. APPLE
-                    ================================================== -->
+<!-- =====================================================
+     JUEGO
+====================================================== -->
 
-                    <div
-                        class="hotspot apple"
-                        data-object="apple"
-                        data-word="Apple"
-                        data-sentence="Apple"
-                        aria-label="Apple"
-                    ></div>
+<div class="game-container">
+
+    <div id="roomScroll">
+
+        <div id="roomSizer">
+
+            <div id="room">
 
 
+                <!-- =================================================
+                     PERSONAJE
+                ================================================== -->
 
-                    <!-- =================================================
-                         2. BREAD
-                    ================================================== -->
-
-                    <div
-                        class="hotspot bread"
-                        data-object="bread"
-                        data-word="Bread"
-                        data-sentence="Bread"
-                        aria-label="Bread"
-                    ></div>
+                <img
+                    id="character"
+                    src="{% static 'juego/images/personaje-niño.png' %}"
+                    alt="Character"
+                    draggable="false"
+                >
 
 
 
-                    <!-- =================================================
-                         3. EGGS
-                    ================================================== -->
+                <!-- =================================================
+                     1. APPLE
+                ================================================== -->
 
-                    <div
-                        class="hotspot eggs"
-                        data-object="eggs"
-                        data-word="Eggs"
-                        data-sentence="Eggs"
-                        aria-label="Eggs"
-                    ></div>
-
-
-
-                    <!-- =================================================
-                         4. CUP
-                    ================================================== -->
-
-                    <div
-                        class="hotspot cup"
-                        data-object="cup"
-                        data-word="Cup"
-                        data-sentence="Cup"
-                        aria-label="Cup"
-                    ></div>
+                <div
+                    class="hotspot apple"
+                    data-object="apple"
+                    data-word="Apple"
+                    data-sentence="Apple"
+                    aria-label="Apple"
+                ></div>
 
 
 
-                    <!-- =================================================
-                         5. BOWL
-                    ================================================== -->
+                <!-- =================================================
+                     2. BREAD
+                ================================================== -->
 
-                    <div
-                        class="hotspot bowl"
-                        data-object="bowl"
-                        data-word="Bowl"
-                        data-sentence="Bowl"
-                        aria-label="Bowl"
-                    ></div>
-
-
-
-                    <!-- =================================================
-                         6. GLASS
-                    ================================================== -->
-
-                    <div
-                        class="hotspot glass"
-                        data-object="glass"
-                        data-word="Glass"
-                        data-sentence="Glass"
-                        aria-label="Glass"
-                    ></div>
+                <div
+                    class="hotspot bread"
+                    data-object="bread"
+                    data-word="Bread"
+                    data-sentence="Bread"
+                    aria-label="Bread"
+                ></div>
 
 
 
-                    <!-- =================================================
-                         7. SPOON
-                    ================================================== -->
+                <!-- =================================================
+                     3. EGGS
+                ================================================== -->
 
-                    <div
-                        class="hotspot spoon"
-                        data-object="spoon"
-                        data-word="Spoon"
-                        data-sentence="Spoon"
-                        aria-label="Spoon"
-                    ></div>
-
-
-
-                    <!-- =================================================
-                         8. FORK
-                    ================================================== -->
-
-                    <div
-                        class="hotspot fork"
-                        data-object="fork"
-                        data-word="Fork"
-                        data-sentence="Fork"
-                        aria-label="Fork"
-                    ></div>
+                <div
+                    class="hotspot eggs"
+                    data-object="eggs"
+                    data-word="Eggs"
+                    data-sentence="Eggs"
+                    aria-label="Eggs"
+                ></div>
 
 
 
-                    <!-- =================================================
-                         9. KNIFE
-                    ================================================== -->
+                <!-- =================================================
+                     4. CUP
+                ================================================== -->
 
-                    <div
-                        class="hotspot knife"
-                        data-object="knife"
-                        data-word="Knife"
-                        data-sentence="Knife"
-                        aria-label="Knife"
-                    ></div>
-
-
-
-                    <!-- =================================================
-                         10. REFRIGERATOR
-                    ================================================== -->
-
-                    <div
-                        class="hotspot refrigerator"
-                        data-object="refrigerator"
-                        data-word="Refrigerator"
-                        data-sentence="Refrigerator"
-                        aria-label="Refrigerator"
-                    ></div>
+                <div
+                    class="hotspot cup"
+                    data-object="cup"
+                    data-word="Cup"
+                    data-sentence="Cup"
+                    aria-label="Cup"
+                ></div>
 
 
-                </div>
+
+                <!-- =================================================
+                     5. BOWL
+                ================================================== -->
+
+                <div
+                    class="hotspot bowl"
+                    data-object="bowl"
+                    data-word="Bowl"
+                    data-sentence="Bowl"
+                    aria-label="Bowl"
+                ></div>
+
+
+
+                <!-- =================================================
+                     6. GLASS
+                ================================================== -->
+
+                <div
+                    class="hotspot glass"
+                    data-object="glass"
+                    data-word="Glass"
+                    data-sentence="Glass"
+                    aria-label="Glass"
+                ></div>
+
+
+
+                <!-- =================================================
+                     7. SPOON
+                ================================================== -->
+
+                <div
+                    class="hotspot spoon"
+                    data-object="spoon"
+                    data-word="Spoon"
+                    data-sentence="Spoon"
+                    aria-label="Spoon"
+                ></div>
+
+
+
+                <!-- =================================================
+                     8. FORK
+                ================================================== -->
+
+                <div
+                    class="hotspot fork"
+                    data-object="fork"
+                    data-word="Fork"
+                    data-sentence="Fork"
+                    aria-label="Fork"
+                ></div>
+
+
+
+                <!-- =================================================
+                     9. KNIFE
+                ================================================== -->
+
+                <div
+                    class="hotspot knife"
+                    data-object="knife"
+                    data-word="Knife"
+                    data-sentence="Knife"
+                    aria-label="Knife"
+                ></div>
+
+
+
+                <!-- =================================================
+                     10. REFRIGERATOR
+                ================================================== -->
+
+                <div
+                    class="hotspot refrigerator"
+                    data-object="refrigerator"
+                    data-word="Refrigerator"
+                    data-sentence="Refrigerator"
+                    aria-label="Refrigerator"
+                ></div>
+
 
             </div>
 
@@ -886,1205 +892,1698 @@
 
     </div>
 
-
-
-    <!-- =====================================================
-         FEEDBACK
-    ====================================================== -->
-
-    <div id="feedback">
-        ⭐ Great job! ⭐
-    </div>
+</div>
 
 
 
-    <!-- =====================================================
-         CONTROLES
-    ====================================================== -->
+<!-- =====================================================
+     FEEDBACK
+====================================================== -->
 
-    <div class="controls">
-
-        <button
-            type="button"
-            class="control-button"
-            id="leftButton"
-            aria-label="Move left"
-        >
-            ←
-        </button>
-
-
-        <button
-            type="button"
-            class="control-button continue-button"
-            id="continueButton"
-        >
-            Continue ➜
-        </button>
-
-
-        <button
-            type="button"
-            class="control-button"
-            id="rightButton"
-            aria-label="Move right"
-        >
-            →
-        </button>
-
-    </div>
+<div id="feedback">
+    ⭐ Great job! ⭐
+</div>
 
 
 
-    <script>
+<!-- =====================================================
+     CONTROLES
+====================================================== -->
 
-        /* =====================================================
-           ELEMENTOS
-        ====================================================== */
+<div class="controls">
 
-        const roomScroll =
-            document.getElementById("roomScroll");
-
-        const roomSizer =
-            document.getElementById("roomSizer");
-
-        const room =
-            document.getElementById("room");
-
-        const character =
-            document.getElementById("character");
-
-        const scoreElement =
-            document.getElementById("score");
-
-        const feedback =
-            document.getElementById("feedback");
-
-        const leftButton =
-            document.getElementById("leftButton");
-
-        const rightButton =
-            document.getElementById("rightButton");
-
-        const continueButton =
-            document.getElementById("continueButton");
+    <button
+        type="button"
+        class="control-button"
+        id="leftButton"
+        aria-label="Move left"
+    >
+        ←
+    </button>
 
 
+    <button
+        type="button"
+        class="control-button continue-button"
+        id="continueButton"
+    >
+        Continue ➜
+    </button>
 
-        /* =====================================================
-           PERSONAJE NIÑO / NIÑA
-        ====================================================== */
 
-        const selectedCharacter =
-            localStorage.getItem(
-                "myLittleEnglishCharacter"
-            );
+    <button
+        type="button"
+        class="control-button"
+        id="rightButton"
+        aria-label="Move right"
+    >
+        →
+    </button>
+
+</div>
+
+
+
+<script>
+
+    /* =====================================================
+       ELEMENTOS
+    ====================================================== */
+
+    const roomScroll =
+        document.getElementById("roomScroll");
+
+    const roomSizer =
+        document.getElementById("roomSizer");
+
+    const room =
+        document.getElementById("room");
+
+    const character =
+        document.getElementById("character");
+
+    const scoreElement =
+        document.getElementById("score");
+
+    const feedback =
+        document.getElementById("feedback");
+
+    const leftButton =
+        document.getElementById("leftButton");
+
+    const rightButton =
+        document.getElementById("rightButton");
+
+    const continueButton =
+        document.getElementById("continueButton");
+
+
+
+    /* =====================================================
+       PERSONAJE NIÑO / NIÑA
+    ====================================================== */
+
+    const selectedCharacter =
+        localStorage.getItem(
+            "myLittleEnglishCharacter"
+        );
+
+
+    if (
+        selectedCharacter === "girl" ||
+        selectedCharacter === "niña" ||
+        selectedCharacter === "nina"
+    ) {
+
+        character.src =
+            "{% static 'juego/images/personaje-niña.png' %}";
+
+        character.classList.add(
+            "girl-character"
+        );
+
+    } else {
+
+        character.src =
+            "{% static 'juego/images/personaje-niño.png' %}";
+
+        character.classList.remove(
+            "girl-character"
+        );
+
+    }
+
+
+
+    /* =====================================================
+       ZOOM
+    ====================================================== */
+
+    let zoom = 1;
+
+    const MIN_ZOOM = 0.55;
+
+    const MAX_ZOOM = 2.20;
+
+
+    function updateZoom() {
+
+        room.style.transform =
+            "scale(" + zoom + ")";
+
+
+        roomSizer.style.width =
+            (1536 * zoom) + "px";
+
+
+        roomSizer.style.height =
+            (1024 * zoom) + "px";
+
+    }
+
+
+    updateZoom();
+
+
+
+    /* =====================================================
+       MOVIMIENTO DEL PERSONAJE
+    ====================================================== */
+
+    let characterX = 120;
+
+    const movementSpeed = 7;
+
+
+    function getCharacterWidth() {
+
+        if (
+            character.classList.contains(
+                "girl-character"
+            )
+        ) {
+
+            return 220;
+
+        }
+
+        return 150;
+
+    }
+
+
+
+    function moveCharacter(direction) {
+
+        characterX +=
+            direction *
+            movementSpeed;
+
+
+        const characterWidth =
+            getCharacterWidth();
+
+
+        const maxX =
+            1536 -
+            characterWidth -
+            20;
+
+
+        if (characterX < 0) {
+
+            characterX = 0;
+
+        }
+
+
+        if (characterX > maxX) {
+
+            characterX = maxX;
+
+        }
+
+
+        character.style.left =
+            characterX + "px";
+
+
+        keepCharacterVisible();
+
+    }
+
+
+
+    /* =====================================================
+       MANTENER AL PERSONAJE VISIBLE
+    ====================================================== */
+
+    function keepCharacterVisible() {
+
+        const characterWidth =
+            getCharacterWidth();
+
+
+        const characterCenter =
+            (
+                characterX +
+                characterWidth / 2
+            ) * zoom;
+
+
+        const viewportWidth =
+            roomScroll.clientWidth;
+
+
+        const currentScroll =
+            roomScroll.scrollLeft;
+
+
+        const leftLimit =
+            currentScroll +
+            viewportWidth * 0.30;
+
+
+        const rightLimit =
+            currentScroll +
+            viewportWidth * 0.70;
 
 
         if (
-            selectedCharacter === "girl" ||
-            selectedCharacter === "niña" ||
-            selectedCharacter === "nina"
+            characterCenter >
+            rightLimit
         ) {
 
-            character.src =
-                "{% static 'juego/images/personaje-niña.png' %}";
+            roomScroll.scrollLeft +=
+                characterCenter -
+                rightLimit;
 
-            character.classList.add(
-                "girl-character"
+        }
+
+
+        if (
+            characterCenter <
+            leftLimit
+        ) {
+
+            roomScroll.scrollLeft -=
+                leftLimit -
+                characterCenter;
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       CAMINAR AUTOMÁTICAMENTE HACIA EL OBJETO
+       
+       EL PERSONAJE NO APARECE DE GOLPE.
+
+       CAMINA PASO A PASO HASTA QUEDAR
+       CERCA DEL OBJETO SELECCIONADO.
+    ====================================================== */
+
+    let automaticWalking = false;
+
+    let automaticWalkTimer = null;
+
+
+    function stopAutomaticWalking() {
+
+        automaticWalking = false;
+
+
+        if (
+            automaticWalkTimer !== null
+        ) {
+
+            clearInterval(
+                automaticWalkTimer
             );
+
+            automaticWalkTimer = null;
+
+        }
+
+    }
+
+
+
+    function walkToObject(hotspot) {
+
+        if (!hotspot) {
+
+            return;
+
+        }
+
+
+        stopAutomaticWalking();
+
+
+        /*
+         * Posición horizontal del objeto
+         * dentro de la cocina.
+         */
+
+        const objectLeft =
+            hotspot.offsetLeft;
+
+
+        const objectWidth =
+            hotspot.offsetWidth;
+
+
+        const objectRight =
+            objectLeft +
+            objectWidth;
+
+
+        const characterWidth =
+            getCharacterWidth();
+
+
+        /*
+         * Distancia que queremos dejar
+         * entre el personaje y el objeto.
+         */
+
+        const distanceFromObject = 25;
+
+
+        /*
+         * Centro del objeto.
+         */
+
+        const objectCenter =
+            objectLeft +
+            objectWidth / 2;
+
+
+        /*
+         * Centro actual del personaje.
+         */
+
+        const characterCenter =
+            characterX +
+            characterWidth / 2;
+
+
+        /*
+         * Si el personaje está a la izquierda
+         * del objeto, se coloca a la izquierda.
+         *
+         * Si está a la derecha, se coloca
+         * a la derecha.
+         */
+
+        let targetX;
+
+
+        if (
+            characterCenter <
+            objectCenter
+        ) {
+
+            targetX =
+                objectLeft -
+                characterWidth -
+                distanceFromObject;
 
         } else {
 
-            character.src =
-                "{% static 'juego/images/personaje-niño.png' %}";
-
-            character.classList.remove(
-                "girl-character"
-            );
+            targetX =
+                objectRight +
+                distanceFromObject;
 
         }
 
 
+        /*
+         * Si el objeto está muy cerca y el
+         * personaje ya está prácticamente allí,
+         * no hacemos un recorrido innecesario.
+         */
 
-        /* =====================================================
-           ZOOM
-        ====================================================== */
+        if (
+            Math.abs(
+                targetX -
+                characterX
+            ) < 5
+        ) {
 
-        let zoom = 1;
-
-        const MIN_ZOOM = 0.55;
-
-        const MAX_ZOOM = 2.20;
-
-
-        function updateZoom() {
-
-            room.style.transform =
-                "scale(" + zoom + ")";
-
-
-            roomSizer.style.width =
-                (1536 * zoom) + "px";
-
-
-            roomSizer.style.height =
-                (1024 * zoom) + "px";
-
-        }
-
-
-        updateZoom();
-
-
-
-        /* =====================================================
-           MOVIMIENTO DEL PERSONAJE
-        ====================================================== */
-
-        let characterX = 120;
-
-        const movementSpeed = 7;
-
-
-        function moveCharacter(direction) {
-
-            characterX +=
-                direction *
-                movementSpeed;
-
-
-            const maxX =
-                1536 -
-                character.offsetWidth -
-                20;
-
-
-            if (characterX < 0) {
-
-                characterX = 0;
-            }
-
-
-            if (characterX > maxX) {
-
-                characterX = maxX;
-            }
+            characterX =
+                Math.max(
+                    0,
+                    Math.min(
+                        1536 -
+                        characterWidth -
+                        20,
+                        targetX
+                    )
+                );
 
 
             character.style.left =
                 characterX + "px";
 
 
-            const viewportWidth =
-                roomScroll.clientWidth;
+            keepCharacterVisible();
 
-
-            const currentScroll =
-                roomScroll.scrollLeft;
-
-
-            const characterCenter =
-                (
-                    characterX +
-                    character.offsetWidth / 2
-                ) * zoom;
-
-
-            const leftLimit =
-                currentScroll +
-                viewportWidth * 0.30;
-
-
-            const rightLimit =
-                currentScroll +
-                viewportWidth * 0.70;
-
-
-            if (
-                characterCenter >
-                rightLimit
-            ) {
-
-                roomScroll.scrollLeft +=
-                    characterCenter -
-                    rightLimit;
-            }
-
-
-            if (
-                characterCenter <
-                leftLimit
-            ) {
-
-                roomScroll.scrollLeft -=
-                    leftLimit -
-                    characterCenter;
-            }
+            return;
 
         }
 
 
+        /*
+         * Asegurar que el objetivo quede
+         * dentro de la cocina.
+         */
 
-        /* =====================================================
-           BOTONES DEL PERSONAJE
-        ====================================================== */
+        targetX =
+            Math.max(
+                0,
+                Math.min(
+                    1536 -
+                    characterWidth -
+                    20,
+                    targetX
+                )
+            );
 
-        leftButton.addEventListener(
-            "pointerdown",
-            function(event) {
+
+        automaticWalking = true;
+
+
+        /*
+         * Velocidad de caminata automática.
+         *
+         * Es independiente de las flechas.
+         */
+
+        const automaticSpeed = 5;
+
+
+        automaticWalkTimer =
+            setInterval(
+                function() {
+
+                    if (
+                        !automaticWalking
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const difference =
+                        targetX -
+                        characterX;
+
+
+                    /*
+                     * Ya llegó.
+                     */
+
+                    if (
+                        Math.abs(
+                            difference
+                        ) <=
+                        automaticSpeed
+                    ) {
+
+                        characterX =
+                            targetX;
+
+
+                        character.style.left =
+                            characterX + "px";
+
+
+                        keepCharacterVisible();
+
+
+                        stopAutomaticWalking();
+
+                        return;
+
+                    }
+
+
+                    /*
+                     * Caminar hacia la izquierda.
+                     */
+
+                    if (
+                        difference < 0
+                    ) {
+
+                        characterX -=
+                            automaticSpeed;
+
+                    }
+
+
+                    /*
+                     * Caminar hacia la derecha.
+                     */
+
+                    else {
+
+                        characterX +=
+                            automaticSpeed;
+
+                    }
+
+
+                    /*
+                     * Límites de la cocina.
+                     */
+
+                    if (
+                        characterX < 0
+                    ) {
+
+                        characterX = 0;
+
+                    }
+
+
+                    const maxX =
+                        1536 -
+                        characterWidth -
+                        20;
+
+
+                    if (
+                        characterX >
+                        maxX
+                    ) {
+
+                        characterX =
+                            maxX;
+
+                    }
+
+
+                    character.style.left =
+                        characterX + "px";
+
+
+                    /*
+                     * La cámara acompaña al niño
+                     * mientras camina.
+                     */
+
+                    keepCharacterVisible();
+
+                },
+                16
+            );
+
+    }
+
+
+
+    /* =====================================================
+       BOTONES DEL PERSONAJE
+    ====================================================== */
+
+    leftButton.addEventListener(
+        "pointerdown",
+        function(event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+
+            /*
+             * Si estaba caminando automáticamente,
+             * las flechas toman el control.
+             */
+
+            stopAutomaticWalking();
+
+
+            moveCharacter(-1);
+
+        }
+    );
+
+
+    rightButton.addEventListener(
+        "pointerdown",
+        function(event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+
+            /*
+             * Si estaba caminando automáticamente,
+             * las flechas toman el control.
+             */
+
+            stopAutomaticWalking();
+
+
+            moveCharacter(1);
+
+        }
+    );
+
+
+
+    /* =====================================================
+       TECLADO
+    ====================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "ArrowLeft" ||
+                event.key.toLowerCase() === "a"
+            ) {
 
                 event.preventDefault();
 
-                event.stopPropagation();
+
+                stopAutomaticWalking();
+
 
                 moveCharacter(-1);
 
             }
-        );
 
 
-        rightButton.addEventListener(
-            "pointerdown",
-            function(event) {
+            if (
+                event.key === "ArrowRight" ||
+                event.key.toLowerCase() === "d"
+            ) {
 
                 event.preventDefault();
 
-                event.stopPropagation();
+
+                stopAutomaticWalking();
+
 
                 moveCharacter(1);
 
             }
-        );
-
-
-
-        /* =====================================================
-           TECLADO
-        ====================================================== */
-
-        document.addEventListener(
-            "keydown",
-            function(event) {
-
-                if (
-                    event.key === "ArrowLeft" ||
-                    event.key.toLowerCase() === "a"
-                ) {
-
-                    event.preventDefault();
-
-                    moveCharacter(-1);
-                }
-
-
-                if (
-                    event.key === "ArrowRight" ||
-                    event.key.toLowerCase() === "d"
-                ) {
-
-                    event.preventDefault();
-
-                    moveCharacter(1);
-                }
-
-            }
-        );
-
-
-
-        /* =====================================================
-           OBJETOS ENCONTRADOS
-        ====================================================== */
-
-        const storageKey =
-            "myKitchenFoundObjects";
-
-
-        let foundObjects = [];
-
-
-        try {
-
-            foundObjects =
-                JSON.parse(
-                    localStorage.getItem(
-                        storageKey
-                    )
-                ) || [];
-
-        } catch (error) {
-
-            foundObjects = [];
 
         }
+    );
 
 
 
-        /* =====================================================
-           ACTUALIZAR PUNTAJE
-        ====================================================== */
+    /* =====================================================
+       OBJETOS ENCONTRADOS
+    ====================================================== */
 
-        function updateScore() {
-
-            scoreElement.textContent =
-                foundObjects.length;
+    const storageKey =
+        "myKitchenFoundObjects";
 
 
-            document
-                .querySelectorAll(".hotspot")
-                .forEach(
-                    function(hotspot) {
-
-                        const objectName =
-                            hotspot.dataset.object;
+    let foundObjects = [];
 
 
-                        if (
-                            foundObjects.includes(
-                                objectName
-                            )
-                        ) {
+    try {
 
-                            hotspot.classList.add(
-                                "found"
-                            );
+        foundObjects =
+            JSON.parse(
+                localStorage.getItem(
+                    storageKey
+                )
+            ) || [];
 
-                        }
+    } catch (error) {
+
+        foundObjects = [];
+
+    }
+
+
+
+    /* =====================================================
+       ACTUALIZAR PUNTAJE
+    ====================================================== */
+
+    function updateScore() {
+
+        scoreElement.textContent =
+            foundObjects.length;
+
+
+        document
+            .querySelectorAll(".hotspot")
+            .forEach(
+                function(hotspot) {
+
+                    const objectName =
+                        hotspot.dataset.object;
+
+
+                    if (
+                        foundObjects.includes(
+                            objectName
+                        )
+                    ) {
+
+                        hotspot.classList.add(
+                            "found"
+                        );
 
                     }
-                );
+
+                }
+            );
+
+    }
+
+
+
+    /* =====================================================
+       ENCONTRAR OBJETO
+    ====================================================== */
+
+    function findObject(hotspot) {
+
+        if (!hotspot) {
+
+            return;
 
         }
 
 
+        const objectName =
+            hotspot.dataset.object;
 
-        /* =====================================================
-           ENCONTRAR OBJETO
-        ====================================================== */
-
-        function findObject(hotspot) {
-
-            if (!hotspot) {
-                return;
-            }
+        const word =
+            hotspot.dataset.word;
 
 
-            const objectName =
-                hotspot.dataset.object;
+        /*
+         * DETENER CUALQUIER MOVIMIENTO
+         * AUTOMÁTICO ANTERIOR.
+         */
 
-            const word =
-                hotspot.dataset.word;
-
-
-            /*
-             * LA VOZ AHORA PRONUNCIA
-             * SOLAMENTE EL NOMBRE.
-             */
-
-            if (
-                foundObjects.includes(
-                    objectName
-                )
-            ) {
-
-                speak(word);
-
-                showFeedback(
-                    "⭐ " + word + " ⭐"
-                );
-
-                return;
-            }
+        stopAutomaticWalking();
 
 
-            foundObjects.push(
+        /*
+         * HACER QUE EL PERSONAJE CAMINE
+         * HACIA EL OBJETO SELECCIONADO.
+         *
+         * Esto ocurre tanto la primera vez
+         * como si se vuelve a tocar el objeto.
+         */
+
+        walkToObject(
+            hotspot
+        );
+
+
+        /*
+         * LA VOZ AHORA PRONUNCIA
+         * SOLAMENTE EL NOMBRE.
+         */
+
+        if (
+            foundObjects.includes(
                 objectName
-            );
-
-
-            localStorage.setItem(
-                storageKey,
-                JSON.stringify(
-                    foundObjects
-                )
-            );
-
-
-            hotspot.classList.add(
-                "found"
-            );
-
-
-            updateScore();
-
-
-            /*
-             * SOLO LA PALABRA
-             */
+            )
+        ) {
 
             speak(word);
-
 
             showFeedback(
                 "⭐ " +
                 word +
-                "! ⭐"
+                " ⭐"
             );
 
+            return;
+
+        }
+
+
+        foundObjects.push(
+            objectName
+        );
+
+
+        localStorage.setItem(
+            storageKey,
+            JSON.stringify(
+                foundObjects
+            )
+        );
+
+
+        hotspot.classList.add(
+            "found"
+        );
+
+
+        updateScore();
+
+
+        /*
+         * SOLO LA PALABRA
+         */
+
+        speak(word);
+
+
+        showFeedback(
+            "⭐ " +
+            word +
+            "! ⭐"
+        );
+
+
+        if (
+            foundObjects.length >= 10
+        ) {
+
+            setTimeout(
+                function() {
+
+                    showFeedback(
+                        "🎉 Great job! You found all 10 objects! 🎉"
+                    );
+
+                },
+                1300
+            );
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       POINTER EVENTS
+
+       1 DEDO SOBRE OBJETO = SELECCIONAR
+
+       1 DEDO EN ZONA VACÍA = DESPLAZAR
+
+       2 DEDOS = ZOOM
+
+       IMPORTANTE:
+       SELECCIONAR UN OBJETO NO DESPLAZA
+       LA COCINA CON EL DEDO.
+    ====================================================== */
+
+    const activePointers =
+        new Map();
+
+
+    let draggingRoom = false;
+
+    let dragStartX = 0;
+
+    let dragStartY = 0;
+
+    let dragScrollLeft = 0;
+
+    let dragScrollTop = 0;
+
+    let dragMoved = false;
+
+    let activeHotspot = null;
+
+
+    let pinchStartDistance = 0;
+
+    let pinchStartZoom = 1;
+
+
+
+    function distanceBetween(
+        point1,
+        point2
+    ) {
+
+        const dx =
+            point2.clientX -
+            point1.clientX;
+
+        const dy =
+            point2.clientY -
+            point1.clientY;
+
+
+        return Math.sqrt(
+            dx * dx +
+            dy * dy
+        );
+
+    }
+
+
+
+    function centerBetween(
+        point1,
+        point2
+    ) {
+
+        return {
+
+            x:
+                (
+                    point1.clientX +
+                    point2.clientX
+                ) / 2,
+
+            y:
+                (
+                    point1.clientY +
+                    point2.clientY
+                ) / 2
+
+        };
+
+    }
+
+
+
+    /* =====================================================
+       POINTER DOWN
+    ====================================================== */
+
+    roomScroll.addEventListener(
+        "pointerdown",
+        function(event) {
 
             if (
-                foundObjects.length >= 10
+                event.pointerType === "mouse" &&
+                event.button !== 0
             ) {
 
-                setTimeout(
-                    function() {
-
-                        showFeedback(
-                            "🎉 Great job! You found all 10 objects! 🎉"
-                        );
-
-                    },
-                    1300
-                );
+                return;
 
             }
 
-        }
 
-
-
-        /* =====================================================
-           POINTER EVENTS
-           
-           1 DEDO SOBRE OBJETO = SELECCIONAR
-           
-           1 DEDO EN ZONA VACÍA = DESPLAZAR
-           
-           2 DEDOS = ZOOM
-        ====================================================== */
-
-        const activePointers =
-            new Map();
-
-
-        let draggingRoom = false;
-
-        let dragStartX = 0;
-
-        let dragStartY = 0;
-
-        let dragScrollLeft = 0;
-
-        let dragScrollTop = 0;
-
-        let dragMoved = false;
-
-        let activeHotspot = null;
-
-
-        let pinchStartDistance = 0;
-
-        let pinchStartZoom = 1;
-
-
-
-        function distanceBetween(
-            point1,
-            point2
-        ) {
-
-            const dx =
-                point2.clientX -
-                point1.clientX;
-
-            const dy =
-                point2.clientY -
-                point1.clientY;
-
-
-            return Math.sqrt(
-                dx * dx +
-                dy * dy
-            );
-
-        }
-
-
-
-        function centerBetween(
-            point1,
-            point2
-        ) {
-
-            return {
-
-                x:
-                    (
-                        point1.clientX +
-                        point2.clientX
-                    ) / 2,
-
-                y:
-                    (
-                        point1.clientY +
-                        point2.clientY
-                    ) / 2
-
-            };
-
-        }
-
-
-
-        /* =====================================================
-           POINTER DOWN
-        ====================================================== */
-
-        roomScroll.addEventListener(
-            "pointerdown",
-            function(event) {
-
-                if (
-                    event.pointerType === "mouse" &&
-                    event.button !== 0
-                ) {
-
-                    return;
-                }
-
-
-                activePointers.set(
-                    event.pointerId,
-                    event
-                );
-
-
-                const hotspot =
-                    event.target.closest(
-                        ".hotspot"
-                    );
-
-
-                /* -------------------------------------
-                   TOQUE SOBRE OBJETO
-                -------------------------------------- */
-
-                if (
-                    hotspot &&
-                    activePointers.size === 1
-                ) {
-
-                    activeHotspot =
-                        hotspot;
-
-                    draggingRoom = false;
-
-                    dragMoved = false;
-
-
-                    dragStartX =
-                        event.clientX;
-
-                    dragStartY =
-                        event.clientY;
-
-
-                    return;
-                }
-
-
-                /* -------------------------------------
-                   TOQUE EN ZONA VACÍA
-                -------------------------------------- */
-
-                if (
-                    activePointers.size === 1
-                ) {
-
-                    activeHotspot = null;
-
-                    draggingRoom = true;
-
-                    dragMoved = false;
-
-
-                    dragStartX =
-                        event.clientX;
-
-                    dragStartY =
-                        event.clientY;
-
-
-                    dragScrollLeft =
-                        roomScroll.scrollLeft;
-
-                    dragScrollTop =
-                        roomScroll.scrollTop;
-
-                }
-
-
-                /* -------------------------------------
-                   DOS DEDOS
-                -------------------------------------- */
-
-                if (
-                    activePointers.size === 2
-                ) {
-
-                    draggingRoom = false;
-
-                    activeHotspot = null;
-
-                    dragMoved = true;
-
-
-                    const points =
-                        Array.from(
-                            activePointers.values()
-                        );
-
-
-                    pinchStartDistance =
-                        distanceBetween(
-                            points[0],
-                            points[1]
-                        );
-
-
-                    pinchStartZoom =
-                        zoom;
-
-                }
-
-            },
-            {
-                passive: false
-            }
-        );
-
-
-
-        /* =====================================================
-           POINTER MOVE
-        ====================================================== */
-
-        roomScroll.addEventListener(
-            "pointermove",
-            function(event) {
-
-                if (
-                    !activePointers.has(
-                        event.pointerId
-                    )
-                ) {
-
-                    return;
-                }
-
-
-                activePointers.set(
-                    event.pointerId,
-                    event
-                );
-
-
-                /* -------------------------------------
-                   DOS DEDOS = ZOOM
-                -------------------------------------- */
-
-                if (
-                    activePointers.size >= 2
-                ) {
-
-                    event.preventDefault();
-
-
-                    const points =
-                        Array.from(
-                            activePointers.values()
-                        );
-
-
-                    const currentDistance =
-                        distanceBetween(
-                            points[0],
-                            points[1]
-                        );
-
-
-                    if (
-                        pinchStartDistance <= 0
-                    ) {
-
-                        return;
-                    }
-
-
-                    let newZoom =
-                        pinchStartZoom *
-                        (
-                            currentDistance /
-                            pinchStartDistance
-                        );
-
-
-                    newZoom =
-                        Math.max(
-                            MIN_ZOOM,
-                            Math.min(
-                                MAX_ZOOM,
-                                newZoom
-                            )
-                        );
-
-
-                    const oldZoom =
-                        zoom;
-
-
-                    const center =
-                        centerBetween(
-                            points[0],
-                            points[1]
-                        );
-
-
-                    const contentX =
-                        (
-                            roomScroll.scrollLeft +
-                            center.x
-                        ) / oldZoom;
-
-
-                    const contentY =
-                        (
-                            roomScroll.scrollTop +
-                            center.y
-                        ) / oldZoom;
-
-
-                    zoom =
-                        newZoom;
-
-
-                    updateZoom();
-
-
-                    roomScroll.scrollLeft =
-                        (
-                            contentX *
-                            zoom
-                        ) -
-                        center.x;
-
-
-                    roomScroll.scrollTop =
-                        (
-                            contentY *
-                            zoom
-                        ) -
-                        center.y;
-
-
-                    return;
-                }
-
-
-
-                /* -------------------------------------
-                   UN DEDO = DESPLAZAMIENTO
-                -------------------------------------- */
-
-                if (
-                    activePointers.size === 1 &&
-                    draggingRoom
-                ) {
-
-                    event.preventDefault();
-
-
-                    const deltaX =
-                        event.clientX -
-                        dragStartX;
-
-
-                    const deltaY =
-                        event.clientY -
-                        dragStartY;
-
-
-                    if (
-                        Math.abs(deltaX) > 8 ||
-                        Math.abs(deltaY) > 8
-                    ) {
-
-                        dragMoved = true;
-
-                    }
-
-
-                    roomScroll.scrollLeft =
-                        dragScrollLeft -
-                        deltaX;
-
-
-                    roomScroll.scrollTop =
-                        dragScrollTop -
-                        deltaY;
-
-                }
-
-
-
-                /* -------------------------------------
-                   DEDO SOBRE OBJETO
-                -------------------------------------- */
-
-                if (
-                    activeHotspot &&
-                    activePointers.size === 1
-                ) {
-
-                    const deltaX =
-                        event.clientX -
-                        dragStartX;
-
-
-                    const deltaY =
-                        event.clientY -
-                        dragStartY;
-
-
-                    if (
-                        Math.abs(deltaX) > 10 ||
-                        Math.abs(deltaY) > 10
-                    ) {
-
-                        dragMoved = true;
-
-                    }
-
-                }
-
-            },
-            {
-                passive: false
-            }
-        );
-
-
-
-        /* =====================================================
-           POINTER UP
-        ====================================================== */
-
-        roomScroll.addEventListener(
-            "pointerup",
-            function(event) {
-
-                const selectedHotspot =
-                    activeHotspot;
-
-
-                const moved =
-                    dragMoved;
-
-
-                activePointers.delete(
-                    event.pointerId
-                );
-
-
-                /*
-                 * TOQUE CORTO:
-                 * SELECCIONAR OBJETO
-                 */
-
-                if (
-                    selectedHotspot &&
-                    !moved &&
-                    activePointers.size === 0
-                ) {
-
-                    findObject(
-                        selectedHotspot
-                    );
-
-                }
-
-
-                if (
-                    activePointers.size === 0
-                ) {
-
-                    draggingRoom = false;
-
-                    activeHotspot = null;
-
-                    dragMoved = false;
-
-                    pinchStartDistance = 0;
-
-                }
-
-
-                /*
-                 * SI QUEDA UN DEDO
-                 * DESPUÉS DEL ZOOM
-                 */
-
-                if (
-                    activePointers.size === 1
-                ) {
-
-                    const remaining =
-                        Array.from(
-                            activePointers.values()
-                        )[0];
-
-
-                    draggingRoom = true;
-
-                    activeHotspot = null;
-
-                    dragMoved = false;
-
-
-                    dragStartX =
-                        remaining.clientX;
-
-                    dragStartY =
-                        remaining.clientY;
-
-
-                    dragScrollLeft =
-                        roomScroll.scrollLeft;
-
-                    dragScrollTop =
-                        roomScroll.scrollTop;
-
-                }
-
-            },
-            {
-                passive: false
-            }
-        );
-
-
-
-        /* =====================================================
-           POINTER CANCEL
-        ====================================================== */
-
-        roomScroll.addEventListener(
-            "pointercancel",
-            function(event) {
-
-                activePointers.delete(
-                    event.pointerId
-                );
-
-
-                if (
-                    activePointers.size === 0
-                ) {
-
-                    draggingRoom = false;
-
-                    activeHotspot = null;
-
-                    dragMoved = false;
-
-                }
-
-            }
-        );
-
-
-
-        /* =====================================================
-           EVITAR ARRASTRE DE IMÁGENES
-        ====================================================== */
-
-        document
-            .querySelectorAll("img")
-            .forEach(
-                function(image) {
-
-                    image.addEventListener(
-                        "dragstart",
-                        function(event) {
-
-                            event.preventDefault();
-
-                        }
-                    );
-
+            activePointers.set(
+                event.pointerId,
+                {
+                    clientX:
+                        event.clientX,
+
+                    clientY:
+                        event.clientY
                 }
             );
 
 
+            const hotspot =
+                event.target.closest(
+                    ".hotspot"
+                );
 
-        /* =====================================================
-           VOZ
-        ====================================================== */
 
-        function speak(text) {
+            /* -------------------------------------
+               TOQUE SOBRE OBJETO
+            -------------------------------------- */
 
             if (
-                !(
-                    "speechSynthesis"
-                    in window
+                hotspot &&
+                activePointers.size === 1
+            ) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+
+                activeHotspot =
+                    hotspot;
+
+
+                draggingRoom =
+                    false;
+
+
+                dragMoved =
+                    false;
+
+
+                dragStartX =
+                    event.clientX;
+
+
+                dragStartY =
+                    event.clientY;
+
+
+                return;
+
+            }
+
+
+            /* -------------------------------------
+               TOQUE EN ZONA VACÍA
+            -------------------------------------- */
+
+            if (
+                activePointers.size === 1
+            ) {
+
+                activeHotspot =
+                    null;
+
+
+                draggingRoom =
+                    true;
+
+
+                dragMoved =
+                    false;
+
+
+                dragStartX =
+                    event.clientX;
+
+
+                dragStartY =
+                    event.clientY;
+
+
+                dragScrollLeft =
+                    roomScroll.scrollLeft;
+
+
+                dragScrollTop =
+                    roomScroll.scrollTop;
+
+            }
+
+
+            /* -------------------------------------
+               DOS DEDOS
+            -------------------------------------- */
+
+            if (
+                activePointers.size === 2
+            ) {
+
+                event.preventDefault();
+
+
+                draggingRoom =
+                    false;
+
+
+                activeHotspot =
+                    null;
+
+
+                dragMoved =
+                    true;
+
+
+                const points =
+                    Array.from(
+                        activePointers.values()
+                    );
+
+
+                pinchStartDistance =
+                    distanceBetween(
+                        points[0],
+                        points[1]
+                    );
+
+
+                pinchStartZoom =
+                    zoom;
+
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+
+    /* =====================================================
+       POINTER MOVE
+    ====================================================== */
+
+    roomScroll.addEventListener(
+        "pointermove",
+        function(event) {
+
+            if (
+                !activePointers.has(
+                    event.pointerId
                 )
             ) {
 
                 return;
+
             }
 
 
-            window.speechSynthesis.cancel();
+            activePointers.set(
+                event.pointerId,
+                {
+                    clientX:
+                        event.clientX,
+
+                    clientY:
+                        event.clientY
+                }
+            );
 
 
-            const utterance =
-                new SpeechSynthesisUtterance(
-                    text
+            /* -------------------------------------
+               DOS DEDOS = ZOOM
+            -------------------------------------- */
+
+            if (
+                activePointers.size >= 2
+            ) {
+
+                event.preventDefault();
+
+
+                const points =
+                    Array.from(
+                        activePointers.values()
+                    );
+
+
+                const currentDistance =
+                    distanceBetween(
+                        points[0],
+                        points[1]
+                    );
+
+
+                if (
+                    pinchStartDistance <= 0
+                ) {
+
+                    return;
+
+                }
+
+
+                let newZoom =
+                    pinchStartZoom *
+                    (
+                        currentDistance /
+                        pinchStartDistance
+                    );
+
+
+                newZoom =
+                    Math.max(
+                        MIN_ZOOM,
+                        Math.min(
+                            MAX_ZOOM,
+                            newZoom
+                        )
+                    );
+
+
+                const oldZoom =
+                    zoom;
+
+
+                const center =
+                    centerBetween(
+                        points[0],
+                        points[1]
+                    );
+
+
+                const contentX =
+                    (
+                        roomScroll.scrollLeft +
+                        center.x
+                    ) / oldZoom;
+
+
+                const contentY =
+                    (
+                        roomScroll.scrollTop +
+                        center.y
+                    ) / oldZoom;
+
+
+                zoom =
+                    newZoom;
+
+
+                updateZoom();
+
+
+                roomScroll.scrollLeft =
+                    (
+                        contentX *
+                        zoom
+                    ) -
+                    center.x;
+
+
+                roomScroll.scrollTop =
+                    (
+                        contentY *
+                        zoom
+                    ) -
+                    center.y;
+
+
+                return;
+
+            }
+
+
+
+            /* -------------------------------------
+               UN DEDO = DESPLAZAMIENTO
+               
+               SOLO SI NO HAY HOTSPOT ACTIVO.
+            -------------------------------------- */
+
+            if (
+                activePointers.size === 1 &&
+                draggingRoom &&
+                !activeHotspot
+            ) {
+
+                event.preventDefault();
+
+
+                const deltaX =
+                    event.clientX -
+                    dragStartX;
+
+
+                const deltaY =
+                    event.clientY -
+                    dragStartY;
+
+
+                if (
+                    Math.abs(deltaX) > 8 ||
+                    Math.abs(deltaY) > 8
+                ) {
+
+                    dragMoved =
+                        true;
+
+                }
+
+
+                roomScroll.scrollLeft =
+                    dragScrollLeft -
+                    deltaX;
+
+
+                roomScroll.scrollTop =
+                    dragScrollTop -
+                    deltaY;
+
+            }
+
+
+
+            /* -------------------------------------
+               DEDO SOBRE OBJETO
+
+               NO MUEVE LA COCINA.
+            -------------------------------------- */
+
+            if (
+                activeHotspot &&
+                activePointers.size === 1
+            ) {
+
+                const deltaX =
+                    event.clientX -
+                    dragStartX;
+
+
+                const deltaY =
+                    event.clientY -
+                    dragStartY;
+
+
+                if (
+                    Math.abs(deltaX) > 10 ||
+                    Math.abs(deltaY) > 10
+                ) {
+
+                    dragMoved =
+                        true;
+
+                }
+
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+
+    /* =====================================================
+       POINTER UP
+    ====================================================== */
+
+    roomScroll.addEventListener(
+        "pointerup",
+        function(event) {
+
+            const selectedHotspot =
+                activeHotspot;
+
+
+            const moved =
+                dragMoved;
+
+
+            activePointers.delete(
+                event.pointerId
+            );
+
+
+            /*
+             * TOQUE CORTO:
+             * SELECCIONAR OBJETO
+             */
+
+            if (
+                selectedHotspot &&
+                !moved &&
+                activePointers.size === 0
+            ) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+
+                findObject(
+                    selectedHotspot
                 );
 
-
-            utterance.lang =
-                "en-US";
+            }
 
 
-            utterance.rate =
-                0.72;
+            if (
+                activePointers.size === 0
+            ) {
+
+                draggingRoom =
+                    false;
 
 
-            utterance.pitch =
-                1.08;
+                activeHotspot =
+                    null;
 
 
-            const voices =
-                window.speechSynthesis
-                    .getVoices();
+                dragMoved =
+                    false;
 
 
-            const englishVoice =
-                voices.find(
-                    function(voice) {
+                pinchStartDistance =
+                    0;
 
-                        return (
-                            voice.lang &&
-                            voice.lang
-                                .toLowerCase()
-                                .startsWith("en")
-                        );
+            }
+
+
+            /*
+             * SI QUEDA UN DEDO
+             * DESPUÉS DEL ZOOM
+             */
+
+            if (
+                activePointers.size === 1
+            ) {
+
+                const remaining =
+                    Array.from(
+                        activePointers.values()
+                    )[0];
+
+
+                draggingRoom =
+                    true;
+
+
+                activeHotspot =
+                    null;
+
+
+                dragMoved =
+                    false;
+
+
+                dragStartX =
+                    remaining.clientX;
+
+
+                dragStartY =
+                    remaining.clientY;
+
+
+                dragScrollLeft =
+                    roomScroll.scrollLeft;
+
+
+                dragScrollTop =
+                    roomScroll.scrollTop;
+
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+
+    /* =====================================================
+       POINTER CANCEL
+    ====================================================== */
+
+    roomScroll.addEventListener(
+        "pointercancel",
+        function(event) {
+
+            activePointers.delete(
+                event.pointerId
+            );
+
+
+            if (
+                activePointers.size === 0
+            ) {
+
+                draggingRoom =
+                    false;
+
+
+                activeHotspot =
+                    null;
+
+
+                dragMoved =
+                    false;
+
+
+                pinchStartDistance =
+                    0;
+
+            }
+
+        }
+    );
+
+
+
+    /* =====================================================
+       EVITAR ARRASTRE DE IMÁGENES
+    ====================================================== */
+
+    document
+        .querySelectorAll("img")
+        .forEach(
+            function(image) {
+
+                image.addEventListener(
+                    "dragstart",
+                    function(event) {
+
+                        event.preventDefault();
 
                     }
                 );
 
-
-            if (
-                englishVoice
-            ) {
-
-                utterance.voice =
-                    englishVoice;
-
             }
-
-
-            window.speechSynthesis.speak(
-                utterance
-            );
-
-        }
+        );
 
 
 
-        /* =====================================================
-           FEEDBACK
-        ====================================================== */
+    /* =====================================================
+       VOZ
+    ====================================================== */
 
-        let feedbackTimer;
+    function speak(text) {
 
-
-        function showFeedback(
-            message
+        if (
+            !(
+                "speechSynthesis"
+                in window
+            )
         ) {
 
-            feedback.textContent =
-                message;
-
-
-            feedback.classList.add(
-                "show"
-            );
-
-
-            clearTimeout(
-                feedbackTimer
-            );
-
-
-            feedbackTimer =
-                setTimeout(
-                    function() {
-
-                        feedback.classList.remove(
-                            "show"
-                        );
-
-                    },
-                    1300
-                );
+            return;
 
         }
 
 
+        window.speechSynthesis.cancel();
 
-        /* =====================================================
-           CONTINUAR
-        ====================================================== */
 
-        continueButton.addEventListener(
-            "pointerdown",
-            function(event) {
+        const utterance =
+            new SpeechSynthesisUtterance(
+                text
+            );
 
-                event.preventDefault();
 
-                event.stopPropagation();
+        utterance.lang =
+            "en-US";
 
-            }
+
+        utterance.rate =
+            0.72;
+
+
+        utterance.pitch =
+            1.08;
+
+
+        const voices =
+            window.speechSynthesis
+                .getVoices();
+
+
+        const englishVoice =
+            voices.find(
+                function(voice) {
+
+                    return (
+                        voice.lang &&
+                        voice.lang
+                            .toLowerCase()
+                            .startsWith("en")
+                    );
+
+                }
+            );
+
+
+        if (
+            englishVoice
+        ) {
+
+            utterance.voice =
+                englishVoice;
+
+        }
+
+
+        window.speechSynthesis.speak(
+            utterance
+        );
+
+    }
+
+
+
+    /* =====================================================
+       FEEDBACK
+    ====================================================== */
+
+    let feedbackTimer;
+
+
+    function showFeedback(
+        message
+    ) {
+
+        feedback.textContent =
+            message;
+
+
+        feedback.classList.add(
+            "show"
         );
 
 
-        continueButton.addEventListener(
-            "click",
-            function(event) {
-
-                event.preventDefault();
-
-                event.stopPropagation();
-
-
-                window.location.href =
-                    "/habitacion/";
-
-            }
+        clearTimeout(
+            feedbackTimer
         );
 
 
+        feedbackTimer =
+            setTimeout(
+                function() {
 
-        /* =====================================================
-           CARGAR PUNTAJE
-        ====================================================== */
+                    feedback.classList.remove(
+                        "show"
+                    );
 
-        updateScore();
+                },
+                1300
+            );
 
-    </script>
+    }
+
+
+
+    /* =====================================================
+       CONTINUAR
+    ====================================================== */
+
+    continueButton.addEventListener(
+        "pointerdown",
+        function(event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+        }
+    );
+
+
+    continueButton.addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+
+            window.location.href =
+                "/habitacion/";
+
+        }
+    );
+
+
+
+    /* =====================================================
+       CARGAR PUNTAJE
+    ====================================================== */
+
+    updateScore();
+
+</script>
+```
 
 </body>
 
