@@ -1,7 +1,9 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -11,6 +13,7 @@
 
     <title>My Little English - My Kitchen</title>
 
+
     <style>
 
         * {
@@ -18,8 +21,10 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+
         html,
         body {
+
             margin: 0;
             padding: 0;
 
@@ -30,17 +35,18 @@
 
             font-family: Arial, sans-serif;
 
-            background: #ddd;
+            background: #dcdcdc;
 
             touch-action: none;
         }
 
 
-        /* =========================================
+        /* =====================================================
            BARRA SUPERIOR
-        ========================================= */
+        ====================================================== */
 
         .top-bar {
+
             position: fixed;
 
             top: 0;
@@ -49,10 +55,12 @@
             width: 100%;
             height: 72px;
 
-            z-index: 3000;
+            z-index: 5000;
 
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
 
             padding: 0 20px;
@@ -67,19 +75,24 @@
             color: #4a3000;
 
             box-shadow:
-                0 3px 10px rgba(0, 0, 0, 0.20);
+                0 3px 10px rgba(0,0,0,0.20);
         }
 
 
         .game-title {
+
             font-size: 26px;
+
             font-weight: bold;
+
             white-space: nowrap;
         }
 
 
         .mission {
+
             font-size: 18px;
+
             font-weight: bold;
 
             text-align: center;
@@ -87,18 +100,22 @@
 
 
         .stars {
+
             font-size: 20px;
+
             font-weight: bold;
 
             white-space: nowrap;
         }
 
 
-        /* =========================================
+
+        /* =====================================================
            CONTENEDOR DEL JUEGO
-        ========================================= */
+        ====================================================== */
 
         .game-container {
+
             position: fixed;
 
             top: 72px;
@@ -108,21 +125,23 @@
 
             overflow: hidden;
 
-            background: #ddd;
+            background: #dcdcdc;
 
             touch-action: none;
         }
 
 
-        /* =========================================
-           VENTANA DE LA HABITACIÓN
-        ========================================= */
 
-        .room-scroll {
+        /* =====================================================
+           ÁREA DE DESPLAZAMIENTO
+        ====================================================== */
+
+        #roomScroll {
+
             position: absolute;
 
-            top: 0;
             left: 0;
+            top: 0;
 
             width: 100%;
             height: 100%;
@@ -131,25 +150,28 @@
 
             scrollbar-width: none;
 
-            -webkit-overflow-scrolling: touch;
+            -ms-overflow-style: none;
 
             touch-action: none;
 
             overscroll-behavior: none;
+
+            -webkit-overflow-scrolling: touch;
         }
 
 
-        .room-scroll::-webkit-scrollbar {
+        #roomScroll::-webkit-scrollbar {
             display: none;
         }
 
 
-        /* =========================================
-           CONTENEDOR QUE DEFINE EL TAMAÑO REAL
-           DESPUÉS DEL ZOOM
-        ========================================= */
+
+        /* =====================================================
+           TAMAÑO REAL DE LA COCINA
+        ====================================================== */
 
         #roomSizer {
+
             position: relative;
 
             width: 1536px;
@@ -159,11 +181,13 @@
         }
 
 
-        /* =========================================
-           HABITACIÓN
-        ========================================= */
 
-        .room {
+        /* =====================================================
+           IMAGEN / HABITACIÓN
+        ====================================================== */
+
+        #room {
+
             position: absolute;
 
             left: 0;
@@ -177,19 +201,23 @@
             background-image:
                 url("{% static 'juego/images/my-kitchen.jpeg' %}");
 
-            background-size: 1536px 1024px;
+            background-size:
+                1536px 1024px;
 
             background-repeat: no-repeat;
 
-            background-position: top left;
+            background-position:
+                top left;
         }
 
 
-        /* =========================================
+
+        /* =====================================================
            PERSONAJE
-        ========================================= */
+        ====================================================== */
 
         #character {
+
             position: absolute;
 
             left: 120px;
@@ -200,16 +228,18 @@
 
             object-fit: contain;
 
-            z-index: 100;
-
-            user-select: none;
-            -webkit-user-select: none;
+            z-index: 300;
 
             pointer-events: none;
+
+            user-select: none;
+
+            -webkit-user-select: none;
         }
 
 
         #character.girl-character {
+
             width: 220px;
             height: 300px;
 
@@ -217,187 +247,206 @@
         }
 
 
-        /* =========================================
-           OBJETOS
-        ========================================= */
+
+        /* =====================================================
+           ZONAS DE LOS OBJETOS
+        ====================================================== */
 
         .hotspot {
+
             position: absolute;
+
+            z-index: 1000;
+
+            display: block;
 
             cursor: pointer;
 
-            z-index: 50;
+            background:
+                transparent;
 
-            border-radius: 20px;
+            border-radius: 22px;
 
             user-select: none;
+
             -webkit-user-select: none;
 
             touch-action: none;
 
-            transition:
-                background 0.2s ease,
-                box-shadow 0.2s ease;
-        }
+            pointer-events: auto;
 
-
-        .hotspot:hover {
-            background:
-                rgba(255, 255, 0, 0.12);
+            -webkit-touch-callout: none;
         }
 
 
         .hotspot.found {
+
             background:
-                rgba(76, 175, 80, 0.25);
+                rgba(76,175,80,0.25);
 
             box-shadow:
-                0 0 0 4px rgba(76, 175, 80, 0.50),
-                0 0 20px rgba(76, 175, 80, 0.80);
+                0 0 0 4px rgba(76,175,80,0.60),
+                0 0 22px rgba(76,175,80,0.80);
         }
 
 
-        /* =========================================
-           1. APPLE
-        ========================================= */
+
+        /* =====================================================
+           APPLE
+        ====================================================== */
 
         .apple {
-            left: 815px;
-            top: 570px;
 
-            width: 115px;
-            height: 105px;
-        }
-
-
-        /* =========================================
-           2. BREAD
-        ========================================= */
-
-        .bread {
-            left: 900px;
-            top: 535px;
-
-            width: 180px;
-            height: 120px;
-        }
-
-
-        /* =========================================
-           3. EGGS
-        ========================================= */
-
-        .eggs {
-            left: 1080px;
-            top: 565px;
-
-            width: 135px;
-            height: 105px;
-        }
-
-
-        /* =========================================
-           4. CUP
-        ========================================= */
-
-        .cup {
-            left: 1060px;
-            top: 650px;
-
-            width: 105px;
-            height: 105px;
-        }
-
-
-        /* =========================================
-           5. BOWL
-        ========================================= */
-
-        .bowl {
-            left: 1190px;
-            top: 660px;
+            left: 790px;
+            top: 555px;
 
             width: 150px;
-            height: 115px;
+            height: 135px;
         }
 
 
-        /* =========================================
-           6. GLASS
-        ========================================= */
 
-        .glass {
-            left: 1310px;
-            top: 660px;
+        /* =====================================================
+           BREAD
+        ====================================================== */
 
-            width: 100px;
+        .bread {
+
+            left: 875px;
+            top: 520px;
+
+            width: 205px;
             height: 145px;
         }
 
 
-        /* =========================================
-           7. SPOON
-        ========================================= */
+
+        /* =====================================================
+           EGGS
+        ====================================================== */
+
+        .eggs {
+
+            left: 1050px;
+            top: 545px;
+
+            width: 165px;
+            height: 140px;
+        }
+
+
+
+        /* =====================================================
+           CUP
+        ====================================================== */
+
+        .cup {
+
+            left: 1035px;
+            top: 635px;
+
+            width: 135px;
+            height: 135px;
+        }
+
+
+
+        /* =====================================================
+           BOWL
+        ====================================================== */
+
+        .bowl {
+
+            left: 1170px;
+            top: 635px;
+
+            width: 175px;
+            height: 145px;
+        }
+
+
+
+        /* =====================================================
+           GLASS
+        ====================================================== */
+
+        .glass {
+
+            left: 1285px;
+            top: 640px;
+
+            width: 140px;
+            height: 175px;
+        }
+
+
+
+        /* =====================================================
+           SPOON
+        ====================================================== */
 
         .spoon {
-            left: 930px;
-            top: 675px;
 
-            width: 85px;
-            height: 155px;
+            left: 905px;
+            top: 650px;
 
-            transform: rotate(-25deg);
+            width: 115px;
+            height: 180px;
         }
 
 
-        /* =========================================
-           8. FORK
-        ========================================= */
+
+        /* =====================================================
+           FORK
+        ====================================================== */
 
         .fork {
-            left: 1000px;
-            top: 675px;
 
-            width: 85px;
-            height: 155px;
+            left: 975px;
+            top: 650px;
 
-            transform: rotate(-25deg);
+            width: 115px;
+            height: 180px;
         }
 
 
-        /* =========================================
-           9. KNIFE
-        ========================================= */
+
+        /* =====================================================
+           KNIFE
+        ====================================================== */
 
         .knife {
-            left: 1070px;
-            top: 670px;
 
-            width: 85px;
-            height: 160px;
+            left: 1040px;
+            top: 650px;
 
-            transform: rotate(-25deg);
+            width: 115px;
+            height: 185px;
         }
 
 
-        /* =========================================
-           10. REFRIGERATOR
-        ========================================= */
+
+        /* =====================================================
+           REFRIGERATOR
+        ====================================================== */
 
         .refrigerator {
-            left: 90px;
-            top: 25px;
 
-            width: 225px;
-            height: 825px;
+            left: 65px;
+            top: 15px;
+
+            width: 260px;
+            height: 850px;
         }
 
 
-        /* =========================================
-           FEEDBACK
-        ========================================= */
+
+        /* =====================================================
+           MENSAJE
+        ====================================================== */
 
         #feedback {
+
             position: fixed;
 
             top: 50%;
@@ -405,27 +454,31 @@
 
             transform:
                 translate(-50%, -50%)
-                scale(0.8);
+                scale(0.80);
 
-            z-index: 4000;
+            z-index: 6000;
+
+            width: max-content;
+
+            max-width: 90%;
 
             padding: 25px 40px;
 
-            width: max-content;
-            max-width: 90%;
-
             background:
-                rgba(255, 255, 255, 0.97);
+                rgba(255,255,255,0.97);
 
             border-radius: 25px;
 
             box-shadow:
-                0 10px 40px rgba(0, 0, 0, 0.30);
+                0 10px 40px rgba(0,0,0,0.30);
 
             font-size: 32px;
+
             font-weight: bold;
 
             color: #198754;
+
+            text-align: center;
 
             opacity: 0;
 
@@ -434,12 +487,11 @@
             transition:
                 opacity 0.25s ease,
                 transform 0.25s ease;
-
-            text-align: center;
         }
 
 
         #feedback.show {
+
             opacity: 1;
 
             transform:
@@ -448,11 +500,13 @@
         }
 
 
-        /* =========================================
+
+        /* =====================================================
            CONTROLES
-        ========================================= */
+        ====================================================== */
 
         .controls {
+
             position: fixed;
 
             left: 0;
@@ -460,11 +514,12 @@
 
             bottom: 18px;
 
-            z-index: 3500;
+            z-index: 5500;
 
             display: flex;
 
             justify-content: center;
+
             align-items: center;
 
             gap: 15px;
@@ -474,6 +529,7 @@
 
 
         .control-button {
+
             pointer-events: auto;
 
             width: 65px;
@@ -488,14 +544,16 @@
             color: white;
 
             font-size: 30px;
+
             font-weight: bold;
 
             box-shadow:
-                0 5px 12px rgba(0, 0, 0, 0.25);
+                0 5px 12px rgba(0,0,0,0.25);
 
             cursor: pointer;
 
             user-select: none;
+
             -webkit-user-select: none;
 
             touch-action: manipulation;
@@ -503,11 +561,13 @@
 
 
         .control-button:active {
+
             transform: scale(0.92);
         }
 
 
         .continue-button {
+
             width: auto;
 
             min-width: 150px;
@@ -524,13 +584,15 @@
         }
 
 
-        /* =========================================
+
+        /* =====================================================
            CELULAR
-        ========================================= */
+        ====================================================== */
 
         @media (max-width: 700px) {
 
             .top-bar {
+
                 height: 60px;
 
                 padding: 0 10px;
@@ -538,26 +600,31 @@
 
 
             .game-container {
+
                 top: 60px;
             }
 
 
             .game-title {
+
                 font-size: 17px;
             }
 
 
             .mission {
+
                 font-size: 13px;
             }
 
 
             .stars {
+
                 font-size: 14px;
             }
 
 
             .control-button {
+
                 width: 58px;
                 height: 58px;
 
@@ -566,6 +633,7 @@
 
 
             .continue-button {
+
                 min-width: 125px;
 
                 height: 52px;
@@ -577,6 +645,7 @@
 
 
             .controls {
+
                 bottom: 10px;
 
                 gap: 8px;
@@ -584,6 +653,7 @@
 
 
             #feedback {
+
                 width: 85%;
 
                 padding: 20px;
@@ -591,18 +661,37 @@
                 font-size: 24px;
             }
 
+
+            #character {
+
+                width: 150px;
+                height: 205px;
+
+                bottom: 45px;
+            }
+
+
+            #character.girl-character {
+
+                width: 220px;
+                height: 300px;
+
+                bottom: 15px;
+            }
+
         }
 
     </style>
+
 </head>
 
 
 <body>
 
 
-    <!-- =========================================
+    <!-- =====================================================
          BARRA SUPERIOR
-    ========================================== -->
+    ====================================================== -->
 
     <div class="top-bar">
 
@@ -624,30 +713,22 @@
 
 
 
-    <!-- =========================================
+    <!-- =====================================================
          JUEGO
-    ========================================== -->
+    ====================================================== -->
 
     <div class="game-container">
 
-        <div
-            id="roomScroll"
-            class="room-scroll"
-        >
+        <div id="roomScroll">
 
-            <div
-                id="roomSizer"
-            >
+            <div id="roomSizer">
 
-                <div
-                    id="room"
-                    class="room"
-                >
+                <div id="room">
 
 
-                    <!-- =================================
+                    <!-- =================================================
                          PERSONAJE
-                    ================================== -->
+                    ================================================== -->
 
                     <img
                         id="character"
@@ -658,9 +739,9 @@
 
 
 
-                    <!-- =================================
-                         1. APPLE
-                    ================================== -->
+                    <!-- =================================================
+                         APPLE
+                    ================================================== -->
 
                     <div
                         class="hotspot apple"
@@ -672,9 +753,9 @@
 
 
 
-                    <!-- =================================
-                         2. BREAD
-                    ================================== -->
+                    <!-- =================================================
+                         BREAD
+                    ================================================== -->
 
                     <div
                         class="hotspot bread"
@@ -686,9 +767,9 @@
 
 
 
-                    <!-- =================================
-                         3. EGGS
-                    ================================== -->
+                    <!-- =================================================
+                         EGGS
+                    ================================================== -->
 
                     <div
                         class="hotspot eggs"
@@ -700,9 +781,9 @@
 
 
 
-                    <!-- =================================
-                         4. CUP
-                    ================================== -->
+                    <!-- =================================================
+                         CUP
+                    ================================================== -->
 
                     <div
                         class="hotspot cup"
@@ -714,9 +795,9 @@
 
 
 
-                    <!-- =================================
-                         5. BOWL
-                    ================================== -->
+                    <!-- =================================================
+                         BOWL
+                    ================================================== -->
 
                     <div
                         class="hotspot bowl"
@@ -728,9 +809,9 @@
 
 
 
-                    <!-- =================================
-                         6. GLASS
-                    ================================== -->
+                    <!-- =================================================
+                         GLASS
+                    ================================================== -->
 
                     <div
                         class="hotspot glass"
@@ -742,9 +823,9 @@
 
 
 
-                    <!-- =================================
-                         7. SPOON
-                    ================================== -->
+                    <!-- =================================================
+                         SPOON
+                    ================================================== -->
 
                     <div
                         class="hotspot spoon"
@@ -756,9 +837,9 @@
 
 
 
-                    <!-- =================================
-                         8. FORK
-                    ================================== -->
+                    <!-- =================================================
+                         FORK
+                    ================================================== -->
 
                     <div
                         class="hotspot fork"
@@ -770,9 +851,9 @@
 
 
 
-                    <!-- =================================
-                         9. KNIFE
-                    ================================== -->
+                    <!-- =================================================
+                         KNIFE
+                    ================================================== -->
 
                     <div
                         class="hotspot knife"
@@ -784,9 +865,9 @@
 
 
 
-                    <!-- =================================
-                         10. REFRIGERATOR
-                    ================================== -->
+                    <!-- =================================================
+                         REFRIGERATOR
+                    ================================================== -->
 
                     <div
                         class="hotspot refrigerator"
@@ -795,6 +876,7 @@
                         data-sentence="This is a refrigerator."
                         aria-label="Refrigerator"
                     ></div>
+
 
                 </div>
 
@@ -806,9 +888,9 @@
 
 
 
-    <!-- =========================================
+    <!-- =====================================================
          FEEDBACK
-    ========================================== -->
+    ====================================================== -->
 
     <div id="feedback">
         ⭐ Great job! ⭐
@@ -816,9 +898,9 @@
 
 
 
-    <!-- =========================================
+    <!-- =====================================================
          CONTROLES
-    ========================================== -->
+    ====================================================== -->
 
     <div class="controls">
 
@@ -932,6 +1014,7 @@
         let zoom = 1;
 
         const MIN_ZOOM = 0.55;
+
         const MAX_ZOOM = 2.20;
 
 
@@ -980,24 +1063,18 @@
             if (characterX < 0) {
 
                 characterX = 0;
-
             }
 
 
             if (characterX > maxX) {
 
                 characterX = maxX;
-
             }
 
 
             character.style.left =
                 characterX + "px";
 
-
-            /* ---------------------------------
-               AUTOSCROLL
-            ---------------------------------- */
 
             const viewportWidth =
                 roomScroll.clientWidth;
@@ -1008,13 +1085,10 @@
 
 
             const characterCenter =
-                characterX +
-                character.offsetWidth / 2;
-
-
-            const scaledCharacterCenter =
-                characterCenter *
-                zoom;
+                (
+                    characterX +
+                    character.offsetWidth / 2
+                ) * zoom;
 
 
             const leftLimit =
@@ -1028,26 +1102,24 @@
 
 
             if (
-                scaledCharacterCenter >
+                characterCenter >
                 rightLimit
             ) {
 
                 roomScroll.scrollLeft +=
-                    scaledCharacterCenter -
+                    characterCenter -
                     rightLimit;
-
             }
 
 
             if (
-                scaledCharacterCenter <
+                characterCenter <
                 leftLimit
             ) {
 
                 roomScroll.scrollLeft -=
                     leftLimit -
-                    scaledCharacterCenter;
-
+                    characterCenter;
             }
 
         }
@@ -1055,7 +1127,7 @@
 
 
         /* =====================================================
-           BOTONES
+           BOTONES DEL PERSONAJE
         ====================================================== */
 
         leftButton.addEventListener(
@@ -1063,6 +1135,8 @@
             function(event) {
 
                 event.preventDefault();
+
+                event.stopPropagation();
 
                 moveCharacter(-1);
 
@@ -1075,6 +1149,8 @@
             function(event) {
 
                 event.preventDefault();
+
+                event.stopPropagation();
 
                 moveCharacter(1);
 
@@ -1099,7 +1175,6 @@
                     event.preventDefault();
 
                     moveCharacter(-1);
-
                 }
 
 
@@ -1111,453 +1186,7 @@
                     event.preventDefault();
 
                     moveCharacter(1);
-
                 }
-
-            }
-        );
-
-
-
-        /* =====================================================
-           ZOOM + DESPLAZAMIENTO TÁCTIL
-        ====================================================== */
-
-        let touches = [];
-
-        let startDistance = 0;
-
-        let startZoom = 1;
-
-        let startScrollLeft = 0;
-
-        let startScrollTop = 0;
-
-        let startCenterX = 0;
-
-        let startCenterY = 0;
-
-        let dragging = false;
-
-        let pinchZooming = false;
-
-
-
-        function getDistance(
-            touch1,
-            touch2
-        ) {
-
-            const dx =
-                touch2.clientX -
-                touch1.clientX;
-
-            const dy =
-                touch2.clientY -
-                touch1.clientY;
-
-
-            return Math.sqrt(
-                dx * dx +
-                dy * dy
-            );
-
-        }
-
-
-
-        function getCenter(
-            touch1,
-            touch2
-        ) {
-
-            return {
-
-                x:
-                    (
-                        touch1.clientX +
-                        touch2.clientX
-                    ) / 2,
-
-                y:
-                    (
-                        touch1.clientY +
-                        touch2.clientY
-                    ) / 2
-
-            };
-
-        }
-
-
-
-        roomScroll.addEventListener(
-            "touchstart",
-            function(event) {
-
-                event.preventDefault();
-
-
-                touches =
-                    Array.from(
-                        event.touches
-                    );
-
-
-                if (
-                    touches.length === 1
-                ) {
-
-                    dragging = true;
-
-                    pinchZooming = false;
-
-
-                    startCenterX =
-                        touches[0].clientX;
-
-                    startCenterY =
-                        touches[0].clientY;
-
-
-                    startScrollLeft =
-                        roomScroll.scrollLeft;
-
-                    startScrollTop =
-                        roomScroll.scrollTop;
-
-                }
-
-
-                if (
-                    touches.length >= 2
-                ) {
-
-                    dragging = false;
-
-                    pinchZooming = true;
-
-
-                    const touch1 =
-                        touches[0];
-
-                    const touch2 =
-                        touches[1];
-
-
-                    startDistance =
-                        getDistance(
-                            touch1,
-                            touch2
-                        );
-
-
-                    startZoom =
-                        zoom;
-
-
-                    const center =
-                        getCenter(
-                            touch1,
-                            touch2
-                        );
-
-
-                    startCenterX =
-                        center.x;
-
-                    startCenterY =
-                        center.y;
-
-
-                    startScrollLeft =
-                        roomScroll.scrollLeft;
-
-                    startScrollTop =
-                        roomScroll.scrollTop;
-
-                }
-
-            },
-            {
-                passive: false
-            }
-        );
-
-
-
-        roomScroll.addEventListener(
-            "touchmove",
-            function(event) {
-
-                event.preventDefault();
-
-
-                touches =
-                    Array.from(
-                        event.touches
-                    );
-
-
-                /* =================================
-                   DOS DEDOS = ZOOM
-                ================================== */
-
-                if (
-                    touches.length >= 2
-                ) {
-
-                    pinchZooming = true;
-
-                    dragging = false;
-
-
-                    const touch1 =
-                        touches[0];
-
-                    const touch2 =
-                        touches[1];
-
-
-                    const currentDistance =
-                        getDistance(
-                            touch1,
-                            touch2
-                        );
-
-
-                    if (
-                        startDistance <= 0
-                    ) {
-                        return;
-                    }
-
-
-                    const scaleChange =
-                        currentDistance /
-                        startDistance;
-
-
-                    let newZoom =
-                        startZoom *
-                        scaleChange;
-
-
-                    if (
-                        newZoom < MIN_ZOOM
-                    ) {
-
-                        newZoom =
-                            MIN_ZOOM;
-
-                    }
-
-
-                    if (
-                        newZoom > MAX_ZOOM
-                    ) {
-
-                        newZoom =
-                            MAX_ZOOM;
-
-                    }
-
-
-                    /*
-                     * Punto central del zoom.
-                     */
-
-                    const center =
-                        getCenter(
-                            touch1,
-                            touch2
-                        );
-
-
-                    const oldZoom =
-                        zoom;
-
-
-                    const scrollXBefore =
-                        roomScroll.scrollLeft;
-
-
-                    const scrollYBefore =
-                        roomScroll.scrollTop;
-
-
-                    /*
-                     * Posición del contenido
-                     * que está debajo del centro
-                     * de los dedos.
-                     */
-
-                    const contentX =
-                        (
-                            scrollXBefore +
-                            center.x
-                        ) / oldZoom;
-
-
-                    const contentY =
-                        (
-                            scrollYBefore +
-                            center.y
-                        ) / oldZoom;
-
-
-                    zoom =
-                        newZoom;
-
-
-                    updateZoom();
-
-
-                    /*
-                     * Conservamos el punto
-                     * debajo de los dedos.
-                     */
-
-                    roomScroll.scrollLeft =
-                        (
-                            contentX *
-                            zoom
-                        ) -
-                        center.x;
-
-
-                    roomScroll.scrollTop =
-                        (
-                            contentY *
-                            zoom
-                        ) -
-                        center.y;
-
-                }
-
-
-                /* =================================
-                   UN DEDO = DESPLAZAMIENTO
-                ================================== */
-
-                else if (
-                    touches.length === 1 &&
-                    !pinchZooming
-                ) {
-
-                    const currentX =
-                        touches[0].clientX;
-
-                    const currentY =
-                        touches[0].clientY;
-
-
-                    const deltaX =
-                        currentX -
-                        startCenterX;
-
-
-                    const deltaY =
-                        currentY -
-                        startCenterY;
-
-
-                    roomScroll.scrollLeft =
-                        startScrollLeft -
-                        deltaX;
-
-
-                    roomScroll.scrollTop =
-                        startScrollTop -
-                        deltaY;
-
-                }
-
-            },
-            {
-                passive: false
-            }
-        );
-
-
-
-        roomScroll.addEventListener(
-            "touchend",
-            function(event) {
-
-                touches =
-                    Array.from(
-                        event.touches
-                    );
-
-
-                if (
-                    touches.length === 0
-                ) {
-
-                    dragging = false;
-
-                    pinchZooming = false;
-
-                }
-
-
-                if (
-                    touches.length === 1
-                ) {
-
-                    /*
-                     * Cuando termina el pinch,
-                     * permitimos nuevamente
-                     * el desplazamiento con
-                     * un dedo.
-                     */
-
-                    pinchZooming = false;
-
-                    dragging = true;
-
-
-                    startCenterX =
-                        touches[0].clientX;
-
-                    startCenterY =
-                        touches[0].clientY;
-
-
-                    startScrollLeft =
-                        roomScroll.scrollLeft;
-
-                    startScrollTop =
-                        roomScroll.scrollTop;
-
-                }
-
-            },
-            {
-                passive: true
-            }
-        );
-
-
-
-        /* =====================================================
-           EVITAR ARRASTRE DE IMÁGENES
-        ====================================================== */
-
-        document.querySelectorAll(
-            "img"
-        ).forEach(
-            function(image) {
-
-                image.addEventListener(
-                    "dragstart",
-                    function(event) {
-
-                        event.preventDefault();
-
-                    }
-                );
 
             }
         );
@@ -1587,10 +1216,13 @@
         } catch (error) {
 
             foundObjects = [];
-
         }
 
 
+
+        /* =====================================================
+           ACTUALIZAR PUNTAJE
+        ====================================================== */
 
         function updateScore() {
 
@@ -1598,62 +1230,44 @@
                 foundObjects.length;
 
 
-            document.querySelectorAll(
-                ".hotspot"
-            ).forEach(
-                function(hotspot) {
+            document
+                .querySelectorAll(".hotspot")
+                .forEach(
+                    function(hotspot) {
 
-                    const objectName =
-                        hotspot.dataset.object;
+                        const objectName =
+                            hotspot.dataset.object;
 
 
-                    if (
-                        foundObjects.includes(
-                            objectName
-                        )
-                    ) {
+                        if (
+                            foundObjects.includes(
+                                objectName
+                            )
+                        ) {
 
-                        hotspot.classList.add(
-                            "found"
-                        );
+                            hotspot.classList.add(
+                                "found"
+                            );
+
+                        }
 
                     }
-
-                }
-            );
+                );
 
         }
 
 
 
         /* =====================================================
-           ACTIVAR OBJETO
+           ENCONTRAR OBJETO
         ====================================================== */
 
-        document.querySelectorAll(
-            ".hotspot"
-        ).forEach(
-            function(hotspot) {
+        function findObject(hotspot) {
 
-                hotspot.addEventListener(
-                    "click",
-                    function() {
-
-                        findObject(
-                            hotspot
-                        );
-
-                    }
-                );
-
+            if (!hotspot) {
+                return;
             }
-        );
 
-
-
-        function findObject(
-            hotspot
-        ) {
 
             const objectName =
                 hotspot.dataset.object;
@@ -1673,8 +1287,11 @@
 
                 speak(word);
 
-                return;
+                showFeedback(
+                    "⭐ " + word + " ⭐"
+                );
 
+                return;
             }
 
 
@@ -1731,6 +1348,582 @@
 
 
         /* =====================================================
+           POINTER EVENTS
+           
+           ESTA PARTE ES LA IMPORTANTE:
+           
+           - 1 dedo sobre objeto = objeto
+           - 1 dedo fuera de objeto = desplazamiento
+           - 2 dedos = zoom
+        ====================================================== */
+
+        const activePointers =
+            new Map();
+
+
+        let draggingRoom = false;
+
+        let dragStartX = 0;
+
+        let dragStartY = 0;
+
+        let dragScrollLeft = 0;
+
+        let dragScrollTop = 0;
+
+        let dragMoved = false;
+
+        let activeHotspot = null;
+
+
+        let pinchStartDistance = 0;
+
+        let pinchStartZoom = 1;
+
+        let pinchCenterX = 0;
+
+        let pinchCenterY = 0;
+
+
+
+        function distanceBetween(
+            point1,
+            point2
+        ) {
+
+            const dx =
+                point2.clientX -
+                point1.clientX;
+
+            const dy =
+                point2.clientY -
+                point1.clientY;
+
+
+            return Math.sqrt(
+                dx * dx +
+                dy * dy
+            );
+
+        }
+
+
+
+        function centerBetween(
+            point1,
+            point2
+        ) {
+
+            return {
+
+                x:
+                    (
+                        point1.clientX +
+                        point2.clientX
+                    ) / 2,
+
+                y:
+                    (
+                        point1.clientY +
+                        point2.clientY
+                    ) / 2
+
+            };
+
+        }
+
+
+
+        roomScroll.addEventListener(
+            "pointerdown",
+            function(event) {
+
+                if (
+                    event.pointerType === "mouse" &&
+                    event.button !== 0
+                ) {
+
+                    return;
+                }
+
+
+                activePointers.set(
+                    event.pointerId,
+                    event
+                );
+
+
+                const hotspot =
+                    event.target.closest(
+                        ".hotspot"
+                    );
+
+
+                /* -------------------------------------
+                   SI TOCÓ UN OBJETO
+                -------------------------------------- */
+
+                if (
+                    hotspot &&
+                    activePointers.size === 1
+                ) {
+
+                    activeHotspot =
+                        hotspot;
+
+                    draggingRoom = false;
+
+                    dragMoved = false;
+
+
+                    dragStartX =
+                        event.clientX;
+
+                    dragStartY =
+                        event.clientY;
+
+
+                    return;
+                }
+
+
+                /* -------------------------------------
+                   SI TOCÓ LA COCINA
+                -------------------------------------- */
+
+                if (
+                    activePointers.size === 1
+                ) {
+
+                    activeHotspot = null;
+
+                    draggingRoom = true;
+
+                    dragMoved = false;
+
+
+                    dragStartX =
+                        event.clientX;
+
+                    dragStartY =
+                        event.clientY;
+
+
+                    dragScrollLeft =
+                        roomScroll.scrollLeft;
+
+                    dragScrollTop =
+                        roomScroll.scrollTop;
+
+                }
+
+
+                /* -------------------------------------
+                   DOS DEDOS = ZOOM
+                -------------------------------------- */
+
+                if (
+                    activePointers.size === 2
+                ) {
+
+                    draggingRoom = false;
+
+                    activeHotspot = null;
+
+                    dragMoved = true;
+
+
+                    const points =
+                        Array.from(
+                            activePointers.values()
+                        );
+
+
+                    pinchStartDistance =
+                        distanceBetween(
+                            points[0],
+                            points[1]
+                        );
+
+
+                    pinchStartZoom =
+                        zoom;
+
+
+                    const center =
+                        centerBetween(
+                            points[0],
+                            points[1]
+                        );
+
+
+                    pinchCenterX =
+                        center.x;
+
+                    pinchCenterY =
+                        center.y;
+
+                }
+
+            },
+            {
+                passive: false
+            }
+        );
+
+
+
+        roomScroll.addEventListener(
+            "pointermove",
+            function(event) {
+
+                if (
+                    !activePointers.has(
+                        event.pointerId
+                    )
+                ) {
+
+                    return;
+                }
+
+
+                activePointers.set(
+                    event.pointerId,
+                    event
+                );
+
+
+                /* =====================================
+                   DOS DEDOS = ZOOM
+                ====================================== */
+
+                if (
+                    activePointers.size >= 2
+                ) {
+
+                    event.preventDefault();
+
+
+                    const points =
+                        Array.from(
+                            activePointers.values()
+                        );
+
+
+                    const currentDistance =
+                        distanceBetween(
+                            points[0],
+                            points[1]
+                        );
+
+
+                    if (
+                        pinchStartDistance <= 0
+                    ) {
+
+                        return;
+                    }
+
+
+                    let newZoom =
+                        pinchStartZoom *
+                        (
+                            currentDistance /
+                            pinchStartDistance
+                        );
+
+
+                    newZoom =
+                        Math.max(
+                            MIN_ZOOM,
+                            Math.min(
+                                MAX_ZOOM,
+                                newZoom
+                            )
+                        );
+
+
+                    const oldZoom =
+                        zoom;
+
+
+                    const center =
+                        centerBetween(
+                            points[0],
+                            points[1]
+                        );
+
+
+                    const contentX =
+                        (
+                            roomScroll.scrollLeft +
+                            center.x
+                        ) / oldZoom;
+
+
+                    const contentY =
+                        (
+                            roomScroll.scrollTop +
+                            center.y
+                        ) / oldZoom;
+
+
+                    zoom =
+                        newZoom;
+
+
+                    updateZoom();
+
+
+                    roomScroll.scrollLeft =
+                        (
+                            contentX *
+                            zoom
+                        ) -
+                        center.x;
+
+
+                    roomScroll.scrollTop =
+                        (
+                            contentY *
+                            zoom
+                        ) -
+                        center.y;
+
+
+                    return;
+                }
+
+
+
+                /* =====================================
+                   UN DEDO = DESPLAZAMIENTO
+                ====================================== */
+
+                if (
+                    activePointers.size === 1 &&
+                    draggingRoom
+                ) {
+
+                    event.preventDefault();
+
+
+                    const deltaX =
+                        event.clientX -
+                        dragStartX;
+
+
+                    const deltaY =
+                        event.clientY -
+                        dragStartY;
+
+
+                    if (
+                        Math.abs(deltaX) > 8 ||
+                        Math.abs(deltaY) > 8
+                    ) {
+
+                        dragMoved = true;
+                    }
+
+
+                    roomScroll.scrollLeft =
+                        dragScrollLeft -
+                        deltaX;
+
+
+                    roomScroll.scrollTop =
+                        dragScrollTop -
+                        deltaY;
+
+                }
+
+
+
+                /* =====================================
+                   DEDO SOBRE OBJETO
+                ====================================== */
+
+                if (
+                    activeHotspot &&
+                    activePointers.size === 1
+                ) {
+
+                    const deltaX =
+                        event.clientX -
+                        dragStartX;
+
+
+                    const deltaY =
+                        event.clientY -
+                        dragStartY;
+
+
+                    if (
+                        Math.abs(deltaX) > 10 ||
+                        Math.abs(deltaY) > 10
+                    ) {
+
+                        dragMoved = true;
+
+                    }
+
+                }
+
+            },
+            {
+                passive: false
+            }
+        );
+
+
+
+        roomScroll.addEventListener(
+            "pointerup",
+            function(event) {
+
+                const wasHotspot =
+                    activeHotspot;
+
+                const didMove =
+                    dragMoved;
+
+
+                activePointers.delete(
+                    event.pointerId
+                );
+
+
+                /* -------------------------------------
+                   TOQUE CORTO SOBRE OBJETO
+                -------------------------------------- */
+
+                if (
+                    wasHotspot &&
+                    !didMove &&
+                    activePointers.size === 0
+                ) {
+
+                    findObject(
+                        wasHotspot
+                    );
+
+                }
+
+
+                /* -------------------------------------
+                   LIMPIAR
+                -------------------------------------- */
+
+                if (
+                    activePointers.size === 0
+                ) {
+
+                    draggingRoom = false;
+
+                    activeHotspot = null;
+
+                    dragMoved = false;
+
+                    pinchStartDistance = 0;
+
+                }
+
+
+                /* -------------------------------------
+                   SI QUEDA UN DEDO DESPUÉS DEL ZOOM
+                -------------------------------------- */
+
+                if (
+                    activePointers.size === 1
+                ) {
+
+                    const remaining =
+                        Array.from(
+                            activePointers.values()
+                        )[0];
+
+
+                    draggingRoom = true;
+
+                    activeHotspot = null;
+
+                    dragMoved = false;
+
+
+                    dragStartX =
+                        remaining.clientX;
+
+                    dragStartY =
+                        remaining.clientY;
+
+
+                    dragScrollLeft =
+                        roomScroll.scrollLeft;
+
+                    dragScrollTop =
+                        roomScroll.scrollTop;
+
+                }
+
+            },
+            {
+                passive: false
+            }
+        );
+
+
+
+        roomScroll.addEventListener(
+            "pointercancel",
+            function(event) {
+
+                activePointers.delete(
+                    event.pointerId
+                );
+
+
+                if (
+                    activePointers.size === 0
+                ) {
+
+                    draggingRoom = false;
+
+                    activeHotspot = null;
+
+                    dragMoved = false;
+
+                }
+
+            }
+        );
+
+
+
+        /* =====================================================
+           EVITAR ARRASTRE DE IMÁGENES
+        ====================================================== */
+
+        document
+            .querySelectorAll("img")
+            .forEach(
+                function(image) {
+
+                    image.addEventListener(
+                        "dragstart",
+                        function(event) {
+
+                            event.preventDefault();
+
+                        }
+                    );
+
+                }
+            );
+
+
+
+        /* =====================================================
            VOZ
         ====================================================== */
 
@@ -1744,7 +1937,6 @@
             ) {
 
                 return;
-
             }
 
 
@@ -1795,7 +1987,6 @@
 
                 utterance.voice =
                     englishVoice;
-
             }
 
 
@@ -1814,9 +2005,7 @@
         let feedbackTimer;
 
 
-        function showFeedback(
-            message
-        ) {
+        function showFeedback(message) {
 
             feedback.textContent =
                 message;
@@ -1841,7 +2030,7 @@
                         );
 
                     },
-                    1200
+                    1300
                 );
 
         }
@@ -1853,8 +2042,25 @@
         ====================================================== */
 
         continueButton.addEventListener(
+            "pointerdown",
+            function(event) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+            }
+        );
+
+
+        continueButton.addEventListener(
             "click",
-            function() {
+            function(event) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
 
                 window.location.href =
                     "/habitacion/";
@@ -1865,33 +2071,14 @@
 
 
         /* =====================================================
-           CARGAR PUNTAJE
+           CARGAR DATOS
         ====================================================== */
 
         updateScore();
 
 
-
-        /* =====================================================
-           CARGAR VOCES
-        ====================================================== */
-
-        if (
-            "speechSynthesis"
-            in window
-        ) {
-
-            window.speechSynthesis.onvoiceschanged =
-                function() {
-
-                    window.speechSynthesis
-                        .getVoices();
-
-                };
-
-        }
-
     </script>
 
 </body>
+
 </html>
