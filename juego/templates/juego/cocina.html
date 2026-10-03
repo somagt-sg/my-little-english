@@ -740,140 +740,140 @@
 
 
                     <!-- =================================================
-                         APPLE
+                         1. APPLE
                     ================================================== -->
 
                     <div
                         class="hotspot apple"
                         data-object="apple"
                         data-word="Apple"
-                        data-sentence="This is an apple."
+                        data-sentence="Apple"
                         aria-label="Apple"
                     ></div>
 
 
 
                     <!-- =================================================
-                         BREAD
+                         2. BREAD
                     ================================================== -->
 
                     <div
                         class="hotspot bread"
                         data-object="bread"
                         data-word="Bread"
-                        data-sentence="This is bread."
+                        data-sentence="Bread"
                         aria-label="Bread"
                     ></div>
 
 
 
                     <!-- =================================================
-                         EGGS
+                         3. EGGS
                     ================================================== -->
 
                     <div
                         class="hotspot eggs"
                         data-object="eggs"
                         data-word="Eggs"
-                        data-sentence="These are eggs."
+                        data-sentence="Eggs"
                         aria-label="Eggs"
                     ></div>
 
 
 
                     <!-- =================================================
-                         CUP
+                         4. CUP
                     ================================================== -->
 
                     <div
                         class="hotspot cup"
                         data-object="cup"
                         data-word="Cup"
-                        data-sentence="This is a cup."
+                        data-sentence="Cup"
                         aria-label="Cup"
                     ></div>
 
 
 
                     <!-- =================================================
-                         BOWL
+                         5. BOWL
                     ================================================== -->
 
                     <div
                         class="hotspot bowl"
                         data-object="bowl"
                         data-word="Bowl"
-                        data-sentence="This is a bowl."
+                        data-sentence="Bowl"
                         aria-label="Bowl"
                     ></div>
 
 
 
                     <!-- =================================================
-                         GLASS
+                         6. GLASS
                     ================================================== -->
 
                     <div
                         class="hotspot glass"
                         data-object="glass"
                         data-word="Glass"
-                        data-sentence="This is a glass."
+                        data-sentence="Glass"
                         aria-label="Glass"
                     ></div>
 
 
 
                     <!-- =================================================
-                         SPOON
+                         7. SPOON
                     ================================================== -->
 
                     <div
                         class="hotspot spoon"
                         data-object="spoon"
                         data-word="Spoon"
-                        data-sentence="This is a spoon."
+                        data-sentence="Spoon"
                         aria-label="Spoon"
                     ></div>
 
 
 
                     <!-- =================================================
-                         FORK
+                         8. FORK
                     ================================================== -->
 
                     <div
                         class="hotspot fork"
                         data-object="fork"
                         data-word="Fork"
-                        data-sentence="This is a fork."
+                        data-sentence="Fork"
                         aria-label="Fork"
                     ></div>
 
 
 
                     <!-- =================================================
-                         KNIFE
+                         9. KNIFE
                     ================================================== -->
 
                     <div
                         class="hotspot knife"
                         data-object="knife"
                         data-word="Knife"
-                        data-sentence="This is a knife."
+                        data-sentence="Knife"
                         aria-label="Knife"
                     ></div>
 
 
 
                     <!-- =================================================
-                         REFRIGERATOR
+                         10. REFRIGERATOR
                     ================================================== -->
 
                     <div
                         class="hotspot refrigerator"
                         data-object="refrigerator"
                         data-word="Refrigerator"
-                        data-sentence="This is a refrigerator."
+                        data-sentence="Refrigerator"
                         aria-label="Refrigerator"
                     ></div>
 
@@ -1194,7 +1194,7 @@
 
 
         /* =====================================================
-           OBJETOS
+           OBJETOS ENCONTRADOS
         ====================================================== */
 
         const storageKey =
@@ -1216,6 +1216,7 @@
         } catch (error) {
 
             foundObjects = [];
+
         }
 
 
@@ -1275,9 +1276,11 @@
             const word =
                 hotspot.dataset.word;
 
-            const sentence =
-                hotspot.dataset.sentence;
 
+            /*
+             * LA VOZ AHORA PRONUNCIA
+             * SOLAMENTE EL NOMBRE.
+             */
 
             if (
                 foundObjects.includes(
@@ -1316,7 +1319,11 @@
             updateScore();
 
 
-            speak(sentence);
+            /*
+             * SOLO LA PALABRA
+             */
+
+            speak(word);
 
 
             showFeedback(
@@ -1350,11 +1357,11 @@
         /* =====================================================
            POINTER EVENTS
            
-           ESTA PARTE ES LA IMPORTANTE:
+           1 DEDO SOBRE OBJETO = SELECCIONAR
            
-           - 1 dedo sobre objeto = objeto
-           - 1 dedo fuera de objeto = desplazamiento
-           - 2 dedos = zoom
+           1 DEDO EN ZONA VACÍA = DESPLAZAR
+           
+           2 DEDOS = ZOOM
         ====================================================== */
 
         const activePointers =
@@ -1379,10 +1386,6 @@
         let pinchStartDistance = 0;
 
         let pinchStartZoom = 1;
-
-        let pinchCenterX = 0;
-
-        let pinchCenterY = 0;
 
 
 
@@ -1434,6 +1437,10 @@
 
 
 
+        /* =====================================================
+           POINTER DOWN
+        ====================================================== */
+
         roomScroll.addEventListener(
             "pointerdown",
             function(event) {
@@ -1460,7 +1467,7 @@
 
 
                 /* -------------------------------------
-                   SI TOCÓ UN OBJETO
+                   TOQUE SOBRE OBJETO
                 -------------------------------------- */
 
                 if (
@@ -1488,7 +1495,7 @@
 
 
                 /* -------------------------------------
-                   SI TOCÓ LA COCINA
+                   TOQUE EN ZONA VACÍA
                 -------------------------------------- */
 
                 if (
@@ -1519,7 +1526,7 @@
 
 
                 /* -------------------------------------
-                   DOS DEDOS = ZOOM
+                   DOS DEDOS
                 -------------------------------------- */
 
                 if (
@@ -1549,20 +1556,6 @@
                     pinchStartZoom =
                         zoom;
 
-
-                    const center =
-                        centerBetween(
-                            points[0],
-                            points[1]
-                        );
-
-
-                    pinchCenterX =
-                        center.x;
-
-                    pinchCenterY =
-                        center.y;
-
                 }
 
             },
@@ -1572,6 +1565,10 @@
         );
 
 
+
+        /* =====================================================
+           POINTER MOVE
+        ====================================================== */
 
         roomScroll.addEventListener(
             "pointermove",
@@ -1593,9 +1590,9 @@
                 );
 
 
-                /* =====================================
+                /* -------------------------------------
                    DOS DEDOS = ZOOM
-                ====================================== */
+                -------------------------------------- */
 
                 if (
                     activePointers.size >= 2
@@ -1696,9 +1693,9 @@
 
 
 
-                /* =====================================
+                /* -------------------------------------
                    UN DEDO = DESPLAZAMIENTO
-                ====================================== */
+                -------------------------------------- */
 
                 if (
                     activePointers.size === 1 &&
@@ -1724,6 +1721,7 @@
                     ) {
 
                         dragMoved = true;
+
                     }
 
 
@@ -1740,9 +1738,9 @@
 
 
 
-                /* =====================================
+                /* -------------------------------------
                    DEDO SOBRE OBJETO
-                ====================================== */
+                -------------------------------------- */
 
                 if (
                     activeHotspot &&
@@ -1778,14 +1776,19 @@
 
 
 
+        /* =====================================================
+           POINTER UP
+        ====================================================== */
+
         roomScroll.addEventListener(
             "pointerup",
             function(event) {
 
-                const wasHotspot =
+                const selectedHotspot =
                     activeHotspot;
 
-                const didMove =
+
+                const moved =
                     dragMoved;
 
 
@@ -1794,26 +1797,23 @@
                 );
 
 
-                /* -------------------------------------
-                   TOQUE CORTO SOBRE OBJETO
-                -------------------------------------- */
+                /*
+                 * TOQUE CORTO:
+                 * SELECCIONAR OBJETO
+                 */
 
                 if (
-                    wasHotspot &&
-                    !didMove &&
+                    selectedHotspot &&
+                    !moved &&
                     activePointers.size === 0
                 ) {
 
                     findObject(
-                        wasHotspot
+                        selectedHotspot
                     );
 
                 }
 
-
-                /* -------------------------------------
-                   LIMPIAR
-                -------------------------------------- */
 
                 if (
                     activePointers.size === 0
@@ -1830,9 +1830,10 @@
                 }
 
 
-                /* -------------------------------------
-                   SI QUEDA UN DEDO DESPUÉS DEL ZOOM
-                -------------------------------------- */
+                /*
+                 * SI QUEDA UN DEDO
+                 * DESPUÉS DEL ZOOM
+                 */
 
                 if (
                     activePointers.size === 1
@@ -1873,6 +1874,10 @@
         );
 
 
+
+        /* =====================================================
+           POINTER CANCEL
+        ====================================================== */
 
         roomScroll.addEventListener(
             "pointercancel",
@@ -1987,6 +1992,7 @@
 
                 utterance.voice =
                     englishVoice;
+
             }
 
 
@@ -2005,7 +2011,9 @@
         let feedbackTimer;
 
 
-        function showFeedback(message) {
+        function showFeedback(
+            message
+        ) {
 
             feedback.textContent =
                 message;
@@ -2071,11 +2079,10 @@
 
 
         /* =====================================================
-           CARGAR DATOS
+           CARGAR PUNTAJE
         ====================================================== */
 
         updateScore();
-
 
     </script>
 
