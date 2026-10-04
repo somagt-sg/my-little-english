@@ -207,7 +207,7 @@
 
             width: 100%;
 
-            max-width: 1100px;
+            max-width: 1200px;
 
             display: block;
 
@@ -342,7 +342,7 @@
 
         .category-icon {
 
-            font-size: 90px;
+            font-size: 80px;
 
             margin-bottom: 12px;
 
@@ -353,9 +353,11 @@
 
             color: #243b53;
 
-            font-size: 29px;
+            font-size: 27px;
 
             font-weight: 900;
+
+            text-align: center;
 
         }
 
@@ -370,6 +372,49 @@
 
             margin-top: 8px;
 
+            text-align: center;
+
+        }
+
+
+        /* =====================================================
+           COLOR ESPECIAL DE CATEGORIAS
+        ===================================================== */
+
+        .category-card.fruits-card {
+            border-top-color: #ef4444;
+        }
+
+        .category-card.colors-card {
+            border-top-color: #a855f7;
+        }
+
+        .category-card.objects-card {
+            border-top-color: #38bdf8;
+        }
+
+        .category-card.numbers-card {
+            border-top-color: #22c55e;
+        }
+
+        .category-card.animals-card {
+            border-top-color: #f59e0b;
+        }
+
+        .category-card.body-card {
+            border-top-color: #ec4899;
+        }
+
+        .category-card.clothes-card {
+            border-top-color: #8b5cf6;
+        }
+
+        .category-card.food-card {
+            border-top-color: #f97316;
+        }
+
+        .category-card.games-card {
+            border-top-color: #06b6d4;
         }
 
 
@@ -808,6 +853,8 @@
             text-shadow:
                 2px 3px 0
                 #d7f5ff;
+
+            text-align: center;
 
         }
 
@@ -1263,6 +1310,353 @@
 
 
         /* =====================================================
+           MINI JUEGOS
+        ===================================================== */
+
+        #gameScreen {
+
+            display: none;
+
+            width: 100%;
+
+            max-width: 1200px;
+
+        }
+
+
+        .game-header {
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .game-title {
+
+            flex: 1;
+
+            text-align: center;
+
+            color: #155e75;
+
+            font-size:
+                clamp(
+                    27px,
+                    5vw,
+                    42px
+                );
+
+            font-weight: 900;
+
+        }
+
+
+        .game-card {
+
+            width: 100%;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.97
+                );
+
+            border-radius: 35px;
+
+            padding: 30px;
+
+            box-shadow:
+                0 20px 45px
+                rgba(
+                    55,
+                    90,
+                    110,
+                    0.18
+                );
+
+            text-align: center;
+
+        }
+
+
+        .game-question {
+
+            color: #155e75;
+
+            font-size:
+                clamp(
+                    26px,
+                    5vw,
+                    42px
+                );
+
+            font-weight: 900;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .game-instruction {
+
+            color: #526b76;
+
+            font-size: 19px;
+
+            font-weight: 800;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .game-options {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    3,
+                    1fr
+                );
+
+            gap: 20px;
+
+            max-width: 850px;
+
+            margin:
+                0 auto;
+
+        }
+
+
+        .game-option {
+
+            min-height: 170px;
+
+            border: 5px solid #e2e8f0;
+
+            border-radius: 28px;
+
+            background: #ffffff;
+
+            font-family: inherit;
+
+            cursor: pointer;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease,
+                background 0.2s ease;
+
+            box-shadow:
+                0 8px 18px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                );
+
+        }
+
+
+        .game-option:hover {
+
+            transform:
+                translateY(-5px);
+
+            border-color:
+                #38bdf8;
+
+            background:
+                #f0fbff;
+
+        }
+
+
+        .game-option-emoji {
+
+            font-size: 65px;
+
+        }
+
+
+        .game-option-text {
+
+            font-size: 22px;
+
+            font-weight: 900;
+
+            color: #243b53;
+
+        }
+
+
+        .game-result {
+
+            min-height: 40px;
+
+            margin-top: 22px;
+
+            font-size: 22px;
+
+            font-weight: 900;
+
+        }
+
+
+        .game-correct {
+
+            color: #15803d;
+
+        }
+
+
+        .game-wrong {
+
+            color: #dc2626;
+
+        }
+
+
+        .game-next {
+
+            display: none;
+
+            margin-top: 20px;
+
+            border: none;
+
+            border-radius: 18px;
+
+            padding:
+                14px 25px;
+
+            background:
+                #22c55e;
+
+            color: white;
+
+            font-family: inherit;
+
+            font-size: 19px;
+
+            font-weight: 900;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 5px 0
+                #15803d;
+
+        }
+
+
+        .game-menu {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    1fr
+                );
+
+            gap: 18px;
+
+            max-width: 800px;
+
+            margin:
+                0 auto;
+
+        }
+
+
+        .game-choice {
+
+            min-height: 130px;
+
+            border: none;
+
+            border-radius: 25px;
+
+            background: white;
+
+            font-family: inherit;
+
+            font-size: 22px;
+
+            font-weight: 900;
+
+            color: #243b53;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 10px 20px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.10
+                );
+
+            border:
+                5px solid
+                #dbeafe;
+
+            transition:
+                transform 0.2s ease;
+
+        }
+
+
+        .game-choice:hover {
+
+            transform:
+                translateY(-5px);
+
+            border-color:
+                #38bdf8;
+
+        }
+
+
+        .game-choice span {
+
+            display: block;
+
+            font-size: 50px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        /* =====================================================
            RESPONSIVE TABLET
         ===================================================== */
 
@@ -1273,7 +1667,10 @@
             .category-grid {
 
                 grid-template-columns:
-                    1fr;
+                    repeat(
+                        2,
+                        1fr
+                    );
 
             }
 
@@ -1281,7 +1678,7 @@
             .category-card {
 
                 min-height:
-                    220px;
+                    250px;
 
             }
 
@@ -1308,6 +1705,17 @@
 
                 width:
                     38%;
+
+            }
+
+
+            .game-options {
+
+                grid-template-columns:
+                    repeat(
+                        2,
+                        1fr
+                    );
 
             }
 
@@ -1367,6 +1775,51 @@
 
                 padding:
                     15px 10px 25px;
+
+            }
+
+
+            .category-grid {
+
+                grid-template-columns:
+                    1fr;
+
+                gap: 18px;
+
+            }
+
+
+            .category-card {
+
+                min-height:
+                    190px;
+
+                padding:
+                    20px;
+
+            }
+
+
+            .category-icon {
+
+                font-size:
+                    65px;
+
+            }
+
+
+            .category-name {
+
+                font-size:
+                    24px;
+
+            }
+
+
+            .category-count {
+
+                font-size:
+                    15px;
 
             }
 
@@ -1558,6 +2011,41 @@
 
             }
 
+
+            .game-card {
+
+                padding:
+                    18px 12px;
+
+            }
+
+
+            .game-options {
+
+                grid-template-columns:
+                    1fr;
+
+                gap:
+                    14px;
+
+            }
+
+
+            .game-option {
+
+                min-height:
+                    140px;
+
+            }
+
+
+            .game-menu {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
         }
 
 
@@ -1651,7 +2139,7 @@
             </span>
             /
             <span id="totalScore">
-                70
+                0
             </span>
 
         </div>
@@ -1696,7 +2184,7 @@
 
                 <button
                     type="button"
-                    class="category-card"
+                    class="category-card fruits-card"
                     onclick="startCategory('fruits')"
                 >
 
@@ -1720,7 +2208,7 @@
 
                 <button
                     type="button"
-                    class="category-card"
+                    class="category-card colors-card"
                     onclick="startCategory('colors')"
                 >
 
@@ -1744,7 +2232,7 @@
 
                 <button
                     type="button"
-                    class="category-card"
+                    class="category-card objects-card"
                     onclick="startCategory('objects')"
                 >
 
@@ -1758,6 +2246,150 @@
 
                     <div class="category-count">
                         30 words
+                    </div>
+
+                </button>
+
+
+
+                <!-- NUMBERS -->
+
+                <button
+                    type="button"
+                    class="category-card numbers-card"
+                    onclick="startCategory('numbers')"
+                >
+
+                    <div class="category-icon">
+                        🔢1️⃣2️⃣
+                    </div>
+
+                    <div class="category-name">
+                        🔢 Numbers
+                    </div>
+
+                    <div class="category-count">
+                        10 words
+                    </div>
+
+                </button>
+
+
+
+                <!-- ANIMALS -->
+
+                <button
+                    type="button"
+                    class="category-card animals-card"
+                    onclick="startCategory('animals')"
+                >
+
+                    <div class="category-icon">
+                        🐶🐱🦁
+                    </div>
+
+                    <div class="category-name">
+                        🐶 Animals
+                    </div>
+
+                    <div class="category-count">
+                        20 words
+                    </div>
+
+                </button>
+
+
+
+                <!-- BODY -->
+
+                <button
+                    type="button"
+                    class="category-card body-card"
+                    onclick="startCategory('body')"
+                >
+
+                    <div class="category-icon">
+                        👀👂🖐️
+                    </div>
+
+                    <div class="category-name">
+                        🧍 My Body
+                    </div>
+
+                    <div class="category-count">
+                        15 words
+                    </div>
+
+                </button>
+
+
+
+                <!-- CLOTHES -->
+
+                <button
+                    type="button"
+                    class="category-card clothes-card"
+                    onclick="startCategory('clothes')"
+                >
+
+                    <div class="category-icon">
+                        👕👖👟
+                    </div>
+
+                    <div class="category-name">
+                        👕 Getting Dressed
+                    </div>
+
+                    <div class="category-count">
+                        15 words
+                    </div>
+
+                </button>
+
+
+
+                <!-- FOOD -->
+
+                <button
+                    type="button"
+                    class="category-card food-card"
+                    onclick="startCategory('food')"
+                >
+
+                    <div class="category-icon">
+                        🍔🍕🍎
+                    </div>
+
+                    <div class="category-name">
+                        🍔 Food
+                    </div>
+
+                    <div class="category-count">
+                        20 words
+                    </div>
+
+                </button>
+
+
+
+                <!-- MINI GAMES -->
+
+                <button
+                    type="button"
+                    class="category-card games-card"
+                    onclick="startMiniGames()"
+                >
+
+                    <div class="category-icon">
+                        🎮🧩⭐
+                    </div>
+
+                    <div class="category-name">
+                        🎮 Mini Games
+                    </div>
+
+                    <div class="category-count">
+                        5 fun games
                     </div>
 
                 </button>
@@ -1827,7 +2459,7 @@
 
                     <!-- =====================================
                          ELEMENTO
-                    ====================================== -->
+                    ===================================== -->
 
                     <div class="word-area">
 
@@ -1868,7 +2500,7 @@
 
                     <!-- =====================================
                          PERSONAJE
-                    ====================================== -->
+                    ===================================== -->
 
                     <div class="character-area">
 
@@ -1932,6 +2564,202 @@
                     class="small-message"
                 ></div>
 
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             MINI JUEGOS
+        ================================================== -->
+
+        <section
+            id="gameScreen"
+        >
+
+            <div class="game-header">
+
+                <button
+                    type="button"
+                    class="back-button"
+                    onclick="showCategories()"
+                >
+                    ← Categories
+                </button>
+
+
+                <div class="game-title">
+                    🎮 Mini Games
+                </div>
+
+
+                <div class="word-progress">
+                    ⭐ <span id="gameScore">0</span>
+                </div>
+
+            </div>
+
+
+            <div class="game-card">
+
+
+                <!-- =========================================
+                     MENU DE MINI JUEGOS
+                ========================================== -->
+
+                <div
+                    id="gameMenu"
+                    class="game-menu"
+                >
+
+                    <button
+                        type="button"
+                        class="game-choice"
+                        onclick="startGame('color')"
+                    >
+
+                        <span>
+                            🎨
+                        </span>
+
+                        Find the Color
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="game-choice"
+                        onclick="startGame('object')"
+                    >
+
+                        <span>
+                            🧸
+                        </span>
+
+                        Find the Object
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="game-choice"
+                        onclick="startGame('number')"
+                    >
+
+                        <span>
+                            🔢
+                        </span>
+
+                        Count
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="game-choice"
+                        onclick="startGame('animal')"
+                    >
+
+                        <span>
+                            🐶
+                        </span>
+
+                        Find the Animal
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="game-choice"
+                        onclick="startGame('memory')"
+                    >
+
+                        <span>
+                            🧩
+                        </span>
+
+                        Memory Game
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     JUEGO ACTIVO
+                ========================================== -->
+
+                <div
+                    id="activeGame"
+                    style="display:none;"
+                >
+
+                    <div
+                        id="gameQuestion"
+                        class="game-question"
+                    >
+                        Find the color!
+                    </div>
+
+
+                    <div
+                        id="gameInstruction"
+                        class="game-instruction"
+                    >
+                        Listen and choose the correct answer.
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="speak-button"
+                        onclick="speakGameQuestion()"
+                    >
+                        🔊 Listen
+                    </button>
+
+
+                    <div
+                        id="gameOptions"
+                        class="game-options"
+                        style="margin-top:25px;"
+                    >
+                    </div>
+
+
+                    <div
+                        id="gameResult"
+                        class="game-result"
+                    ></div>
+
+
+                    <button
+                        type="button"
+                        id="gameNextButton"
+                        class="game-next"
+                        onclick="nextGameRound()"
+                    >
+                        Next ⭐
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="complete-button categories-button"
+                        onclick="showGameMenu()"
+                        style="margin-top:20px;"
+                    >
+                        Mini Games 🎮
+                    </button>
+
+                </div>
 
             </div>
 
@@ -2405,6 +3233,466 @@
 
             ]
 
+        },
+
+
+        numbers: {
+
+            title:
+                "🔢 Numbers",
+
+            words: [
+
+                {
+                    name: "One",
+                    emoji: "1️⃣"
+                },
+
+                {
+                    name: "Two",
+                    emoji: "2️⃣"
+                },
+
+                {
+                    name: "Three",
+                    emoji: "3️⃣"
+                },
+
+                {
+                    name: "Four",
+                    emoji: "4️⃣"
+                },
+
+                {
+                    name: "Five",
+                    emoji: "5️⃣"
+                },
+
+                {
+                    name: "Six",
+                    emoji: "6️⃣"
+                },
+
+                {
+                    name: "Seven",
+                    emoji: "7️⃣"
+                },
+
+                {
+                    name: "Eight",
+                    emoji: "8️⃣"
+                },
+
+                {
+                    name: "Nine",
+                    emoji: "9️⃣"
+                },
+
+                {
+                    name: "Ten",
+                    emoji: "🔟"
+                }
+
+            ]
+
+        },
+
+
+        animals: {
+
+            title:
+                "🐶 Animals",
+
+            words: [
+
+                {
+                    name: "Dog",
+                    emoji: "🐶"
+                },
+
+                {
+                    name: "Cat",
+                    emoji: "🐱"
+                },
+
+                {
+                    name: "Lion",
+                    emoji: "🦁"
+                },
+
+                {
+                    name: "Tiger",
+                    emoji: "🐯"
+                },
+
+                {
+                    name: "Elephant",
+                    emoji: "🐘"
+                },
+
+                {
+                    name: "Monkey",
+                    emoji: "🐒"
+                },
+
+                {
+                    name: "Rabbit",
+                    emoji: "🐰"
+                },
+
+                {
+                    name: "Bear",
+                    emoji: "🐻"
+                },
+
+                {
+                    name: "Panda",
+                    emoji: "🐼"
+                },
+
+                {
+                    name: "Cow",
+                    emoji: "🐮"
+                },
+
+                {
+                    name: "Pig",
+                    emoji: "🐷"
+                },
+
+                {
+                    name: "Horse",
+                    emoji: "🐴"
+                },
+
+                {
+                    name: "Chicken",
+                    emoji: "🐔"
+                },
+
+                {
+                    name: "Duck",
+                    emoji: "🦆"
+                },
+
+                {
+                    name: "Fish",
+                    emoji: "🐟"
+                },
+
+                {
+                    name: "Dolphin",
+                    emoji: "🐬"
+                },
+
+                {
+                    name: "Frog",
+                    emoji: "🐸"
+                },
+
+                {
+                    name: "Butterfly",
+                    emoji: "🦋"
+                },
+
+                {
+                    name: "Bee",
+                    emoji: "🐝"
+                },
+
+                {
+                    name: "Turtle",
+                    emoji: "🐢"
+                }
+
+            ]
+
+        },
+
+
+        body: {
+
+            title:
+                "🧍 My Body",
+
+            words: [
+
+                {
+                    name: "Head",
+                    emoji: "🙂"
+                },
+
+                {
+                    name: "Eyes",
+                    emoji: "👀"
+                },
+
+                {
+                    name: "Ears",
+                    emoji: "👂"
+                },
+
+                {
+                    name: "Nose",
+                    emoji: "👃"
+                },
+
+                {
+                    name: "Mouth",
+                    emoji: "👄"
+                },
+
+                {
+                    name: "Teeth",
+                    emoji: "🦷"
+                },
+
+                {
+                    name: "Hair",
+                    emoji: "💇"
+                },
+
+                {
+                    name: "Hand",
+                    emoji: "✋"
+                },
+
+                {
+                    name: "Finger",
+                    emoji: "☝️"
+                },
+
+                {
+                    name: "Arm",
+                    emoji: "💪"
+                },
+
+                {
+                    name: "Leg",
+                    emoji: "🦵"
+                },
+
+                {
+                    name: "Foot",
+                    emoji: "🦶"
+                },
+
+                {
+                    name: "Knee",
+                    emoji: "🦵"
+                },
+
+                {
+                    name: "Shoulder",
+                    emoji: "🙆"
+                },
+
+                {
+                    name: "Heart",
+                    emoji: "❤️"
+                }
+
+            ]
+
+        },
+
+
+        clothes: {
+
+            title:
+                "👕 Getting Dressed",
+
+            words: [
+
+                {
+                    name: "Shirt",
+                    emoji: "👕"
+                },
+
+                {
+                    name: "T-Shirt",
+                    emoji: "👕"
+                },
+
+                {
+                    name: "Pants",
+                    emoji: "👖"
+                },
+
+                {
+                    name: "Dress",
+                    emoji: "👗"
+                },
+
+                {
+                    name: "Skirt",
+                    emoji: "👗"
+                },
+
+                {
+                    name: "Shorts",
+                    emoji: "🩳"
+                },
+
+                {
+                    name: "Shoes",
+                    emoji: "👟"
+                },
+
+                {
+                    name: "Socks",
+                    emoji: "🧦"
+                },
+
+                {
+                    name: "Hat",
+                    emoji: "🧢"
+                },
+
+                {
+                    name: "Jacket",
+                    emoji: "🧥"
+                },
+
+                {
+                    name: "Coat",
+                    emoji: "🧥"
+                },
+
+                {
+                    name: "Gloves",
+                    emoji: "🧤"
+                },
+
+                {
+                    name: "Scarf",
+                    emoji: "🧣"
+                },
+
+                {
+                    name: "Boots",
+                    emoji: "🥾"
+                },
+
+                {
+                    name: "Pajamas",
+                    emoji: "🛌"
+                }
+
+            ]
+
+        },
+
+
+        food: {
+
+            title:
+                "🍔 Food",
+
+            words: [
+
+                {
+                    name: "Bread",
+                    emoji: "🍞"
+                },
+
+                {
+                    name: "Egg",
+                    emoji: "🥚"
+                },
+
+                {
+                    name: "Milk",
+                    emoji: "🥛"
+                },
+
+                {
+                    name: "Cheese",
+                    emoji: "🧀"
+                },
+
+                {
+                    name: "Pizza",
+                    emoji: "🍕"
+                },
+
+                {
+                    name: "Hamburger",
+                    emoji: "🍔"
+                },
+
+                {
+                    name: "French Fries",
+                    emoji: "🍟"
+                },
+
+                {
+                    name: "Hot Dog",
+                    emoji: "🌭"
+                },
+
+                {
+                    name: "Sandwich",
+                    emoji: "🥪"
+                },
+
+                {
+                    name: "Rice",
+                    emoji: "🍚"
+                },
+
+                {
+                    name: "Soup",
+                    emoji: "🍲"
+                },
+
+                {
+                    name: "Salad",
+                    emoji: "🥗"
+                },
+
+                {
+                    name: "Cake",
+                    emoji: "🍰"
+                },
+
+                {
+                    name: "Cookie",
+                    emoji: "🍪"
+                },
+
+                {
+                    name: "Ice Cream",
+                    emoji: "🍦"
+                },
+
+                {
+                    name: "Chocolate",
+                    emoji: "🍫"
+                },
+
+                {
+                    name: "Juice",
+                    emoji: "🧃"
+                },
+
+                {
+                    name: "Water",
+                    emoji: "💧"
+                },
+
+                {
+                    name: "Apple",
+                    emoji: "🍎"
+                },
+
+                {
+                    name: "Banana",
+                    emoji: "🍌"
+                }
+
+            ]
+
         }
 
     };
@@ -2448,6 +3736,12 @@
     const learningScreen =
         document.getElementById(
             "learningScreen"
+        );
+
+
+    const gameScreen =
+        document.getElementById(
+            "gameScreen"
         );
 
 
@@ -2557,6 +3851,7 @@
 
             character.alt =
                 "Boy";
+
         }
 
     }
@@ -2580,9 +3875,37 @@
                 saved
             ) {
 
-                return JSON.parse(
-                    saved
-                );
+                const loaded =
+                    JSON.parse(
+                        saved
+                    );
+
+
+                const defaultProgress = {
+
+                    fruits: [],
+
+                    colors: [],
+
+                    objects: [],
+
+                    numbers: [],
+
+                    animals: [],
+
+                    body: [],
+
+                    clothes: [],
+
+                    food: []
+
+                };
+
+
+                return {
+                    ...defaultProgress,
+                    ...loaded
+                };
 
             }
 
@@ -2602,7 +3925,17 @@
 
             colors: [],
 
-            objects: []
+            objects: [],
+
+            numbers: [],
+
+            animals: [],
+
+            body: [],
+
+            clothes: [],
+
+            food: []
 
         };
 
@@ -2802,6 +4135,10 @@
 
 
         categoryScreen.style.display =
+            "none";
+
+
+        gameScreen.style.display =
             "none";
 
 
@@ -3172,6 +4509,81 @@
 
 
         if (
+            currentCategory ===
+            "numbers"
+        ) {
+
+            title.textContent =
+                "Amazing! 🔢";
+
+
+            text.textContent =
+                "You learned the numbers!";
+
+        }
+
+
+        if (
+            currentCategory ===
+            "animals"
+        ) {
+
+            title.textContent =
+                "Wonderful! 🐶";
+
+
+            text.textContent =
+                "You learned the animals!";
+
+        }
+
+
+        if (
+            currentCategory ===
+            "body"
+        ) {
+
+            title.textContent =
+                "Great job! 🧍";
+
+
+            text.textContent =
+                "You learned the parts of the body!";
+
+        }
+
+
+        if (
+            currentCategory ===
+            "clothes"
+        ) {
+
+            title.textContent =
+                "Fantastic! 👕";
+
+
+            text.textContent =
+                "You learned the clothes!";
+
+        }
+
+
+        if (
+            currentCategory ===
+            "food"
+        ) {
+
+            title.textContent =
+                "Yummy! 🍔";
+
+
+            text.textContent =
+                "You learned the food words!";
+
+        }
+
+
+        if (
             isLastCategory
         ) {
 
@@ -3268,6 +4680,10 @@
             "none";
 
 
+        gameScreen.style.display =
+            "none";
+
+
         completeScreen.style.display =
             "none";
 
@@ -3297,6 +4713,1093 @@
 
         window.location.href =
             "/";
+
+    }
+
+
+    /* =========================================================
+       MINI JUEGOS
+    ========================================================== */
+
+
+    let currentGame =
+        null;
+
+
+    let currentGameRound =
+        0;
+
+
+    let currentGameAnswer =
+        null;
+
+
+    let gameScore =
+        Number(
+            localStorage.getItem(
+                "myLittleEnglishMiniGameStars"
+            ) || 0
+        );
+
+
+    const gameQuestion =
+        document.getElementById(
+            "gameQuestion"
+        );
+
+
+    const gameInstruction =
+        document.getElementById(
+            "gameInstruction"
+        );
+
+
+    const gameOptions =
+        document.getElementById(
+            "gameOptions"
+        );
+
+
+    const gameResult =
+        document.getElementById(
+            "gameResult"
+        );
+
+
+    const gameNextButton =
+        document.getElementById(
+            "gameNextButton"
+        );
+
+
+    const gameMenu =
+        document.getElementById(
+            "gameMenu"
+        );
+
+
+    const activeGame =
+        document.getElementById(
+            "activeGame"
+        );
+
+
+    const gameScoreElement =
+        document.getElementById(
+            "gameScore"
+        );
+
+
+    function updateGameScore() {
+
+        gameScoreElement.textContent =
+            gameScore;
+
+        localStorage.setItem(
+            "myLittleEnglishMiniGameStars",
+            gameScore
+        );
+
+    }
+
+
+    function startMiniGames() {
+
+        window.speechSynthesis.cancel();
+
+
+        categoryScreen.style.display =
+            "none";
+
+
+        learningScreen.style.display =
+            "none";
+
+
+        completeScreen.style.display =
+            "none";
+
+
+        gameScreen.style.display =
+            "block";
+
+
+        showGameMenu();
+
+    }
+
+
+    function showGameMenu() {
+
+        window.speechSynthesis.cancel();
+
+
+        gameMenu.style.display =
+            "grid";
+
+
+        activeGame.style.display =
+            "none";
+
+
+        gameResult.textContent =
+            "";
+
+
+        gameNextButton.style.display =
+            "none";
+
+
+        updateGameScore();
+
+    }
+
+
+    function randomItems(
+        array,
+        amount
+    ) {
+
+        const copy =
+            [...array];
+
+
+        copy.sort(
+            () =>
+                Math.random() - 0.5
+        );
+
+
+        return copy.slice(
+            0,
+            amount
+        );
+
+    }
+
+
+    function startGame(
+        gameType
+    ) {
+
+        currentGame =
+            gameType;
+
+
+        currentGameRound =
+            0;
+
+
+        gameMenu.style.display =
+            "none";
+
+
+        activeGame.style.display =
+            "block";
+
+
+        createGameRound();
+
+    }
+
+
+    function createGameRound() {
+
+        gameResult.textContent =
+            "";
+
+
+        gameResult.className =
+            "game-result";
+
+
+        gameNextButton.style.display =
+            "none";
+
+
+        gameOptions.innerHTML =
+            "";
+
+
+        if (
+            currentGame ===
+            "color"
+        ) {
+
+            createColorGame();
+
+        }
+
+
+        if (
+            currentGame ===
+            "object"
+        ) {
+
+            createObjectGame();
+
+        }
+
+
+        if (
+            currentGame ===
+            "number"
+        ) {
+
+            createNumberGame();
+
+        }
+
+
+        if (
+            currentGame ===
+            "animal"
+        ) {
+
+            createAnimalGame();
+
+        }
+
+
+        if (
+            currentGame ===
+            "memory"
+        ) {
+
+            createMemoryGame();
+
+        }
+
+    }
+
+
+    /* =========================================================
+       JUEGO DE COLORES
+    ========================================================== */
+
+    function createColorGame() {
+
+        const colors = [
+
+            {
+                name: "Red",
+                emoji: "🔴"
+            },
+
+            {
+                name: "Blue",
+                emoji: "🔵"
+            },
+
+            {
+                name: "Yellow",
+                emoji: "🟡"
+            },
+
+            {
+                name: "Green",
+                emoji: "🟢"
+            },
+
+            {
+                name: "Purple",
+                emoji: "🟣"
+            },
+
+            {
+                name: "Pink",
+                emoji: "🩷"
+            }
+
+        ];
+
+
+        const selected =
+            colors[
+                Math.floor(
+                    Math.random() *
+                    colors.length
+                )
+            ];
+
+
+        currentGameAnswer =
+            selected.name;
+
+
+        gameQuestion.textContent =
+            "🎨 Find the color!";
+
+
+        gameInstruction.textContent =
+            "Listen and choose the correct color.";
+
+
+        const options =
+            randomItems(
+                colors,
+                3
+            );
+
+
+        if (
+            !options.some(
+                item =>
+                    item.name ===
+                    selected.name
+            )
+        ) {
+
+            options[
+                Math.floor(
+                    Math.random() *
+                    options.length
+                )
+            ] = selected;
+
+        }
+
+
+        renderGameOptions(
+            options
+        );
+
+
+        setTimeout(
+            function() {
+
+                speakGameQuestion();
+
+            },
+            350
+        );
+
+    }
+
+
+    /* =========================================================
+       JUEGO DE OBJETOS
+    ========================================================== */
+
+    function createObjectGame() {
+
+        const objects = [
+
+            {
+                name: "Book",
+                emoji: "📖"
+            },
+
+            {
+                name: "Chair",
+                emoji: "🪑"
+            },
+
+            {
+                name: "Bed",
+                emoji: "🛏️"
+            },
+
+            {
+                name: "Ball",
+                emoji: "⚽"
+            },
+
+            {
+                name: "Pencil",
+                emoji: "✏️"
+            },
+
+            {
+                name: "Cup",
+                emoji: "☕"
+            },
+
+            {
+                name: "Clock",
+                emoji: "🕐"
+            },
+
+            {
+                name: "Backpack",
+                emoji: "🎒"
+            }
+
+        ];
+
+
+        const selected =
+            objects[
+                Math.floor(
+                    Math.random() *
+                    objects.length
+                )
+            ];
+
+
+        currentGameAnswer =
+            selected.name;
+
+
+        gameQuestion.textContent =
+            "🧸 Find the object!";
+
+
+        gameInstruction.textContent =
+            "Listen and choose the correct object.";
+
+
+        const options =
+            randomItems(
+                objects,
+                3
+            );
+
+
+        if (
+            !options.some(
+                item =>
+                    item.name ===
+                    selected.name
+            )
+        ) {
+
+            options[
+                Math.floor(
+                    Math.random() *
+                    options.length
+                )
+            ] = selected;
+
+        }
+
+
+        renderGameOptions(
+            options
+        );
+
+
+        setTimeout(
+            function() {
+
+                speakGameQuestion();
+
+            },
+            350
+        );
+
+    }
+
+
+    /* =========================================================
+       JUEGO DE NUMEROS
+    ========================================================== */
+
+    function createNumberGame() {
+
+        const numbers = [
+
+            {
+                name: "One",
+                emoji: "1️⃣"
+            },
+
+            {
+                name: "Two",
+                emoji: "2️⃣"
+            },
+
+            {
+                name: "Three",
+                emoji: "3️⃣"
+            },
+
+            {
+                name: "Four",
+                emoji: "4️⃣"
+            },
+
+            {
+                name: "Five",
+                emoji: "5️⃣"
+            },
+
+            {
+                name: "Six",
+                emoji: "6️⃣"
+            },
+
+            {
+                name: "Seven",
+                emoji: "7️⃣"
+            },
+
+            {
+                name: "Eight",
+                emoji: "8️⃣"
+            },
+
+            {
+                name: "Nine",
+                emoji: "9️⃣"
+            },
+
+            {
+                name: "Ten",
+                emoji: "🔟"
+            }
+
+        ];
+
+
+        const selected =
+            numbers[
+                Math.floor(
+                    Math.random() *
+                    numbers.length
+                )
+            ];
+
+
+        currentGameAnswer =
+            selected.name;
+
+
+        gameQuestion.textContent =
+            "🔢 Find the number!";
+
+
+        gameInstruction.textContent =
+            "Listen and choose the correct number.";
+
+
+        const options =
+            randomItems(
+                numbers,
+                3
+            );
+
+
+        if (
+            !options.some(
+                item =>
+                    item.name ===
+                    selected.name
+            )
+        ) {
+
+            options[
+                Math.floor(
+                    Math.random() *
+                    options.length
+                )
+            ] = selected;
+
+        }
+
+
+        renderGameOptions(
+            options
+        );
+
+
+        setTimeout(
+            function() {
+
+                speakGameQuestion();
+
+            },
+            350
+        );
+
+    }
+
+
+    /* =========================================================
+       JUEGO DE ANIMALES
+    ========================================================== */
+
+    function createAnimalGame() {
+
+        const animals = [
+
+            {
+                name: "Dog",
+                emoji: "🐶"
+            },
+
+            {
+                name: "Cat",
+                emoji: "🐱"
+            },
+
+            {
+                name: "Lion",
+                emoji: "🦁"
+            },
+
+            {
+                name: "Elephant",
+                emoji: "🐘"
+            },
+
+            {
+                name: "Monkey",
+                emoji: "🐒"
+            },
+
+            {
+                name: "Rabbit",
+                emoji: "🐰"
+            },
+
+            {
+                name: "Bear",
+                emoji: "🐻"
+            },
+
+            {
+                name: "Cow",
+                emoji: "🐮"
+            },
+
+            {
+                name: "Horse",
+                emoji: "🐴"
+            },
+
+            {
+                name: "Fish",
+                emoji: "🐟"
+            }
+
+        ];
+
+
+        const selected =
+            animals[
+                Math.floor(
+                    Math.random() *
+                    animals.length
+                )
+            ];
+
+
+        currentGameAnswer =
+            selected.name;
+
+
+        gameQuestion.textContent =
+            "🐶 Find the animal!";
+
+
+        gameInstruction.textContent =
+            "Listen and choose the correct animal.";
+
+
+        const options =
+            randomItems(
+                animals,
+                3
+            );
+
+
+        if (
+            !options.some(
+                item =>
+                    item.name ===
+                    selected.name
+            )
+        ) {
+
+            options[
+                Math.floor(
+                    Math.random() *
+                    options.length
+                )
+            ] = selected;
+
+        }
+
+
+        renderGameOptions(
+            options
+        );
+
+
+        setTimeout(
+            function() {
+
+                speakGameQuestion();
+
+            },
+            350
+        );
+
+    }
+
+
+    /* =========================================================
+       MEMORY GAME
+    ========================================================== */
+
+    function createMemoryGame() {
+
+        const memoryItems = [
+
+            {
+                name: "Apple",
+                emoji: "🍎"
+            },
+
+            {
+                name: "Dog",
+                emoji: "🐶"
+            },
+
+            {
+                name: "Ball",
+                emoji: "⚽"
+            },
+
+            {
+                name: "Banana",
+                emoji: "🍌"
+            }
+
+        ];
+
+
+        const selected =
+            memoryItems[
+                Math.floor(
+                    Math.random() *
+                    memoryItems.length
+                )
+            ];
+
+
+        currentGameAnswer =
+            selected.name;
+
+
+        gameQuestion.textContent =
+            "🧩 Memory Game!";
+
+
+        gameInstruction.textContent =
+            "Remember this picture and choose it.";
+
+
+        gameOptions.innerHTML =
+            "";
+
+
+        const memoryDisplay =
+            document.createElement(
+                "div"
+            );
+
+
+        memoryDisplay.style.fontSize =
+            "110px";
+
+
+        memoryDisplay.style.margin =
+            "15px";
+
+
+        memoryDisplay.textContent =
+            selected.emoji;
+
+
+        gameOptions.appendChild(
+            memoryDisplay
+        );
+
+
+        speakEnglish(
+            selected.name
+        );
+
+
+        setTimeout(
+            function() {
+
+                memoryDisplay.style.display =
+                    "none";
+
+
+                const options =
+                    randomItems(
+                        memoryItems,
+                        3
+                    );
+
+
+                if (
+                    !options.some(
+                        item =>
+                            item.name ===
+                            selected.name
+                    )
+                ) {
+
+                    options[
+                        Math.floor(
+                            Math.random() *
+                            options.length
+                        )
+                    ] = selected;
+
+                }
+
+
+                renderGameOptions(
+                    options
+                );
+
+            },
+            1800
+        );
+
+    }
+
+
+    /* =========================================================
+       MOSTRAR OPCIONES DEL JUEGO
+    ========================================================== */
+
+    function renderGameOptions(
+        options
+    ) {
+
+        gameOptions.innerHTML =
+            "";
+
+
+        options.forEach(
+            function(item) {
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                button.type =
+                    "button";
+
+
+                button.className =
+                    "game-option";
+
+
+                button.innerHTML =
+
+                    `
+                    <div class="game-option-emoji">
+                        ${item.emoji}
+                    </div>
+
+                    <div class="game-option-text">
+                        ${item.name}
+                    </div>
+                    `;
+
+
+                button.addEventListener(
+                    "click",
+                    function() {
+
+                        checkGameAnswer(
+                            item.name,
+                            button
+                        );
+
+                    }
+                );
+
+
+                gameOptions.appendChild(
+                    button
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       COMPROBAR RESPUESTA
+    ========================================================== */
+
+    function checkGameAnswer(
+        answer,
+        clickedButton
+    ) {
+
+        const buttons =
+            gameOptions.querySelectorAll(
+                ".game-option"
+            );
+
+
+        buttons.forEach(
+            function(button) {
+
+                button.disabled =
+                    true;
+
+            }
+        );
+
+
+        if (
+            answer ===
+            currentGameAnswer
+        ) {
+
+            gameResult.textContent =
+                "⭐ Correct! Great job!";
+
+
+            gameResult.className =
+                "game-result game-correct";
+
+
+            gameScore++;
+
+
+            updateGameScore();
+
+
+            speakEnglish(
+                "Correct! Great job!"
+            );
+
+        } else {
+
+            gameResult.textContent =
+                "💪 Try again next time!";
+
+
+            gameResult.className =
+                "game-result game-wrong";
+
+
+            speakEnglish(
+                "Try again next time!"
+            );
+
+        }
+
+
+        gameNextButton.style.display =
+            "inline-block";
+
+    }
+
+
+    /* =========================================================
+       SIGUIENTE RONDA
+    ========================================================== */
+
+    function nextGameRound() {
+
+        currentGameRound++;
+
+
+        if (
+            currentGameRound >= 5
+        ) {
+
+            gameQuestion.textContent =
+                "🌟 Amazing!";
+
+
+            gameInstruction.textContent =
+                "You finished this mini game!";
+
+
+            gameOptions.innerHTML =
+                "🎉⭐🏆";
+
+
+            gameOptions.style.fontSize =
+                "80px";
+
+
+            gameResult.textContent =
+                "Choose another game or play again!";
+
+
+            gameNextButton.textContent =
+                "Play Again";
+
+
+            gameNextButton.onclick =
+                function() {
+
+                    currentGameRound =
+                        0;
+
+                    gameOptions.style.fontSize =
+                        "";
+
+                    gameNextButton.textContent =
+                        "Next ⭐";
+
+                    gameNextButton.onclick =
+                        nextGameRound;
+
+                    createGameRound();
+
+                };
+
+
+            gameNextButton.style.display =
+                "inline-block";
+
+
+            speakEnglish(
+                "Amazing! You finished this mini game!"
+            );
+
+
+            return;
+
+        }
+
+
+        gameOptions.style.fontSize =
+            "";
+
+
+        createGameRound();
+
+    }
+
+
+    /* =========================================================
+       HABLAR PREGUNTA DEL MINI JUEGO
+    ========================================================== */
+
+    function speakGameQuestion() {
+
+        if (
+            !currentGameAnswer
+        ) {
+
+            return;
+
+        }
+
+
+        speakEnglish(
+            currentGameAnswer
+        );
 
     }
 
@@ -3484,12 +5987,27 @@
              */
 
             score =
-                progress.fruits.length +
-                progress.colors.length +
-                progress.objects.length;
+                Object.keys(
+                    learningData
+                ).reduce(
+                    function(total, category) {
+
+                        return total +
+                            (
+                                progress[
+                                    category
+                                ] || []
+                            ).length;
+
+                    },
+                    0
+                );
 
 
             updateScore();
+
+
+            updateGameScore();
 
         }
     );
